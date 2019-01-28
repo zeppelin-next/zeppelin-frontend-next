@@ -30,12 +30,15 @@ import {
 } from './message-paragraph.interface';
 import { OP } from './message-operator.interface';
 
+export interface MessageReceiveDataTypeMap {
+  [ OP.NOTES_INFO ]: NotesInfo;
+  [ OP.CONFIGURATIONS_INFO ]: ConfigurationsInfo;
+}
+
 export interface MessageDataTypeMap {
-  // [s-c]
   [ OP.NOTES_INFO ]: NotesInfo;
   [ OP.CONFIGURATIONS_INFO ]: ConfigurationsInfo;
 
-  // [c-s]
   [ OP.PING ]: undefined;
   [ OP.LIST_CONFIGURATIONS ]: undefined;
   [ OP.LIST_NOTES ]: undefined;

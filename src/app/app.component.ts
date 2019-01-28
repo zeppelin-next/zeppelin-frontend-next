@@ -35,7 +35,7 @@ export class AppComponent {
     });
 
     this.message.receive<OP.NOTES_INFO>(OP.NOTES_INFO).subscribe(data => {
-      console.log(data);
+      console.log(data.notes);
     });
 
     this.message.send(OP.GET_NOTE, { id: '2E1Z1DUH6' });

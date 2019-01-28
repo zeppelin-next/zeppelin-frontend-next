@@ -1,7 +1,7 @@
 import { interval, Observable, Subject, Subscription } from 'rxjs';
 import { delay, filter, map, mergeMap, retryWhen, take } from 'rxjs/operators';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { MessageDataTypeMap } from './interfaces/message-data-type-map.interface';
+import { MessageReceiveDataTypeMap, MessageDataTypeMap } from './interfaces/message-data-type-map.interface';
 import { Note, NoteConfig, PersonalizedMode } from './interfaces/message-notebook.interface';
 import { OP } from './interfaces/message-operator.interface';
 import { Paragraph, ParagraphConfig, ParagraphParams } from './interfaces/message-paragraph.interface';
@@ -22,7 +22,7 @@ export class Message {
   private open$ = new Subject<Event>();
   private close$ = new Subject<CloseEvent>();
   private sent$ = new Subject<WebSocketMessage<keyof MessageDataTypeMap>>();
-  private received$ = new Subject<WebSocketMessage<keyof MessageDataTypeMap>>();
+  private received$ = new Subject<WebSocketMessage<keyof MessageReceiveDataTypeMap>>();
   private pingIntervalSubscription = new Subscription();
   private connectedStatus = false;
 
@@ -59,7 +59,7 @@ export class Message {
       )
     ).subscribe(e => {
       console.log('Receive:', e);
-      this.received$.next(e);
+      this.received$.next(e as WebSocketMessage<keyof MessageReceiveDataTypeMap>);
     });
   }
 
@@ -79,7 +79,7 @@ export class Message {
     return this.sent$.asObservable();
   }
 
-  received(): Observable<WebSocketMessage<keyof MessageDataTypeMap>> {
+  received(): Observable<WebSocketMessage<keyof MessageReceiveDataTypeMap>> {
     return this.received$.asObservable();
   }
 
@@ -95,12 +95,12 @@ export class Message {
     this.sent$.next(message);
   }
 
-  receive<K extends keyof MessageDataTypeMap>(op: K): Observable<MessageDataTypeMap[K]> {
+  receive<K extends keyof MessageReceiveDataTypeMap>(op: K): Observable<Record<K, MessageReceiveDataTypeMap[K]>[K]> {
     return this.ws
     .pipe(
       filter(message => message.op === op),
       map(message => message.data)
-    );
+    ) as Observable<Record<K, MessageReceiveDataTypeMap[K]>[K]>
   }
 
   getHomeNote(): void {
