@@ -1,3 +1,4 @@
+import { ParagraphItem } from './message-paragraph.interface'
 
 interface ID {
   id: string;
@@ -22,13 +23,37 @@ export interface NoteRename extends Name, ID {
   relative: boolean;
 }
 
-export interface Note {
+export interface SendNote {
   id: string;
   noteParams: NoteParams;
 }
 
+export interface Note {
+  note?: {
+    paragraphs: ParagraphItem[];
+    name: string;
+    id: string;
+    defaultInterpreterGroup: string;
+    noteParams: NoteParams;
+    noteForms: NoteForms;
+    angularObjects: NoteAngularObjects;
+    config: NoteConfig;
+    info: NoteInfo;
+  }
+}
+
+export interface NoteAngularObjects {
+}
+
+export interface NoteInfo {
+
+}
+
 export interface NoteParams {
 
+}
+
+export interface NoteForms {
 }
 
 export interface RemoveNoteForms {

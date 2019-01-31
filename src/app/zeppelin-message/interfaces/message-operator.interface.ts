@@ -1,7 +1,7 @@
 /**
  * Representation of event type.
  */
-export const enum OP {
+export enum OP {
 
   /**
    * [c-s]
@@ -19,7 +19,7 @@ export const enum OP {
   /**
    * [s-c]
    * note info
-   * @param note serialized Note object
+   * @param note serialized SendNote object
    */
   NOTE                         = 'NOTE',
 

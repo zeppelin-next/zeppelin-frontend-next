@@ -7,7 +7,7 @@ import {
   GetNode, ListRevisionHistory, ListUpdateNoteJobs,
   MoveFolderToTrash,
   MoveNoteToTrash,
-  NewNote, NoteRename, NoteRevision, NoteRevisionForCompare,
+  NewNote, Note, NoteRename, NoteRevision, NoteRevisionForCompare,
   NotesInfo, NoteUpdate, RemoveFolder, RemoveNoteForms, RestoreFolder,
   RestoreNote, SaveNoteForms, SetNoteRevision, UpdatePersonalizedMode
 } from './message-notebook.interface';
@@ -33,11 +33,13 @@ import { OP } from './message-operator.interface';
 export interface MessageReceiveDataTypeMap {
   [ OP.NOTES_INFO ]: NotesInfo;
   [ OP.CONFIGURATIONS_INFO ]: ConfigurationsInfo;
+  [ OP.NOTE ]: Note;
 }
 
 export interface MessageDataTypeMap {
-  [ OP.NOTES_INFO ]: NotesInfo;
-  [ OP.CONFIGURATIONS_INFO ]: ConfigurationsInfo;
+  [ OP.NOTES_INFO ]: never;
+  [ OP.CONFIGURATIONS_INFO ]: never;
+  [ OP.NOTE ]: never;
 
   [ OP.PING ]: undefined;
   [ OP.LIST_CONFIGURATIONS ]: undefined;

@@ -23,9 +23,41 @@ export interface ParagraphConfig {
   results: ParagraphResults;
   enabled: boolean;
   editorHide: boolean;
+  title?: boolean;
+  runOnSelectionChange?: boolean;
+  isZeppelinNotebookCronEnable?: boolean;
 }
 
-export interface Paragraph {
+export interface ParagraphResults {
+  code?: string;
+  msg?: ParagraphIResultsMsgItem[];
+  [index: number]: {}
+}
+
+export interface ParagraphIResultsMsgItem {
+  type: string;
+  data: string;
+}
+
+export interface ParagraphItem {
+  text: string;
+  user: string;
+  dateUpdated: string;
+  config: ParagraphConfig;
+  settings: ParagraphEditorSetting;
+  results?: ParagraphResults;
+  apps: any[];
+  progressUpdateIntervalMs: number;
+  jobName: string;
+  id: string;
+  dateCreated: string;
+  dateStarted?: string;
+  dateFinished?: string;
+  status: string;
+  title?: string;
+}
+
+export interface SendParagraph {
   id: string;
   title?: string;
   paragraph: string;
@@ -41,10 +73,10 @@ export interface CopyParagraph {
   params: ParagraphParams;
 }
 
-export interface RunParagraph extends Paragraph {
+export interface RunParagraph extends SendParagraph {
 }
 
-export interface CommitParagraph extends Paragraph {
+export interface CommitParagraph extends SendParagraph {
   noteId: string;
 }
 

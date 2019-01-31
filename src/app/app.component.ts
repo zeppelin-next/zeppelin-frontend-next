@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
+import { MessageDataTypeMap } from './zeppelin-message/interfaces/message-data-type-map.interface'
 import { OP } from './zeppelin-message/interfaces/message-operator.interface';
+import { ParagraphItem } from './zeppelin-message/interfaces/message-paragraph.interface'
+import { WebSocketMessage } from './zeppelin-message/interfaces/websocket-message.interface'
 import { Message } from './zeppelin-message/message';
 
 @Component({
@@ -17,18 +20,47 @@ export class AppComponent {
   };
   message: Message;
 
-  constructor() {
-    this.message = new Message(this.ticket);
+  status = false;
+  logs: Array<{
+    type: string,
+    event: WebSocketMessage<keyof MessageDataTypeMap>
+  }> = [];
 
+  logIndex = 0;
+  showPing = false;
+  noteId = '';
+  paragraphs: ParagraphItem[] = [];
+  paragraph: string;
+  ops: string[] = Object.keys(OP);
+  op: string;
+  dataStr: string = '{}';
+  constructor() {
+
+    this.message = new Message(this.ticket);
     this.message.opened().subscribe(e => {
+      this.status = true;
       this.message.listConfigurations();
       this.message.listNodes();
       this.message.getHomeNote();
     });
 
     this.message.closed().subscribe(e => {
-      console.log(e);
+      this.status = false;
     });
+
+    this.message.sent().subscribe(e => {
+      this.logs.push({
+        type: 'send',
+        event: e
+      });
+    })
+
+    this.message.received().subscribe(e => {
+      this.logs.push({
+        type: 'receive',
+        event: e
+      });
+    })
 
     this.message.receive<OP.CONFIGURATIONS_INFO>(OP.CONFIGURATIONS_INFO).subscribe(data => {
       console.log(data);
@@ -38,7 +70,43 @@ export class AppComponent {
       console.log(data.notes);
     });
 
-    this.message.send(OP.GET_NOTE, { id: '2E1Z1DUH6' });
+    this.message.receive<OP.NOTE>(OP.NOTE).subscribe(data => {
+      if (data && data.note) {
+        this.paragraphs = data.note.paragraphs;
+        if (this.paragraphs.length) {
+          this.paragraph = this.paragraphs[0].id;
+        } else {
+          this.paragraph = null;
+        }
+      }
+    });
 
+
+  }
+
+
+  getNotebook(id: string): void {
+    this.message.getNote(id);
+  }
+
+  runParagraph(id: string) {
+    const paragraph = this.paragraphs.find(e => e.id === id);
+    this.message.runParagraph(
+      paragraph.id,
+      paragraph.title,
+      paragraph.text,
+      paragraph.config,
+      {}
+    )
+  }
+
+  send(op: string, dataStr: string) {
+    let data = null;
+    try {
+      data = JSON.parse(dataStr);
+    } catch (e) {
+      console.warn(e);
+    }
+    this.message.send<any>(op, data);
   }
 }

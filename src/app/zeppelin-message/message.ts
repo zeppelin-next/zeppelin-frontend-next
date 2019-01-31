@@ -2,9 +2,9 @@ import { interval, Observable, Subject, Subscription } from 'rxjs';
 import { delay, filter, map, mergeMap, retryWhen, take } from 'rxjs/operators';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { MessageReceiveDataTypeMap, MessageDataTypeMap } from './interfaces/message-data-type-map.interface';
-import { Note, NoteConfig, PersonalizedMode } from './interfaces/message-notebook.interface';
+import { SendNote, NoteConfig, PersonalizedMode } from './interfaces/message-notebook.interface';
 import { OP } from './interfaces/message-operator.interface';
-import { Paragraph, ParagraphConfig, ParagraphParams } from './interfaces/message-paragraph.interface';
+import { SendParagraph, ParagraphConfig, ParagraphParams } from './interfaces/message-paragraph.interface';
 import { WebSocketMessage } from './interfaces/websocket-message.interface';
 import { Ticket } from './interfaces/message-common.interface';
 
@@ -304,7 +304,7 @@ export class Message {
     );
   }
 
-  runAllParagraphs(noteId: string, paragraphs: Paragraph[]): void {
+  runAllParagraphs(noteId: string, paragraphs: SendParagraph[]): void {
     this.send<OP.RUN_ALL_PARAGRAPHS>(OP.RUN_ALL_PARAGRAPHS,
       {
         noteId    : noteId,
@@ -366,7 +366,7 @@ export class Message {
     );
   }
 
-  importNote(note: Note): void {
+  importNote(note: SendNote): void {
     this.send<OP.IMPORT_NOTE>(OP.IMPORT_NOTE,
       {
         note: note
@@ -457,7 +457,7 @@ export class Message {
     this.send<OP.GET_INTERPRETER_SETTINGS>(OP.GET_INTERPRETER_SETTINGS);
   }
 
-  saveNoteForms(note: Note): void {
+  saveNoteForms(note: SendNote): void {
     this.send<OP.SAVE_NOTE_FORMS>(OP.SAVE_NOTE_FORMS,
       {
         noteId    : note.id,
