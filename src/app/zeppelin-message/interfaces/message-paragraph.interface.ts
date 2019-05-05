@@ -9,10 +9,14 @@ export interface ParagraphEditorSetting {
 
 // TODO
 export interface ParagraphResults {
+  // tslint:disable-next-line no-any
+  [key: string]: any;
 }
 
 // TODO
 export interface ParagraphParams {
+  // tslint:disable-next-line no-any
+  [key: string]: any;
 }
 
 export interface ParagraphConfig {
@@ -31,7 +35,7 @@ export interface ParagraphConfig {
 export interface ParagraphResults {
   code?: string;
   msg?: ParagraphIResultsMsgItem[];
-  [index: number]: {}
+  [index: number]: {};
 }
 
 export interface ParagraphIResultsMsgItem {
@@ -46,6 +50,7 @@ export interface ParagraphItem {
   config: ParagraphConfig;
   settings: ParagraphEditorSetting;
   results?: ParagraphResults;
+  // tslint:disable-next-line no-any
   apps: any[];
   progressUpdateIntervalMs: number;
   jobName: string;
@@ -74,6 +79,8 @@ export interface CopyParagraph {
 }
 
 export interface RunParagraph extends SendParagraph {
+  // tslint:disable-next-line no-any
+  [key: string]: any;
 }
 
 export interface CommitParagraph extends SendParagraph {
@@ -142,4 +149,3 @@ export interface PatchParagraph {
   noteId: string;
   patch: string;
 }
-

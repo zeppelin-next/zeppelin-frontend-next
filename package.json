@@ -1,5 +1,5 @@
 {
-  "name": "zeppelin-message",
+  "name": "zeppelin",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "proxy": "ng serve --proxy-config proxy.conf.js"
   },
   "private": true,
   "dependencies": {
@@ -19,7 +20,16 @@
     "@angular/platform-browser": "~7.1.0",
     "@angular/platform-browser-dynamic": "~7.1.0",
     "@angular/router": "~7.1.0",
+    "@commitlint/cli": "^7.5.2",
+    "@commitlint/config-conventional": "^7.5.0",
+    "@commitlint/prompt-cli": "^7.5.0",
     "core-js": "^2.5.4",
+    "dotenv": "^8.0.0",
+    "https-proxy-agent": "^2.2.1",
+    "husky": "^2.2.0",
+    "lint-staged": "^8.1.6",
+    "ng-zorro-antd": "^7.3.3",
+    "prettier": "^1.17.0",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"
@@ -29,9 +39,9 @@
     "@angular/cli": "~7.1.0",
     "@angular/compiler-cli": "~7.1.0",
     "@angular/language-service": "~7.1.0",
-    "@types/node": "~8.9.4",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
+    "@types/node": "~8.9.4",
     "codelyzer": "~4.5.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
@@ -44,5 +54,21 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
     "typescript": "~3.1.6"
+  },
+  "lint-staged": {
+    "src/**/*.{ts,js,less,json}": [
+      "./node_modules/.bin/prettier --write",
+      "git add"
+    ],
+    "src/**/*.ts": [
+      "tslint --project src/tslint.json --fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
   }
 }

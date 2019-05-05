@@ -1,29 +1,28 @@
 import { Component } from '@angular/core';
-import { MessageDataTypeMap } from './zeppelin-message/interfaces/message-data-type-map.interface'
+import { MessageDataTypeMap } from './zeppelin-message/interfaces/message-data-type-map.interface';
 import { OP } from './zeppelin-message/interfaces/message-operator.interface';
-import { ParagraphItem } from './zeppelin-message/interfaces/message-paragraph.interface'
-import { WebSocketMessage } from './zeppelin-message/interfaces/websocket-message.interface'
+import { ParagraphItem } from './zeppelin-message/interfaces/message-paragraph.interface';
+import { WebSocketMessage } from './zeppelin-message/interfaces/websocket-message.interface';
 import { Message } from './zeppelin-message/message';
 
 @Component({
-  selector   : 'app-root',
+  selector: 'zeppelin-root',
   templateUrl: './app.component.html',
-  styleUrls  : [ './app.component.less' ]
+  styleUrls: ['./app.component.less']
 })
 export class AppComponent {
-
   /** 它的值因该是初始化的时候从 api/security/ticket 接口获取 **/
   ticket = {
     principal: 'anonymous',
-    roles    : '',
-    ticket   : 'anonymous'
+    roles: '',
+    ticket: 'anonymous'
   };
   message: Message;
 
   status = false;
   logs: Array<{
-    type: string,
-    event: WebSocketMessage<keyof MessageDataTypeMap>
+    type: string;
+    event: WebSocketMessage<keyof MessageDataTypeMap>;
   }> = [];
 
   logIndex = 0;
@@ -33,9 +32,8 @@ export class AppComponent {
   paragraph: string;
   ops: string[] = Object.keys(OP);
   op: string;
-  dataStr: string = '{}';
+  dataStr = '{}';
   constructor() {
-
     this.message = new Message(this.ticket);
     this.message.opened().subscribe(e => {
       this.status = true;
@@ -53,14 +51,14 @@ export class AppComponent {
         type: 'send',
         event: e
       });
-    })
+    });
 
     this.message.received().subscribe(e => {
       this.logs.push({
         type: 'receive',
         event: e
       });
-    })
+    });
 
     this.message.receive<OP.CONFIGURATIONS_INFO>(OP.CONFIGURATIONS_INFO).subscribe(data => {
       console.log(data);
@@ -80,10 +78,7 @@ export class AppComponent {
         }
       }
     });
-
-
   }
-
 
   getNotebook(id: string): void {
     this.message.getNote(id);
@@ -91,13 +86,7 @@ export class AppComponent {
 
   runParagraph(id: string) {
     const paragraph = this.paragraphs.find(e => e.id === id);
-    this.message.runParagraph(
-      paragraph.id,
-      paragraph.title,
-      paragraph.text,
-      paragraph.config,
-      {}
-    )
+    this.message.runParagraph(paragraph.id, paragraph.title, paragraph.text, paragraph.config, {});
   }
 
   send(op: string, dataStr: string) {
@@ -107,6 +96,7 @@ export class AppComponent {
     } catch (e) {
       console.warn(e);
     }
+    // tslint:disable-next-line no-any
     this.message.send<any>(op, data);
   }
 }

@@ -10,14 +10,11 @@ import { Ticket } from './interfaces/message-common.interface';
 
 type ArgumentsType<T> = T extends (...args: infer U) => void ? U : never;
 
-type SendArgumentsType<K extends keyof MessageDataTypeMap> =
-  MessageDataTypeMap[K] extends undefined ?
-    ArgumentsType<(op: K) => void> :
-    ArgumentsType<(op: K, data: MessageDataTypeMap[K]) => void>;
-
+type SendArgumentsType<K extends keyof MessageDataTypeMap> = MessageDataTypeMap[K] extends undefined
+  ? ArgumentsType<(op: K) => void>
+  : ArgumentsType<(op: K, data: MessageDataTypeMap[K]) => void>;
 
 export class Message {
-
   private ws: WebSocketSubject<WebSocketMessage<keyof MessageDataTypeMap>>;
   private open$ = new Subject<Event>();
   private close$ = new Subject<CloseEvent>();
@@ -41,26 +38,29 @@ export class Message {
 
   public connect() {
     this.ws = webSocket({
-      url          : this.wsUrl,
-      openObserver : this.open$,
+      url: this.wsUrl,
+      openObserver: this.open$,
       closeObserver: this.close$
     });
 
-    this.ws.pipe(
-      // reconnect
-      retryWhen(errors => errors.pipe(
-        mergeMap(
-          () => this.close$
-          .pipe(
-            take(1),
-            delay(4000)
-          ))
+    this.ws
+      .pipe(
+        // reconnect
+        retryWhen(errors =>
+          errors.pipe(
+            mergeMap(() =>
+              this.close$.pipe(
+                take(1),
+                delay(4000)
+              )
+            )
+          )
         )
       )
-    ).subscribe(e => {
-      console.log('Receive:', e);
-      this.received$.next(e as WebSocketMessage<keyof MessageReceiveDataTypeMap>);
-    });
+      .subscribe(e => {
+        console.log('Receive:', e);
+        this.received$.next(e as WebSocketMessage<keyof MessageReceiveDataTypeMap>);
+      });
   }
 
   private ping() {
@@ -84,7 +84,7 @@ export class Message {
   }
 
   send<K extends keyof MessageDataTypeMap>(...args: SendArgumentsType<K>): void {
-    const [ op, data ] = args;
+    const [op, data] = args;
     const message: WebSocketMessage<K> = {
       op,
       data: data as MessageDataTypeMap[K],
@@ -96,11 +96,10 @@ export class Message {
   }
 
   receive<K extends keyof MessageReceiveDataTypeMap>(op: K): Observable<Record<K, MessageReceiveDataTypeMap[K]>[K]> {
-    return this.ws
-    .pipe(
+    return this.ws.pipe(
       filter(message => message.op === op),
       map(message => message.data)
-    ) as Observable<Record<K, MessageReceiveDataTypeMap[K]>[K]>
+    ) as Observable<Record<K, MessageReceiveDataTypeMap[K]>[K]>;
   }
 
   getHomeNote(): void {
@@ -201,116 +200,112 @@ export class Message {
     this.send<OP.INSERT_PARAGRAPH>(OP.INSERT_PARAGRAPH, { index: newIndex });
   }
 
-  copyParagraph(newIndex: number,
-                paragraphTitle: string,
-                paragraphData: string,
-                paragraphConfig: ParagraphConfig,
-                paragraphParams: ParagraphParams): void {
-    this.send<OP.COPY_PARAGRAPH>(OP.COPY_PARAGRAPH,
-      {
-        index    : newIndex,
-        title    : paragraphTitle,
-        paragraph: paragraphData,
-        config   : paragraphConfig,
-        params   : paragraphParams
-      }
-    );
+  copyParagraph(
+    newIndex: number,
+    paragraphTitle: string,
+    paragraphData: string,
+    paragraphConfig: ParagraphConfig,
+    paragraphParams: ParagraphParams
+  ): void {
+    this.send<OP.COPY_PARAGRAPH>(OP.COPY_PARAGRAPH, {
+      index: newIndex,
+      title: paragraphTitle,
+      paragraph: paragraphData,
+      config: paragraphConfig,
+      params: paragraphParams
+    });
   }
 
-  angularObjectUpdate(noteId: string,
-                      paragraphId: string,
-                      name: string,
-                      value: string,
-                      interpreterGroupId: string): void {
-    this.send<OP.ANGULAR_OBJECT_UPDATED>(OP.ANGULAR_OBJECT_UPDATED,
-      {
-        noteId            : noteId,
-        paragraphId       : paragraphId,
-        name              : name,
-        value             : value,
-        interpreterGroupId: interpreterGroupId
-      }
-    );
+  angularObjectUpdate(
+    noteId: string,
+    paragraphId: string,
+    name: string,
+    value: string,
+    interpreterGroupId: string
+  ): void {
+    this.send<OP.ANGULAR_OBJECT_UPDATED>(OP.ANGULAR_OBJECT_UPDATED, {
+      noteId: noteId,
+      paragraphId: paragraphId,
+      name: name,
+      value: value,
+      interpreterGroupId: interpreterGroupId
+    });
   }
 
-  angularObjectClientBind(noteId: string,
-                          name: string,
-                          value: string,
-                          paragraphId: string): void {
-    this.send<OP.ANGULAR_OBJECT_CLIENT_BIND>(OP.ANGULAR_OBJECT_CLIENT_BIND,
-      {
-        noteId     : noteId,
-        name       : name,
-        value      : value,
-        paragraphId: paragraphId
-      }
-    );
+  angularObjectClientBind(noteId: string, name: string, value: string, paragraphId: string): void {
+    this.send<OP.ANGULAR_OBJECT_CLIENT_BIND>(OP.ANGULAR_OBJECT_CLIENT_BIND, {
+      noteId: noteId,
+      name: name,
+      value: value,
+      paragraphId: paragraphId
+    });
   }
 
   angularObjectClientUnbind(noteId: string, name: string, paragraphId: string): void {
-    this.send<OP.ANGULAR_OBJECT_CLIENT_UNBIND>(OP.ANGULAR_OBJECT_CLIENT_UNBIND,
-      {
-        noteId     : noteId,
-        name       : name,
-        paragraphId: paragraphId
-      }
-    );
+    this.send<OP.ANGULAR_OBJECT_CLIENT_UNBIND>(OP.ANGULAR_OBJECT_CLIENT_UNBIND, {
+      noteId: noteId,
+      name: name,
+      paragraphId: paragraphId
+    });
   }
 
   cancelParagraph(paragraphId): void {
     this.send<OP.CANCEL_PARAGRAPH>(OP.CANCEL_PARAGRAPH, { id: paragraphId });
   }
 
-  paragraphExecutedBySpell(paragraphId, paragraphTitle,
-                           paragraphText, paragraphResultsMsg,
-                           paragraphStatus, paragraphErrorMessage,
-                           paragraphConfig, paragraphParams,
-                           paragraphDateStarted, paragraphDateFinished): void {
-    this.send<OP.PARAGRAPH_EXECUTED_BY_SPELL>(OP.PARAGRAPH_EXECUTED_BY_SPELL,
-      {
-        id          : paragraphId,
-        title       : paragraphTitle,
-        paragraph   : paragraphText,
-        results     : {
-          code: paragraphStatus,
-          msg : paragraphResultsMsg.map((dataWithType) => {
-            const serializedData = dataWithType.data;
-            return { type: dataWithType.type, serializedData };
-          })
-        },
-        status      : paragraphStatus,
-        errorMessage: paragraphErrorMessage,
-        config      : paragraphConfig,
-        params      : paragraphParams,
-        dateStarted : paragraphDateStarted,
-        dateFinished: paragraphDateFinished
-      }
-    );
+  paragraphExecutedBySpell(
+    paragraphId,
+    paragraphTitle,
+    paragraphText,
+    paragraphResultsMsg,
+    paragraphStatus,
+    paragraphErrorMessage,
+    paragraphConfig,
+    paragraphParams,
+    paragraphDateStarted,
+    paragraphDateFinished
+  ): void {
+    this.send<OP.PARAGRAPH_EXECUTED_BY_SPELL>(OP.PARAGRAPH_EXECUTED_BY_SPELL, {
+      id: paragraphId,
+      title: paragraphTitle,
+      paragraph: paragraphText,
+      results: {
+        code: paragraphStatus,
+        msg: paragraphResultsMsg.map(dataWithType => {
+          const serializedData = dataWithType.data;
+          return { type: dataWithType.type, serializedData };
+        })
+      },
+      status: paragraphStatus,
+      errorMessage: paragraphErrorMessage,
+      config: paragraphConfig,
+      params: paragraphParams,
+      dateStarted: paragraphDateStarted,
+      dateFinished: paragraphDateFinished
+    });
   }
 
-  runParagraph(paragraphId: string,
-               paragraphTitle: string,
-               paragraphData: string,
-               paragraphConfig: ParagraphConfig,
-               paragraphParams: ParagraphParams): void {
-    this.send<OP.RUN_PARAGRAPH>(OP.RUN_PARAGRAPH,
-      {
-        id       : paragraphId,
-        title    : paragraphTitle,
-        paragraph: paragraphData,
-        config   : paragraphConfig,
-        params   : paragraphParams
-      }
-    );
+  runParagraph(
+    paragraphId: string,
+    paragraphTitle: string,
+    paragraphData: string,
+    paragraphConfig: ParagraphConfig,
+    paragraphParams: ParagraphParams
+  ): void {
+    this.send<OP.RUN_PARAGRAPH>(OP.RUN_PARAGRAPH, {
+      id: paragraphId,
+      title: paragraphTitle,
+      paragraph: paragraphData,
+      config: paragraphConfig,
+      params: paragraphParams
+    });
   }
 
   runAllParagraphs(noteId: string, paragraphs: SendParagraph[]): void {
-    this.send<OP.RUN_ALL_PARAGRAPHS>(OP.RUN_ALL_PARAGRAPHS,
-      {
-        noteId    : noteId,
-        paragraphs: JSON.stringify(paragraphs)
-      }
-    );
+    this.send<OP.RUN_ALL_PARAGRAPHS>(OP.RUN_ALL_PARAGRAPHS, {
+      noteId: noteId,
+      paragraphs: JSON.stringify(paragraphs)
+    });
   }
 
   paragraphRemove(paragraphId: string): void {
@@ -326,106 +321,88 @@ export class Message {
   }
 
   completion(paragraphId: string, buf: string, cursor: number): void {
-    this.send<OP.COMPLETION>(OP.COMPLETION,
-      {
-        id    : paragraphId,
-        buf   : buf,
-        cursor: cursor
-      }
-    );
+    this.send<OP.COMPLETION>(OP.COMPLETION, {
+      id: paragraphId,
+      buf: buf,
+      cursor: cursor
+    });
   }
 
-  commitParagraph(paragraphId: string,
-                  paragraphTitle: string,
-                  paragraphData: string,
-                  paragraphConfig: ParagraphConfig,
-                  paragraphParams: ParagraphConfig,
-                  noteId: string): void {
-    return this.send<OP.COMMIT_PARAGRAPH>(OP.COMMIT_PARAGRAPH,
-      {
-        id       : paragraphId,
-        noteId   : noteId,
-        title    : paragraphTitle,
-        paragraph: paragraphData,
-        config   : paragraphConfig,
-        params   : paragraphParams
-      }
-    );
+  commitParagraph(
+    paragraphId: string,
+    paragraphTitle: string,
+    paragraphData: string,
+    paragraphConfig: ParagraphConfig,
+    paragraphParams: ParagraphConfig,
+    noteId: string
+  ): void {
+    return this.send<OP.COMMIT_PARAGRAPH>(OP.COMMIT_PARAGRAPH, {
+      id: paragraphId,
+      noteId: noteId,
+      title: paragraphTitle,
+      paragraph: paragraphData,
+      config: paragraphConfig,
+      params: paragraphParams
+    });
   }
 
   patchParagraph(paragraphId: string, noteId: string, patch: string): void {
     // javascript add "," if change contains several patches
     // but java library requires patch list without ","
     patch = patch.replace(/,@@/g, '@@');
-    return this.send<OP.PATCH_PARAGRAPH>(OP.PATCH_PARAGRAPH,
-      {
-        id    : paragraphId,
-        noteId: noteId,
-        patch : patch
-      }
-    );
+    return this.send<OP.PATCH_PARAGRAPH>(OP.PATCH_PARAGRAPH, {
+      id: paragraphId,
+      noteId: noteId,
+      patch: patch
+    });
   }
 
   importNote(note: SendNote): void {
-    this.send<OP.IMPORT_NOTE>(OP.IMPORT_NOTE,
-      {
-        note: note
-      }
-    );
+    this.send<OP.IMPORT_NOTE>(OP.IMPORT_NOTE, {
+      note: note
+    });
   }
 
   checkpointNote(noteId: string, commitMessage: string): void {
-    this.send<OP.CHECKPOINT_NOTE>(OP.CHECKPOINT_NOTE,
-      {
-        noteId       : noteId,
-        commitMessage: commitMessage
-      }
-    );
+    this.send<OP.CHECKPOINT_NOTE>(OP.CHECKPOINT_NOTE, {
+      noteId: noteId,
+      commitMessage: commitMessage
+    });
   }
 
   setNoteRevision(noteId: string, revisionId: string): void {
-    this.send<OP.SET_NOTE_REVISION>(OP.SET_NOTE_REVISION,
-      {
-        noteId    : noteId,
-        revisionId: revisionId
-      }
-    );
+    this.send<OP.SET_NOTE_REVISION>(OP.SET_NOTE_REVISION, {
+      noteId: noteId,
+      revisionId: revisionId
+    });
   }
 
   listRevisionHistory(noteId: string): void {
-    this.send<OP.LIST_REVISION_HISTORY>(OP.LIST_REVISION_HISTORY,
-      {
-        noteId: noteId
-      }
-    );
+    this.send<OP.LIST_REVISION_HISTORY>(OP.LIST_REVISION_HISTORY, {
+      noteId: noteId
+    });
   }
 
   noteRevision(noteId: string, revisionId: string): void {
-    this.send<OP.NOTE_REVISION>(OP.NOTE_REVISION,
-      {
-        noteId    : noteId,
-        revisionId: revisionId
-      }
-    );
+    this.send<OP.NOTE_REVISION>(OP.NOTE_REVISION, {
+      noteId: noteId,
+      revisionId: revisionId
+    });
   }
 
   noteRevisionForCompare(noteId: string, revisionId: string, position: string): void {
-    this.send<OP.NOTE_REVISION_FOR_COMPARE>(OP.NOTE_REVISION_FOR_COMPARE,
-      {
-        noteId    : noteId,
-        revisionId: revisionId,
-        position  : position
-      }
-    );
+    this.send<OP.NOTE_REVISION_FOR_COMPARE>(OP.NOTE_REVISION_FOR_COMPARE, {
+      noteId: noteId,
+      revisionId: revisionId,
+      position: position
+    });
   }
 
   editorSetting(paragraphId: string, replName: string): void {
-    this.send<OP.EDITOR_SETTING>(OP.EDITOR_SETTING,
-      {
-        paragraphId: paragraphId,
-        magic      : replName
-      }
-    );
+    this.send<OP.EDITOR_SETTING>(OP.EDITOR_SETTING, {
+      paragraphId: paragraphId,
+      magic: replName
+    });
   }
 
   listNoteJobs(): void {
@@ -458,21 +435,16 @@ export class Message {
   }
 
   saveNoteForms(note: SendNote): void {
-    this.send<OP.SAVE_NOTE_FORMS>(OP.SAVE_NOTE_FORMS,
-      {
-        noteId    : note.id,
-        noteParams: note.noteParams
-      }
-    );
+    this.send<OP.SAVE_NOTE_FORMS>(OP.SAVE_NOTE_FORMS, {
+      noteId: note.id,
+      noteParams: note.noteParams
+    });
   }
 
   removeNoteForms(note, formName): void {
-    this.send<OP.REMOVE_NOTE_FORMS>(OP.REMOVE_NOTE_FORMS,
-      {
-        noteId  : note.id,
-        formName: formName
-      }
-    );
+    this.send<OP.REMOVE_NOTE_FORMS>(OP.REMOVE_NOTE_FORMS, {
+      noteId: note.id,
+      formName: formName
+    });
   }
-
 }

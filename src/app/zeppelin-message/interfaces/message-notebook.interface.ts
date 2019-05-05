@@ -1,4 +1,4 @@
-import { ParagraphItem } from './message-paragraph.interface'
+import { ParagraphItem } from './message-paragraph.interface';
 
 interface ID {
   id: string;
@@ -39,21 +39,27 @@ export interface Note {
     angularObjects: NoteAngularObjects;
     config: NoteConfig;
     info: NoteInfo;
-  }
+  };
 }
 
 export interface NoteAngularObjects {
+  // tslint:disable-next-line no-any
+  [key: string]: any;
 }
 
 export interface NoteInfo {
-
+  // tslint:disable-next-line no-any
+  [key: string]: any;
 }
 
 export interface NoteParams {
-
+  // tslint:disable-next-line no-any
+  [key: string]: any;
 }
 
 export interface NoteForms {
+  // tslint:disable-next-line no-any
+  [key: string]: any;
 }
 
 export interface RemoveNoteForms {
