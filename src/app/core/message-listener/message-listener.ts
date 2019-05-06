@@ -3,7 +3,7 @@ import { Subscriber } from 'rxjs';
 import { MessageReceiveDataTypeMap } from 'zeppelin-sdk';
 import { MessageService } from 'zeppelin-services';
 
-export class MessageListenerComponent implements OnDestroy {
+export class MessageListenersManager implements OnDestroy {
   __zeppelinMessageListeners__: Function[];
   __zeppelinMessageListeners$__ = new Subscriber();
   constructor(public messageService: MessageService) {
@@ -19,10 +19,10 @@ export class MessageListenerComponent implements OnDestroy {
 }
 
 export function MessageListener(op: keyof MessageReceiveDataTypeMap) {
-  return function(target: MessageListenerComponent, propertyKey: string, descriptor: PropertyDescriptor) {
+  return function(target: MessageListenersManager, propertyKey: string, descriptor: PropertyDescriptor) {
     const oldValue = descriptor.value;
 
-    descriptor.value = function() {
+    const fn = function() {
       this.__zeppelinMessageListeners$__.add(
         this.messageService.receive(op).subscribe(data => {
           oldValue.apply(this, [data]);
@@ -31,9 +31,9 @@ export function MessageListener(op: keyof MessageReceiveDataTypeMap) {
     };
 
     if (!target.__zeppelinMessageListeners__) {
-      target.__zeppelinMessageListeners__ = [descriptor.value];
+      target.__zeppelinMessageListeners__ = [fn];
     } else {
-      target.__zeppelinMessageListeners__.push(descriptor.value);
+      target.__zeppelinMessageListeners__.push(fn);
     }
 
     return descriptor;
