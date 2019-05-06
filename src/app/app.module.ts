@@ -1,20 +1,40 @@
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { NZ_I18N, en_US } from 'ng-zorro-antd';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
+import { BaseUrlService, TicketService } from 'zeppelin-services';
+import { AppInterceptor } from './app.interceptor';
+import { AppInitializer } from './app.initializer';
 
 registerLocaleData(en);
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, FormsModule, HttpClientModule, BrowserAnimationsModule],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [
+    {
+      provide: NZ_I18N,
+      useValue: en_US
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AppInterceptor,
+      multi: true,
+      deps: [TicketService]
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: AppInitializer,
+      deps: [HttpClient, BaseUrlService, TicketService],
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

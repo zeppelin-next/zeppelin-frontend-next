@@ -2,6 +2,23 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "paths": {
+      "zeppelin-services": [
+        "src/app/services"
+      ],
+      "zeppelin-interfaces": [
+        "src/app/interfaces"
+      ],
+      "zeppelin-core": [
+        "src/app/core"
+      ],
+      "zeppelin-share/*": [
+        "src/app/share/*"
+      ],
+      "zeppelin-environment": [
+        "src/environments/environment.ts"
+      ]
+    },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
