@@ -13,10 +13,6 @@ export class BaseUrlService {
         port = 443;
       }
     }
-    // Exception for when running locally via grunt
-    if (port === environment.WEB_PORT) {
-      port = environment.SERVER_PORT;
-    }
     return port;
   }
 

@@ -59,14 +59,14 @@
             ],
             "styles": [
               "src/styles.less",
-              "src/styles/dark/antd-dark.less",
-              "src/styles/light/antd-light.less"
+              "src/styles/theme/dark/antd-dark.less",
+              "src/styles/theme/light/antd-light.less"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "src/styles",
-                "src/styles/dark",
-                "src/styles/light"
+                "src/styles/theme",
+                "src/styles/theme/dark",
+                "src/styles/theme/light"
               ]
             },
             "scripts": []
