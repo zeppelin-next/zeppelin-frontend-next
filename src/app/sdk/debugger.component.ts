@@ -1,18 +1,15 @@
 import { Component } from '@angular/core';
-import { MessageListener, MessageListenerComponent } from 'zeppelin-core';
-import { ConfigurationsInfo } from 'zeppelin-sdk';
+import { MessageListener, MessageListenersManager } from 'zeppelin-core';
+import { MessageReceiveDataTypeMap } from 'zeppelin-sdk';
 import { MessageService } from 'zeppelin-services';
-import { WebSocketMessage } from './interfaces/websocket-message.interface';
-import { MessageDataTypeMap } from './interfaces/message-data-type-map.interface';
-import { ParagraphItem } from './interfaces/message-paragraph.interface';
-import { OP } from './interfaces/message-operator.interface';
+import { WebSocketMessage, MessageDataTypeMap, ParagraphItem, OP } from 'zeppelin-sdk';
 
 @Component({
   selector: 'zeppelin-message-debugger',
   templateUrl: `./debugger.component.html`,
   styleUrls: ['./debugger.component.less']
 })
-export class DebuggerComponent extends MessageListenerComponent {
+export class DebuggerComponent extends MessageListenersManager {
   status = false;
   logs: Array<{
     type: string;
@@ -53,31 +50,25 @@ export class DebuggerComponent extends MessageListenerComponent {
         event: e
       });
     });
-
-    this.messageService.receive<OP.CONFIGURATIONS_INFO>(OP.CONFIGURATIONS_INFO).subscribe(data => {
-      console.log(data);
-    });
-
-    this.messageService.receive<OP.NOTES_INFO>(OP.NOTES_INFO).subscribe(data => {
-      console.log(data.notes);
-    });
-
-    this.messageService.receive<OP.NOTE>(OP.NOTE).subscribe(data => {
-      if (data && data.note) {
-        this.paragraphs = data.note.paragraphs;
-        if (this.paragraphs.length) {
-          this.paragraph = this.paragraphs[0].id;
-        } else {
-          this.paragraph = null;
-        }
-      }
-    });
   }
 
+  @MessageListener(OP.NOTE)
+  updateNote(data: MessageReceiveDataTypeMap[OP.NOTE]) {
+    if (data && data.note) {
+      this.paragraphs = data.note.paragraphs;
+      if (this.paragraphs.length) {
+        this.paragraph = this.paragraphs[0].id;
+      } else {
+        this.paragraph = null;
+      }
+    }
+  }
+
+  @MessageListener(OP.NOTES_INFO)
   @MessageListener(OP.CONFIGURATIONS_INFO)
-  updateConfigurations(data: ConfigurationsInfo) {
+  updateConfigurations(data): void {
     console.log(data);
-    console.log(this.status);
+    console.log(this.logs.length);
   }
 
   getNotebook(id: string): void {
