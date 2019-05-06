@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { Message } from './message';
+import { MessageListener, MessageListenerComponent } from 'zeppelin-core';
+import { ConfigurationsInfo } from 'zeppelin-sdk';
+import { MessageService } from 'zeppelin-services';
 import { WebSocketMessage } from './interfaces/websocket-message.interface';
 import { MessageDataTypeMap } from './interfaces/message-data-type-map.interface';
 import { ParagraphItem } from './interfaces/message-paragraph.interface';
@@ -10,15 +12,7 @@ import { OP } from './interfaces/message-operator.interface';
   templateUrl: `./debugger.component.html`,
   styleUrls: ['./debugger.component.less']
 })
-export class DebuggerComponent {
-  /** 它的值因该是初始化的时候从 api/security/ticket 接口获取 **/
-  ticket = {
-    principal: 'anonymous',
-    roles: '',
-    ticket: 'anonymous'
-  };
-  message: Message;
-
+export class DebuggerComponent extends MessageListenerComponent {
   status = false;
   logs: Array<{
     type: string;
@@ -33,42 +27,42 @@ export class DebuggerComponent {
   ops: string[] = Object.keys(OP);
   op: string;
   dataStr = '{}';
-  constructor() {
-    this.message = new Message(this.ticket);
-    this.message.opened().subscribe(e => {
+  constructor(public messageService: MessageService) {
+    super(messageService);
+    this.messageService.opened().subscribe(e => {
       this.status = true;
-      this.message.listConfigurations();
-      this.message.listNodes();
-      this.message.getHomeNote();
+      this.messageService.listConfigurations();
+      this.messageService.listNodes();
+      this.messageService.getHomeNote();
     });
 
-    this.message.closed().subscribe(e => {
+    this.messageService.closed().subscribe(e => {
       this.status = false;
     });
 
-    this.message.sent().subscribe(e => {
+    this.messageService.sent().subscribe(e => {
       this.logs.push({
         type: 'send',
         event: e
       });
     });
 
-    this.message.received().subscribe(e => {
+    this.messageService.received().subscribe(e => {
       this.logs.push({
         type: 'receive',
         event: e
       });
     });
 
-    this.message.receive<OP.CONFIGURATIONS_INFO>(OP.CONFIGURATIONS_INFO).subscribe(data => {
+    this.messageService.receive<OP.CONFIGURATIONS_INFO>(OP.CONFIGURATIONS_INFO).subscribe(data => {
       console.log(data);
     });
 
-    this.message.receive<OP.NOTES_INFO>(OP.NOTES_INFO).subscribe(data => {
+    this.messageService.receive<OP.NOTES_INFO>(OP.NOTES_INFO).subscribe(data => {
       console.log(data.notes);
     });
 
-    this.message.receive<OP.NOTE>(OP.NOTE).subscribe(data => {
+    this.messageService.receive<OP.NOTE>(OP.NOTE).subscribe(data => {
       if (data && data.note) {
         this.paragraphs = data.note.paragraphs;
         if (this.paragraphs.length) {
@@ -80,13 +74,19 @@ export class DebuggerComponent {
     });
   }
 
+  @MessageListener(OP.CONFIGURATIONS_INFO)
+  updateConfigurations(data: ConfigurationsInfo) {
+    console.log(data);
+    console.log(this.status);
+  }
+
   getNotebook(id: string): void {
-    this.message.getNote(id);
+    this.messageService.getNote(id);
   }
 
   runParagraph(id: string) {
     const paragraph = this.paragraphs.find(e => e.id === id);
-    this.message.runParagraph(paragraph.id, paragraph.title, paragraph.text, paragraph.config, {});
+    this.messageService.runParagraph(paragraph.id, paragraph.title, paragraph.text, paragraph.config, {});
   }
 
   send(op: string, dataStr: string) {
@@ -97,6 +97,6 @@ export class DebuggerComponent {
       console.warn(e);
     }
     // tslint:disable-next-line no-any
-    this.message.send<any>(op, data);
+    this.messageService.send<any>(op, data);
   }
 }

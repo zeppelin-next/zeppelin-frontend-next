@@ -8,9 +8,9 @@ import { SendParagraph, ParagraphConfig, ParagraphParams } from './interfaces/me
 import { WebSocketMessage } from './interfaces/websocket-message.interface';
 import { Ticket } from './interfaces/message-common.interface';
 
-type ArgumentsType<T> = T extends (...args: infer U) => void ? U : never;
+export type ArgumentsType<T> = T extends (...args: infer U) => void ? U : never;
 
-type SendArgumentsType<K extends keyof MessageDataTypeMap> = MessageDataTypeMap[K] extends undefined
+export type SendArgumentsType<K extends keyof MessageDataTypeMap> = MessageDataTypeMap[K] extends undefined
   ? ArgumentsType<(op: K) => void>
   : ArgumentsType<(op: K, data: MessageDataTypeMap[K]) => void>;
 
@@ -36,7 +36,7 @@ export class Message {
     });
   }
 
-  public connect() {
+  connect() {
     this.ws = webSocket({
       url: this.wsUrl,
       openObserver: this.open$,
@@ -63,7 +63,7 @@ export class Message {
       });
   }
 
-  private ping() {
+  ping() {
     this.send<OP.PING>(OP.PING);
   }
 
@@ -100,6 +100,11 @@ export class Message {
       filter(message => message.op === op),
       map(message => message.data)
     ) as Observable<Record<K, MessageReceiveDataTypeMap[K]>[K]>;
+  }
+
+  destroy(): void {
+    this.ws.complete();
+    this.ws = null;
   }
 
   getHomeNote(): void {

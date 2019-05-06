@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from 'zeppelin-environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,10 @@ export class BaseUrlService {
       if (location.protocol === 'https:') {
         port = 443;
       }
+    }
+    // Exception for when running locally via grunt
+    if (port === environment.WEB_PORT) {
+      port = environment.SERVER_PORT;
     }
     return port;
   }

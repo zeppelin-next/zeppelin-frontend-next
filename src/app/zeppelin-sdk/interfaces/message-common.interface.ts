@@ -12,6 +12,7 @@ export type EditorLanguage = 'scala' | 'python' | 'r' | 'sql' | 'markdown' | 'sh
 export interface Ticket {
   principal: string;
   ticket: string;
+  redirectURL?: string;
   roles: string;
 }
 

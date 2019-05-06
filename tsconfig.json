@@ -17,6 +17,9 @@
       ],
       "zeppelin-environment": [
         "src/environments/environment.ts"
+      ],
+      "zeppelin-sdk": [
+        "src/app/zeppelin-sdk"
       ]
     },
     "outDir": "./dist/out-tsc",
