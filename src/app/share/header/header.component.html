@@ -1,0 +1,25 @@
+<div class="header">
+  <div class="brand">
+    <a routerLink="/">
+      <div class="logo"></div>
+      <div class="title">Zeppelin</div>
+    </a>
+  </div>
+  <div class="nav">
+    <ul nz-menu [nzMode]="'horizontal'">
+      <li nz-menu-item routerLinkActive="ant-menu-item-selected">
+        <a routerLink="notebook">NoteBook</a>
+      </li>
+      <li nz-menu-item routerLinkActive="ant-menu-item-selected">
+        <a routerLink="jobmanager">Job</a>
+      </li>
+    </ul>
+  </div>
+  <div class="user">
+  </div>
+  <div class="search">
+    <nz-input-group [nzPrefixIcon]="'search'">
+      <input type="text" nz-input placeholder="Search"/>
+    </nz-input-group>
+  </div>
+</div>

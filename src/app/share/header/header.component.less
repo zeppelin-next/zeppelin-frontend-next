@@ -1,0 +1,54 @@
+@import 'theme-mixin';
+
+.themeMixin({
+  .header {
+    position: relative;
+    z-index: 999;
+    width: 100%;
+    height: 50px;
+    background: #fff;
+    padding: 0 15px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .06);
+  }
+  .brand {
+    float: left;
+    width: 200px;
+  }
+  .logo {
+    height: 50px;
+    width: 75px;
+    background-size: 50px 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("../../../assets/zeppelin_svg_logo.svg");
+    float: left;
+  }
+  .title {
+    float: left;
+    line-height: 50px;
+    font-family: 'Patua One', cursive;
+    font-size: 25px;
+    color: @primary-color;
+  }
+  .nav {
+    float: left;
+
+    ul {
+      position: relative;
+      top: 1px;
+      border-bottom: none;
+    }
+
+    a {
+      font-weight: 500;
+    }
+  }
+  .search {
+    float: right;
+    padding: 9px;
+    width: 300px;
+  }
+  .user {
+    float: right;
+  }
+});

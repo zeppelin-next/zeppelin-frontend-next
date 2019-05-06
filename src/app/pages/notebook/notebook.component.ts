@@ -1,12 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-  selector: 'zeppelin-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.less'],
+  selector: 'zeppelin-notebook',
+  templateUrl: './notebook.component.html',
+  styleUrls: ['./notebook.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NavbarComponent implements OnInit {
+export class NotebookComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
