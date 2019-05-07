@@ -13,7 +13,6 @@ import {
   Message,
   SendArgumentsType
 } from 'zeppelin-sdk';
-
 import { TicketService } from './ticket.service';
 import { BaseUrlService } from './base-url.service';
 
@@ -22,11 +21,11 @@ import { BaseUrlService } from './base-url.service';
 })
 export class MessageService extends Message implements OnDestroy {
   constructor(private baseUrlService: BaseUrlService, private ticketService: TicketService) {
-    super(ticketService.ticket, baseUrlService.getWebsocketUrl());
+    super();
   }
 
-  connect() {
-    super.connect();
+  bootstrap(): void {
+    super.bootstrap(this.ticketService.ticket, this.baseUrlService.getWebsocketUrl());
   }
 
   ping() {

@@ -22,9 +22,10 @@ export class Message {
   private received$ = new Subject<WebSocketMessage<keyof MessageReceiveDataTypeMap>>();
   private pingIntervalSubscription = new Subscription();
   private connectedStatus = false;
+  private wsUrl: string;
+  private ticket: Ticket;
 
-  constructor(private ticket: Ticket, private wsUrl = 'ws://localhost:8085/ws') {
-    this.connect();
+  constructor() {
     this.open$.subscribe(() => {
       this.connectedStatus = true;
       this.pingIntervalSubscription.unsubscribe();
@@ -34,6 +35,20 @@ export class Message {
       this.connectedStatus = false;
       this.pingIntervalSubscription.unsubscribe();
     });
+  }
+
+  bootstrap(ticket: Ticket, wsUrl: string) {
+    this.setTicket(ticket);
+    this.setWsUrl(wsUrl);
+    this.connect();
+  }
+
+  setWsUrl(wsUrl: string): void {
+    this.wsUrl = wsUrl;
+  }
+
+  setTicket(ticket: Ticket): void {
+    this.ticket = ticket;
   }
 
   connect() {

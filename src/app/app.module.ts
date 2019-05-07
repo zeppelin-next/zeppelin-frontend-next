@@ -7,7 +7,7 @@ import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
-import { TicketService } from 'zeppelin-services';
+import { MessageService, TicketService } from 'zeppelin-services';
 import { AppInterceptor } from './app.interceptor';
 import { AppInitializer } from './app.initializer';
 import { ShareModule } from 'zeppelin-share/share.module';
@@ -32,7 +32,7 @@ registerLocaleData(en);
     {
       provide: APP_INITIALIZER,
       useFactory: AppInitializer,
-      deps: [HttpClient, TicketService],
+      deps: [HttpClient, TicketService, MessageService],
       multi: true
     }
   ],
