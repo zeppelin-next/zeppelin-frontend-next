@@ -1,25 +1,32 @@
 import { Injectable } from '@angular/core';
-import { ITicket, ITicketWithName, IZeppelinVersion } from 'zeppelin-interfaces';
-import { Subject } from 'rxjs';
+import { ITicket, ITicketWrapped, IZeppelinVersion } from 'zeppelin-interfaces';
+import { forkJoin, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { BaseUrlService } from './base-url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TicketService {
-  ticket = new ITicketWithName();
+  ticket = new ITicketWrapped();
+  rawTicket = new ITicket();
   login$ = new Subject();
   logout$ = new Subject();
 
   getTicket() {
-    return this.httpClient
-      .get<ITicket>(`${this.baseUrlService.getRestApiBase()}/security/ticket`)
-      .pipe(tap(data => this.setTicket(data)));
+    return forkJoin(
+      this.httpClient.get<ITicket>(`${this.baseUrlService.getRestApiBase()}/security/ticket`),
+      this.getZeppelinVersion()
+    ).pipe(
+      tap(data => {
+        const [ticket, version] = data;
+        this.setTicket(ticket, version);
+      })
+    );
   }
 
-  setTicket(ticket: ITicket) {
+  setTicket(ticket: ITicket, version: string) {
     if (ticket.redirectURL) {
       window.location.href = ticket.redirectURL + window.location.href;
     }
@@ -28,7 +35,8 @@ export class TicketService {
       const re = ', name=(.*?),';
       screenUsername = ticket.principal.match(re)[1];
     }
-    this.ticket = { ...ticket, screenUsername, ...{ init: true } };
+    this.rawTicket = ticket;
+    this.ticket = { ...ticket, screenUsername, version, ...{ init: true } };
   }
 
   logout() {
@@ -47,7 +55,9 @@ export class TicketService {
   }
 
   getZeppelinVersion() {
-    return this.httpClient.get<IZeppelinVersion>(`${this.baseUrlService.getRestApiBase()}/version`);
+    return this.httpClient
+      .get<IZeppelinVersion>(`${this.baseUrlService.getRestApiBase()}/version`)
+      .pipe(map(data => data.version));
   }
 
   constructor(private httpClient: HttpClient, private baseUrlService: BaseUrlService) {}

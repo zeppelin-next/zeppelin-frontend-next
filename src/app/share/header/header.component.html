@@ -18,7 +18,7 @@
   <div class="user" *ngIf="ticketService.ticket.init">
     <nz-dropdown [nzTrigger]="'click'">
       <a nz-dropdown class="status">
-        <nz-badge nzStatus="error" [nzText]="ticketService.ticket.screenUsername"></nz-badge>
+        <nz-badge [nzStatus]="connectStatus" [nzText]="ticketService.ticket.screenUsername"></nz-badge>
         <i nz-icon nzType="caret-down"></i> </a>
       <ul nz-menu>
         <li nz-menu-item (click)="about()">About Zeppelin</li>

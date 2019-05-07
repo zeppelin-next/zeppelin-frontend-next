@@ -8,14 +8,7 @@ import { TicketService } from 'zeppelin-services';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AboutZeppelinComponent implements OnInit {
-  zeppelinVersion = 'loading...';
+  constructor(public ticketService: TicketService) {}
 
-  constructor(private ticketService: TicketService, private cdr: ChangeDetectorRef) {}
-
-  ngOnInit() {
-    this.ticketService.getZeppelinVersion().subscribe(data => {
-      this.zeppelinVersion = data.version;
-      this.cdr.markForCheck();
-    });
-  }
+  ngOnInit() {}
 }

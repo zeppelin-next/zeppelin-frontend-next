@@ -25,7 +25,7 @@ export class MessageService extends Message implements OnDestroy {
   }
 
   bootstrap(): void {
-    super.bootstrap(this.ticketService.ticket, this.baseUrlService.getWebsocketUrl());
+    super.bootstrap(this.ticketService.rawTicket, this.baseUrlService.getWebsocketUrl());
   }
 
   ping() {

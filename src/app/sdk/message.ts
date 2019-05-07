@@ -15,24 +15,27 @@ export type SendArgumentsType<K extends keyof MessageDataTypeMap> = MessageDataT
   : ArgumentsType<(op: K, data: MessageDataTypeMap[K]) => void>;
 
 export class Message {
+  public connectedStatus = false;
+  public connectedStatus$ = new Subject<boolean>();
   private ws: WebSocketSubject<WebSocketMessage<keyof MessageDataTypeMap>>;
   private open$ = new Subject<Event>();
   private close$ = new Subject<CloseEvent>();
   private sent$ = new Subject<WebSocketMessage<keyof MessageDataTypeMap>>();
   private received$ = new Subject<WebSocketMessage<keyof MessageReceiveDataTypeMap>>();
   private pingIntervalSubscription = new Subscription();
-  private connectedStatus = false;
   private wsUrl: string;
   private ticket: Ticket;
 
   constructor() {
     this.open$.subscribe(() => {
       this.connectedStatus = true;
+      this.connectedStatus$.next(this.connectedStatus);
       this.pingIntervalSubscription.unsubscribe();
       this.pingIntervalSubscription = interval(1000 * 10).subscribe(() => this.ping());
     });
     this.close$.subscribe(() => {
       this.connectedStatus = false;
+      this.connectedStatus$.next(this.connectedStatus);
       this.pingIntervalSubscription.unsubscribe();
     });
   }
