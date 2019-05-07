@@ -8,6 +8,7 @@
     height: 50px;
     background: #fff;
     padding: 0 15px;
+    overflow: hidden;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .06);
   }
   .brand {
@@ -20,7 +21,7 @@
     background-size: 50px 30px;
     background-repeat: no-repeat;
     background-position: center;
-    background-image: url("../../../assets/zeppelin_svg_logo.svg");
+    background-image: url("../../../assets/images/zeppelin_svg_logo.svg");
     float: left;
   }
   .title {
@@ -47,8 +48,42 @@
     float: right;
     padding: 9px;
     width: 300px;
+    margin-right: 24px;
   }
   .user {
     float: right;
+
+    .status {
+      line-height: 50px;
+      height: 50px;
+      display: inline-block;
+      color: @text-color;
+
+      i {
+        margin-left: 6px;
+      }
+    }
+  }
+  .modal {
+    .about-logo {
+      img {
+        width: 95%;
+      }
+    }
+
+    .content {
+      text-align: center;
+
+      h3 {
+        font-family: 'Patua One', cursive;
+        color: #3071A9;
+        font-size: 30px;
+        margin: 0 auto;
+      }
+
+      .about-version {
+        font-weight: 500;
+      }
+    }
   }
 });

@@ -29,7 +29,7 @@ export class AppInterceptor implements HttpInterceptor {
           // Handle page redirect
           window.location.href = redirect;
         } else if (event.status === 405) {
-          this.ticketService.logout();
+          this.ticketService.notifyLogout();
         }
         return throwError(event);
       })

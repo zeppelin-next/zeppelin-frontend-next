@@ -8,14 +8,37 @@
   <div class="nav">
     <ul nz-menu [nzMode]="'horizontal'">
       <li nz-menu-item routerLinkActive="ant-menu-item-selected">
-        <a routerLink="notebook">NoteBook</a>
+        <a [routerLink]="['/notebook']">NoteBook</a>
       </li>
       <li nz-menu-item routerLinkActive="ant-menu-item-selected">
-        <a routerLink="jobmanager">Job</a>
+        <a [routerLink]="['/jobmanager']">Job</a>
       </li>
     </ul>
   </div>
-  <div class="user">
+  <div class="user" *ngIf="ticketService.ticket.init">
+    <nz-dropdown [nzTrigger]="'click'">
+      <a nz-dropdown class="status">
+        <nz-badge nzStatus="error" [nzText]="ticketService.ticket.screenUsername"></nz-badge>
+        <i nz-icon nzType="caret-down"></i> </a>
+      <ul nz-menu>
+        <li nz-menu-item (click)="about()">About Zeppelin</li>
+        <li nz-menu-divider></li>
+        <li nz-menu-item routerLinkActive="ant-dropdown-menu-item-selected"><a [routerLink]="['/interpreter']">Interpreter</a>
+        </li>
+        <li nz-menu-item routerLinkActive="ant-dropdown-menu-item-selected"><a [routerLink]="['/notebookRepos']">Notebook
+          Repos</a></li>
+        <li nz-menu-item routerLinkActive="ant-dropdown-menu-item-selected"><a
+          [routerLink]="['/credential']">Credential</a></li>
+        <li nz-menu-item routerLinkActive="ant-dropdown-menu-item-selected"><a [routerLink]="['/helium']">Helium</a>
+        </li>
+        <li nz-menu-item routerLinkActive="ant-dropdown-menu-item-selected"><a [routerLink]="['/configuration']">Configuration</a>
+        </li>
+        <ng-container *ngIf="ticketService.ticket.principal !== 'anonymous'">
+          <li nz-menu-divider></li>
+          <li nz-menu-item (click)="logout()">Logout</li>
+        </ng-container>
+      </ul>
+    </nz-dropdown>
   </div>
   <div class="search">
     <nz-input-group [nzPrefixIcon]="'search'">
