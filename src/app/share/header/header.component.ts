@@ -1,9 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { MessageService, TicketService } from 'zeppelin-services';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzNotificationService, NzModalService } from 'ng-zorro-antd';
 import { AboutZeppelinComponent } from 'zeppelin-share/about-zeppelin/about-zeppelin.component';
-import { DestroyHookComponent } from 'zeppelin-core';
 import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { MessageListener, MessageListenersManager } from 'zeppelin-core';
+import { MessageReceiveDataTypeMap, OP } from 'zeppelin-sdk';
 
 @Component({
   selector: 'zeppelin-header',
@@ -11,7 +13,8 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./header.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent extends DestroyHookComponent implements OnInit, OnDestroy {
+export class HeaderComponent extends MessageListenersManager implements OnInit, OnDestroy {
+  private destroy$ = new Subject();
   connectStatus = 'error';
 
   about() {
@@ -27,13 +30,19 @@ export class HeaderComponent extends DestroyHookComponent implements OnInit, OnD
     this.ticketService.logout();
   }
 
+  @MessageListener(OP.ERROR_INFO)
+  getNotes(data: MessageReceiveDataTypeMap[OP.ERROR_INFO]) {
+    this.nzNotificationService.warning('ERRRO', data.info);
+  }
+
   constructor(
     public ticketService: TicketService,
     private nzModalService: NzModalService,
-    private messageService: MessageService,
+    public messageService: MessageService,
+    private nzNotificationService: NzNotificationService,
     private cdr: ChangeDetectorRef
   ) {
-    super();
+    super(messageService);
   }
 
   ngOnInit() {
@@ -45,6 +54,8 @@ export class HeaderComponent extends DestroyHookComponent implements OnInit, OnD
   }
 
   ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
     super.ngOnDestroy();
   }
 }

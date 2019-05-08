@@ -107,3 +107,7 @@ export interface ConfigurationsInfo {
     'zeppelin.search.use.disk': string;
   };
 }
+
+export interface ErrorInfo {
+  info: string;
+}

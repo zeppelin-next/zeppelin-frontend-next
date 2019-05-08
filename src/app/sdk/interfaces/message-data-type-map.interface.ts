@@ -1,4 +1,4 @@
-import { ConfigurationsInfo } from './message-common.interface';
+import { ConfigurationsInfo, ErrorInfo } from './message-common.interface';
 import {
   CheckpointNote,
   CloneNote,
@@ -51,6 +51,7 @@ export interface MessageReceiveDataTypeMap {
   [OP.NOTES_INFO]: NotesInfo;
   [OP.CONFIGURATIONS_INFO]: ConfigurationsInfo;
   [OP.NOTE]: Note;
+  [OP.ERROR_INFO]: ErrorInfo;
   [OP.LIST_NOTE_JOBS]: ListNoteJobs;
   [OP.LIST_UPDATE_NOTE_JOBS]: ListUpdateNoteJobs;
 }
@@ -59,6 +60,7 @@ export interface MessageDataTypeMap {
   [OP.NOTES_INFO]: never;
   [OP.CONFIGURATIONS_INFO]: never;
   [OP.NOTE]: never;
+  [OP.ERROR_INFO]: never;
 
   [OP.PING]: undefined;
   [OP.LIST_CONFIGURATIONS]: undefined;

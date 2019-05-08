@@ -8,6 +8,7 @@ import {
   NzIconModule,
   NzInputModule,
   NzMenuModule,
+  NzNotificationModule,
   NzModalModule,
   NzToolTipModule,
   NzTreeModule
@@ -36,6 +37,7 @@ const EXPORT_LIST = [HeaderComponent, NodeListComponent];
     NzModalModule,
     NzTreeModule,
     RouterModule,
+    NzNotificationModule,
     NzToolTipModule
   ]
 })

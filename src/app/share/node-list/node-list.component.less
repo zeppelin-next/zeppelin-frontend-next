@@ -1,14 +1,22 @@
 @import 'theme-mixin';
 
 .themeMixin({
+  .content {
+    width: 100%;
+    position: relative;
+  }
+  nz-tree {
+    display: block;
+  }
   nz-input-group {
-    width: 200px;
+    width: 100%;
     margin-top: 12px;
     margin-bottom: 6px;
   }
   .node {
     line-height: 24px;
     display: inline-block;
+    width: calc(~"100% - 24px");
 
     &.not-matched {
       opacity: 0.5;

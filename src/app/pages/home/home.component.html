@@ -6,7 +6,7 @@
     Zeppelin is web-based notebook that enables interactive data analytics.<br/>
     You can make beautiful data-driven, interactive, collaborative document with SQL, code and even more!<br/>
   </div>
-  <div nz-row class="more-info">
+  <div nz-row class="more-info" [nzGutter]="48">
     <div nz-col [nzSpan]="8">
       <h3>Notebook <a class="refresh-note" nz-tooltip nzTitle="Reload notes from storage" (click)="reloadNoteList()"><i nz-icon nzType="sync" nzTheme="outline" [nzSpin]="loading"></i></a></h3>
       <h4><a><i nz-icon nzType="upload" nzTheme="outline"></i> Import Note</a></h4>

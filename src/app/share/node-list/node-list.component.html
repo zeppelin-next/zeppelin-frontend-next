@@ -1,24 +1,25 @@
-<nz-input-group [nzPrefixIcon]="'search'" nzSize="small">
-  <input type="text" nz-input placeholder="filter" nzSize="small" [(ngModel)]="searchValue" />
-</nz-input-group>
-<nz-tree [nzData]="nodes" [nzSearchValue]="searchValue">
-  <ng-template #nzTreeTemplate let-node>
-    <a class="node" [ngSwitch]="node.origin.nodeType" [class.not-matched]="searchValue && !node.isMatched">
+<div class="content">
+  <nz-input-group [nzPrefixIcon]="'search'" nzSize="small">
+    <input type="text" nz-input placeholder="filter" nzSize="small" [(ngModel)]="searchValue" />
+  </nz-input-group>
+  <nz-tree [nzData]="nodes" [nzSearchValue]="searchValue">
+    <ng-template #nzTreeTemplate let-node>
+      <a class="node" [ngSwitch]="node.origin.nodeType" [class.not-matched]="searchValue && !node.isMatched">
       <span class="folder" *ngSwitchCase="'folder'">
         <span class="name" (click)="toggleFolder(node)"><i nz-icon [nzType]="node.isExpanded ? 'folder-open':'folder'" nzTheme="fill"></i>{{ node.title }}</span>
         <span class="operation">
           <ng-container *ngIf="!node.origin.isTrash">
             <i nz-icon nzType="file-add" nz-tooltip nzTitle="Create new note"></i>
             <i nz-icon nzType="edit" nz-tooltip nzTitle="Rename folder"></i>
-            <i nz-icon nzType="delete" nz-tooltip nzTitle="Move folder to Trash" (click)="messageService.moveFolderToTrash(node.origin.path)"></i>
+            <i nz-icon nzType="delete" nz-tooltip nzTitle="Move folder to Trash" (click)="messageService.moveFolderToTrash(node.origin.id)"></i>
           </ng-container>
           <ng-container *ngIf="node.origin.isTrash">
-            <i nz-icon nzType="undo" nz-tooltip nzTitle="Restore folder" (click)="messageService.restoreFolder(node.origin.path)"></i>
-            <i nz-icon nzType="delete" nz-tooltip nzTitle="Remove folder permanently" (click)="messageService.removeFolder(node.origin.path)"></i>
+            <i nz-icon nzType="undo" nz-tooltip nzTitle="Restore folder" (click)="messageService.restoreFolder(node.origin.id)"></i>
+            <i nz-icon nzType="delete" nz-tooltip nzTitle="Remove folder permanently" (click)="messageService.removeFolder(node.origin.id)"></i>
           </ng-container>
         </span>
       </span>
-      <span class="file" *ngSwitchCase="'note'">
+        <span class="file" *ngSwitchCase="'note'">
         <span class="name" (click)="openNote(node)"><i nz-icon nzType="file-text" nzTheme="fill"></i>{{ node.title }}</span>
         <span class="operation">
           <ng-container *ngIf="!node.origin.isTrash">
@@ -32,13 +33,14 @@
           </ng-container>
         </span>
       </span>
-      <span class="folder" *ngSwitchCase="'trash'">
+        <span class="folder" *ngSwitchCase="'trash'">
         <span class="name" (click)="toggleFolder(node)"><i nz-icon nzType="delete" nzTheme="fill"></i>{{ node.title }}</span>
         <span class="operation">
           <i nz-icon nzType="undo" nz-tooltip nzTitle="Restore all" (click)="messageService.restoreAll()"></i>
           <i nz-icon nzType="delete" nz-tooltip nzTitle="Empty all" (click)="messageService.emptyTrash()"></i>
         </span>
       </span>
-    </a>
-  </ng-template>
-</nz-tree>
+      </a>
+    </ng-template>
+  </nz-tree>
+</div>
