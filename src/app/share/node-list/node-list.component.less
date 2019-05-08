@@ -40,7 +40,13 @@
       }
     }
 
-    &:hover {
+    &.active {
+      .name {
+        color: @link-active-color;
+      }
+    }
+
+    &:hover, &.active {
       .operation {
         i {
           display: inline-block;

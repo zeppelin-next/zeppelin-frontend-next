@@ -3,7 +3,8 @@ import { NoteListService } from '../../services/note-list.service';
 import { MessageListener, MessageListenersManager } from 'zeppelin-core';
 import { MessageReceiveDataTypeMap, OP } from 'zeppelin-sdk';
 import { MessageService } from 'zeppelin-services';
-import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
+import { NzFormatEmitEvent, NzModalService, NzTreeNode } from 'ng-zorro-antd';
+import { NoteImportComponent } from 'zeppelin-share/note-import/note-import.component';
 
 @Component({
   selector: 'zeppelin-node-list',
@@ -14,6 +15,7 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 export class NodeListComponent extends MessageListenersManager implements OnInit {
   searchValue: string;
   nodes = [];
+  activatedId: string;
 
   toggleFolder(node: NzTreeNode) {
     node.isExpanded = !node.isExpanded;
@@ -22,6 +24,15 @@ export class NodeListComponent extends MessageListenersManager implements OnInit
 
   openNote(node: NzTreeNode) {
     // TODO
+  }
+
+  importNote() {
+    this.nzModalService.create({
+      nzTitle: 'Import New Note',
+      nzContent: NoteImportComponent,
+      nzWidth: '800px',
+      nzFooter: null
+    });
   }
 
   @MessageListener(OP.NOTES_INFO)
@@ -36,10 +47,13 @@ export class NodeListComponent extends MessageListenersManager implements OnInit
   constructor(
     private noteListService: NoteListService,
     public messageService: MessageService,
+    private nzModalService: NzModalService,
     private cdr: ChangeDetectorRef
   ) {
     super(messageService);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.messageService.listNodes();
+  }
 }

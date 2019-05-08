@@ -1,46 +1,48 @@
 <div class="content">
+  <h4><a (click)="importNote()"><i nz-icon nzType="upload" nzTheme="outline"></i> Import Note</a></h4>
+  <h4><a><i nz-icon nzType="file-add" nzTheme="outline"></i> Create new Note</a></h4>
   <nz-input-group [nzPrefixIcon]="'search'" nzSize="small">
-    <input type="text" nz-input placeholder="filter" nzSize="small" [(ngModel)]="searchValue" />
+    <input type="text" nz-input placeholder="Filter" nzSize="small" [(ngModel)]="searchValue" />
   </nz-input-group>
   <nz-tree [nzData]="nodes" [nzSearchValue]="searchValue">
     <ng-template #nzTreeTemplate let-node>
-      <a class="node" [ngSwitch]="node.origin.nodeType" [class.not-matched]="searchValue && !node.isMatched">
-      <span class="folder" *ngSwitchCase="'folder'">
-        <span class="name" (click)="toggleFolder(node)"><i nz-icon [nzType]="node.isExpanded ? 'folder-open':'folder'" nzTheme="fill"></i>{{ node.title }}</span>
-        <span class="operation">
-          <ng-container *ngIf="!node.origin.isTrash">
-            <i nz-icon nzType="file-add" nz-tooltip nzTitle="Create new note"></i>
-            <i nz-icon nzType="edit" nz-tooltip nzTitle="Rename folder"></i>
-            <i nz-icon nzType="delete" nz-tooltip nzTitle="Move folder to Trash" (click)="messageService.moveFolderToTrash(node.origin.id)"></i>
-          </ng-container>
-          <ng-container *ngIf="node.origin.isTrash">
-            <i nz-icon nzType="undo" nz-tooltip nzTitle="Restore folder" (click)="messageService.restoreFolder(node.origin.id)"></i>
-            <i nz-icon nzType="delete" nz-tooltip nzTitle="Remove folder permanently" (click)="messageService.removeFolder(node.origin.id)"></i>
-          </ng-container>
+      <span class="node" [ngSwitch]="node.origin.nodeType" [class.not-matched]="searchValue && !node.isMatched" [class.active]="activatedId === node.origin.id" (click)="activatedId = node.origin.id">
+        <span class="folder" *ngSwitchCase="'folder'">
+          <a class="name" (click)="toggleFolder(node)"><i nz-icon [nzType]="node.isExpanded ? 'folder-open':'folder'" nzTheme="fill"></i>{{ node.title }}</a>
+          <span class="operation">
+            <ng-container *ngIf="!node.origin.isTrash">
+              <a nz-tooltip nzTitle="Create new note"><i nz-icon nzType="file-add"></i></a>
+              <a nz-tooltip nzTitle="Rename folder"><i nz-icon nzType="edit"></i></a>
+              <a nz-tooltip nzTitle="Move folder to Trash"><i nz-icon nzType="delete" nz-popconfirm nzTitle="This folder will be moved to trash." (nzOnConfirm)="messageService.moveFolderToTrash(node.origin.id)"></i></a>
+            </ng-container>
+            <ng-container *ngIf="node.origin.isTrash">
+              <a nz-tooltip nzTitle="Restore folder"><i nz-icon nzType="undo" (click)="messageService.restoreFolder(node.origin.id)"></i></a>
+              <a nz-tooltip nzTitle="Remove folder permanently"><i nz-icon nzType="delete" nz-popconfirm nzTitle="This cannot be undone. Are you sure?" (nzOnConfirm)="messageService.removeFolder(node.origin.id)"></i></a>
+            </ng-container>
+          </span>
         </span>
-      </span>
         <span class="file" *ngSwitchCase="'note'">
-        <span class="name" (click)="openNote(node)"><i nz-icon nzType="file-text" nzTheme="fill"></i>{{ node.title }}</span>
-        <span class="operation">
-          <ng-container *ngIf="!node.origin.isTrash">
-            <i nz-icon nzType="edit" nz-tooltip nzTitle="Rename note"></i>
-            <i nz-icon nzType="fire" nz-tooltip nzTitle="Clear output" (click)="messageService.paragraphClearAllOutput(node.origin.id)"></i>
-            <i nz-icon nzType="delete" nz-tooltip nzTitle="Move note to Trash" (click)="messageService.moveNoteToTrash(node.origin.id)"></i>
-          </ng-container>
-          <ng-container *ngIf="node.origin.isTrash">
-            <i nz-icon nzType="undo" nz-tooltip nzTitle="Restore note" (click)="messageService.restoreNote(node.origin.id)"></i>
-            <i nz-icon nzType="delete" nz-tooltip nzTitle="Remove note permanently" (click)="messageService.deleteNote(node.origin.id)"></i>
-          </ng-container>
+          <a class="name" (click)="openNote(node)"><i nz-icon nzType="file-text" nzTheme="fill"></i>{{ node.title }}</a>
+          <span class="operation">
+            <ng-container *ngIf="!node.origin.isTrash">
+              <a nz-tooltip nzTitle="Rename note"><i nz-icon nzType="edit"></i></a>
+              <a nz-tooltip nzTitle="Clear output"><i nz-icon nzType="fire" nz-popconfirm nzTitle="Do you want to clear all output?" (nzOnConfirm)="messageService.paragraphClearAllOutput(node.origin.id)"></i></a>
+              <a nz-tooltip nzTitle="Move note to Trash"><i nz-icon nzType="delete" nz-popconfirm nzTitle="This note will be moved to trash." (nzOnConfirm)="messageService.moveNoteToTrash(node.origin.id)"></i></a>
+            </ng-container>
+            <ng-container *ngIf="node.origin.isTrash">
+              <a nz-tooltip nzTitle="Restore note"><i nz-icon nzType="undo" (click)="messageService.restoreNote(node.origin.id)"></i></a>
+              <a nz-tooltip nzTitle="Remove note permanently"><i nz-icon nzType="delete" nz-popconfirm nzTitle="This cannot be undone. Are you sure?" (nzOnConfirm)="messageService.deleteNote(node.origin.id)"></i></a>
+            </ng-container>
+          </span>
         </span>
-      </span>
         <span class="folder" *ngSwitchCase="'trash'">
-        <span class="name" (click)="toggleFolder(node)"><i nz-icon nzType="delete" nzTheme="fill"></i>{{ node.title }}</span>
-        <span class="operation">
-          <i nz-icon nzType="undo" nz-tooltip nzTitle="Restore all" (click)="messageService.restoreAll()"></i>
-          <i nz-icon nzType="delete" nz-tooltip nzTitle="Empty all" (click)="messageService.emptyTrash()"></i>
+          <a class="name" (click)="toggleFolder(node)"><i nz-icon nzType="delete" nzTheme="fill"></i>{{ node.title }}</a>
+          <span class="operation">
+            <a nz-tooltip nzTitle="Restore all"><i nz-icon nzType="undo" nz-popconfirm nzTitle="Folders and notes in the trash will be merged into their original position." (nzOnConfirm)="messageService.restoreAll()"></i></a>
+            <a nz-tooltip nzTitle="Empty all"><i nz-icon nzType="delete" nz-popconfirm nzTitle="This cannot be undone. Are you sure?" (nzOnConfirm)="messageService.emptyTrash()"></i></a>
+          </span>
         </span>
       </span>
-      </a>
     </ng-template>
   </nz-tree>
 </div>

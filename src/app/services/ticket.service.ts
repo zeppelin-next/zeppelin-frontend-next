@@ -4,15 +4,21 @@ import { forkJoin, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
 import { BaseUrlService } from './base-url.service';
+import { ConfigurationsInfo } from 'zeppelin-sdk';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TicketService {
+  configuration: ConfigurationsInfo['configurations'];
   ticket = new ITicketWrapped();
-  rawTicket = new ITicket();
+  originTicket = new ITicket();
   login$ = new Subject();
   logout$ = new Subject();
+
+  setConfiguration(conf: ConfigurationsInfo) {
+    this.configuration = conf.configurations;
+  }
 
   getTicket() {
     return forkJoin(
@@ -35,7 +41,7 @@ export class TicketService {
       const re = ', name=(.*?),';
       screenUsername = ticket.principal.match(re)[1];
     }
-    this.rawTicket = ticket;
+    this.originTicket = ticket;
     this.ticket = { ...ticket, screenUsername, version, ...{ init: true } };
   }
 

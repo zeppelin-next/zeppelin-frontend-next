@@ -32,7 +32,7 @@ export class HeaderComponent extends MessageListenersManager implements OnInit, 
 
   @MessageListener(OP.ERROR_INFO)
   getNotes(data: MessageReceiveDataTypeMap[OP.ERROR_INFO]) {
-    this.nzNotificationService.warning('ERRRO', data.info);
+    this.nzNotificationService.warning('ERROR', data.info);
   }
 
   constructor(
@@ -50,7 +50,6 @@ export class HeaderComponent extends MessageListenersManager implements OnInit, 
       this.connectStatus = status ? 'success' : 'error';
       this.cdr.markForCheck();
     });
-    this.messageService.listNodes();
   }
 
   ngOnDestroy() {

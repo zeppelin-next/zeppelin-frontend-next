@@ -1,0 +1,13 @@
+<form nz-form nzLayout="vertical">
+  <nz-form-item>
+    <nz-form-label>Import As</nz-form-label>
+    <nz-form-control>
+      <input nz-input [(ngModel)]="noteImportName" placeholder="Insert Note Name" name="noteImportName"/>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label>JSON file size cannot exceed <strong>{{maxLimit | humanizeBytes}}</strong></nz-form-label>
+    <nz-form-control>
+    </nz-form-control>
+  </nz-form-item>
+</form>
