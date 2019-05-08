@@ -40,8 +40,9 @@ export class NoteListService {
     if (nodes.length === 1) {
       // the leaf
       curDir.children.push({
-        name: nodes[0],
         id: noteId,
+        title: nodes[0],
+        isLeaf: true,
         path: curDir.id ? curDir.id + '/' + nodes[0] : nodes[0],
         isTrash: curDir.id ? curDir.id.split('/')[0] === this.TRASH_FOLDER_ID : false
       });
@@ -49,7 +50,7 @@ export class NoteListService {
       // a folder node
       const node = nodes.shift();
       const dir = curDir.children.find(c => {
-        return c.name === node && c.children !== undefined;
+        return c.title === node && c.children !== undefined;
       });
       if (dir !== undefined) {
         // found an existing dir
@@ -57,8 +58,8 @@ export class NoteListService {
       } else {
         const newDir = {
           id: curDir.id ? curDir.id + '/' + node : node,
-          name: node,
-          hidden: true,
+          title: node,
+          expanded: false,
           children: [],
           isTrash: curDir.id ? curDir.id.split('/')[0] === this.TRASH_FOLDER_ID : false
         };

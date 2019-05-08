@@ -10,8 +10,9 @@ export interface RootNode {
 
 export interface NodeItem {
   id: string;
-  name: string;
-  hidden?: boolean;
+  title: string;
+  isLeaf?: boolean;
+  expanded?: boolean;
   children?: NodeItem[];
   isTrash: boolean;
   path?: string;
@@ -24,5 +25,5 @@ interface FlatListNodeItem {
 }
 
 interface FlatFolderNodeMap {
-  [name: string]: NodeItem;
+  [title: string]: NodeItem;
 }

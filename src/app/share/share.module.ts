@@ -8,7 +8,8 @@ import {
   NzIconModule,
   NzInputModule,
   NzMenuModule,
-  NzModalModule
+  NzModalModule,
+  NzTreeModule
 } from 'ng-zorro-antd';
 import { RouterModule } from '@angular/router';
 import { AboutZeppelinComponent } from './about-zeppelin/about-zeppelin.component';
@@ -30,6 +31,7 @@ const EXPORT_LIST = [HeaderComponent, NodeListComponent];
     NzBadgeModule,
     NzGridModule,
     NzModalModule,
+    NzTreeModule,
     RouterModule
   ]
 })
