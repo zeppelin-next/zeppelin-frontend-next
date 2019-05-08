@@ -436,10 +436,6 @@ export class Message {
     this.send<OP.UNSUBSCRIBE_UPDATE_NOTE_JOBS>(OP.UNSUBSCRIBE_UPDATE_NOTE_JOBS);
   }
 
-  getUpdateNoteJobs(lastUpdateServerUnixTime: number): void {
-    this.send<OP.LIST_UPDATE_NOTE_JOBS>(OP.LIST_UPDATE_NOTE_JOBS, { lastUpdateUnixTime: lastUpdateServerUnixTime });
-  }
-
   getInterpreterBindings(noteId: string): void {
     this.send<OP.GET_INTERPRETER_BINDINGS>(OP.GET_INTERPRETER_BINDINGS, { noteId: noteId });
   }

@@ -66,9 +66,6 @@ export interface RemoveNoteForms {
   noteId: string;
   formName: string;
 }
-export interface ListUpdateNoteJobs {
-  lastUpdateUnixTime: number;
-}
 
 export interface SaveNoteForms {
   noteId: string;

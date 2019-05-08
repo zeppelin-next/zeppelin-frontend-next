@@ -8,7 +8,6 @@ import {
   GetInterpreterBindings,
   GetNode,
   ListRevisionHistory,
-  ListUpdateNoteJobs,
   MoveFolderToTrash,
   MoveNoteToTrash,
   NewNote,
@@ -43,12 +42,17 @@ import {
   RunAllParagraphs,
   RunParagraph
 } from './message-paragraph.interface';
+
+import { ListNoteJobs, ListUpdateNoteJobs } from './message-job.interface';
+
 import { OP } from './message-operator.interface';
 
 export interface MessageReceiveDataTypeMap {
   [OP.NOTES_INFO]: NotesInfo;
   [OP.CONFIGURATIONS_INFO]: ConfigurationsInfo;
   [OP.NOTE]: Note;
+  [OP.LIST_NOTE_JOBS]: ListNoteJobs;
+  [OP.LIST_UPDATE_NOTE_JOBS]: ListUpdateNoteJobs;
 }
 
 export interface MessageDataTypeMap {
@@ -101,7 +105,7 @@ export interface MessageDataTypeMap {
   [OP.EDITOR_SETTING]: EditorSetting;
   [OP.LIST_NOTE_JOBS]: undefined;
   [OP.UNSUBSCRIBE_UPDATE_NOTE_JOBS]: undefined;
-  [OP.LIST_UPDATE_NOTE_JOBS]: ListUpdateNoteJobs;
+  [OP.LIST_UPDATE_NOTE_JOBS]: undefined;
   [OP.GET_INTERPRETER_BINDINGS]: GetInterpreterBindings;
   [OP.GET_INTERPRETER_SETTINGS]: undefined;
   [OP.SAVE_NOTE_FORMS]: SaveNoteForms;

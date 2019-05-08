@@ -17,9 +17,22 @@
     margin-bottom: 4px;
   }
 
+  .ant-tooltip  .ant-tooltip-placement-topLeft {
+    padding-bottom: 8px;
+  }
+
   .ant-tooltip {
     position: relative;
   }
+  .ant-tooltip {
+    &-placement-topLeft &-arrow {
+      left: 16px;
+      bottom:3px;
+      border-width: 5px 5px 0;
+      border-top-color: rgba(0, 0, 0, 0.75);
+    }
+  }
+
 }
 
 

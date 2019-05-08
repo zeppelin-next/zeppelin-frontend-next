@@ -1,0 +1,52 @@
+<nz-card class="header">
+  <h2>Job</h2>
+  <p>You can monitor the status of notebook and navigate to note or paragraph.</p>
+  <nz-divider nzType="horizontal"></nz-divider>
+  <form nz-form [nzLayout]="'inline'" [formGroup]="form">
+    <nz-form-item>
+      <nz-form-control>
+        <nz-input-group [nzPrefix]="prefixSearch">
+          <input formControlName="noteName" nz-input placeholder="Search jobs..." />
+        </nz-input-group>
+        <ng-template #prefixSearch><i nz-icon nzType="search" nzTheme="outline"></i></ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label>Interpreter</nz-form-label>
+      <nz-form-control>
+        <nz-select class="interpreter-select" formControlName="interpreter">
+          <nz-option nzValue="*" nzLabel="All"></nz-option>
+          <nz-option *ngFor="let item of interpreters" [nzValue]="item" [nzLabel]="item"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label>Sort</nz-form-label>
+      <nz-form-control>
+        <nz-select class="sort-select" formControlName="sortBy">
+          <nz-option *ngFor="let item of sortKeys" [nzValue]="item" [nzLabel]="item"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label>Total</nz-form-label>
+      <nz-form-control>
+        <nz-form-text>{{ filteredJobs.length }}</nz-form-text>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item class="status-legend">
+      <nz-form-control>
+        <zeppelin-job-manager-job-status *ngFor="let item of jobStatusKeys" [status]="item" [showText]="true">
+        </zeppelin-job-manager-job-status>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-card>
+<div class="content">
+  <zeppelin-job-manager-job
+    *ngFor="let item of filteredJobs"
+    [note]="item"
+    (start)="onStart($event)"
+    (stop)="onStop($event)">
+  </zeppelin-job-manager-job>
+</div>

@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { JobmanagerComponent } from './jobmanager.component';
+import { JobManagerComponent } from './job-manager.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: JobmanagerComponent
+    component: JobManagerComponent
   }
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class JobmanagerRoutingModule {}
+export class JobManagerRoutingModule {}

@@ -279,10 +279,6 @@ export class MessageService extends Message implements OnDestroy {
     super.unsubscribeUpdateNoteJobs();
   }
 
-  getUpdateNoteJobs(lastUpdateServerUnixTime: number): void {
-    super.getUpdateNoteJobs(lastUpdateServerUnixTime);
-  }
-
   getInterpreterBindings(noteId: string): void {
     super.getInterpreterBindings(noteId);
   }

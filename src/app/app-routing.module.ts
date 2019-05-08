@@ -12,7 +12,7 @@ const routes: Routes = [
   },
   {
     path: 'jobmanager',
-    loadChildren: './pages/jobmanager/jobmanager.module#JobmanagerModule'
+    loadChildren: './pages/job-manager/job-manager.module#JobManagerModule'
   },
   {
     path: 'interpreter',
