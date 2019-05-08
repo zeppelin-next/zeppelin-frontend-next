@@ -3,7 +3,7 @@ import { NoteListService } from '../../services/note-list.service';
 import { MessageListener, MessageListenersManager } from 'zeppelin-core';
 import { MessageReceiveDataTypeMap, OP } from 'zeppelin-sdk';
 import { MessageService } from 'zeppelin-services';
-import { NzFormatEmitEvent } from 'ng-zorro-antd';
+import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 
 @Component({
   selector: 'zeppelin-node-list',
@@ -12,10 +12,16 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NodeListComponent extends MessageListenersManager implements OnInit {
+  searchValue: string;
   nodes = [];
 
-  nzEvent(event: NzFormatEmitEvent): void {
-    console.log(event);
+  toggleFolder(node: NzTreeNode) {
+    node.isExpanded = !node.isExpanded;
+    this.cdr.markForCheck();
+  }
+
+  openNote(node: NzTreeNode) {
+    // TODO
   }
 
   @MessageListener(OP.NOTES_INFO)

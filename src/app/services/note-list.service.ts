@@ -43,6 +43,7 @@ export class NoteListService {
         id: noteId,
         title: nodes[0],
         isLeaf: true,
+        nodeType: 'note',
         path: curDir.id ? curDir.id + '/' + nodes[0] : nodes[0],
         isTrash: curDir.id ? curDir.id.split('/')[0] === this.TRASH_FOLDER_ID : false
       });
@@ -56,10 +57,12 @@ export class NoteListService {
         // found an existing dir
         this.addNode(dir, nodes, noteId);
       } else {
+        const id = curDir.id ? curDir.id + '/' + node : node;
         const newDir = {
-          id: curDir.id ? curDir.id + '/' + node : node,
+          id,
           title: node,
           expanded: false,
+          nodeType: id === this.TRASH_FOLDER_ID ? 'trash' : 'folder',
           children: [],
           isTrash: curDir.id ? curDir.id.split('/')[0] === this.TRASH_FOLDER_ID : false
         };
@@ -74,7 +77,7 @@ export class NoteListService {
   }
 
   constructor(
-    @Inject(TRASH_FOLDER_ID_TOKEN) private TRASH_FOLDER_ID: string,
+    @Inject(TRASH_FOLDER_ID_TOKEN) public TRASH_FOLDER_ID: string,
     private arrayOrderingService: ArrayOrderingService
   ) {}
 }

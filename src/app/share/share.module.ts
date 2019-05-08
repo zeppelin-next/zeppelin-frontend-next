@@ -9,11 +9,13 @@ import {
   NzInputModule,
   NzMenuModule,
   NzModalModule,
+  NzToolTipModule,
   NzTreeModule
 } from 'ng-zorro-antd';
 import { RouterModule } from '@angular/router';
 import { AboutZeppelinComponent } from './about-zeppelin/about-zeppelin.component';
 import { NodeListComponent } from './node-list/node-list.component';
+import { FormsModule } from '@angular/forms';
 
 const MODAL_LIST = [AboutZeppelinComponent];
 const EXPORT_LIST = [HeaderComponent, NodeListComponent];
@@ -23,6 +25,7 @@ const EXPORT_LIST = [HeaderComponent, NodeListComponent];
   entryComponents: [...MODAL_LIST],
   exports: [...EXPORT_LIST],
   imports: [
+    FormsModule,
     CommonModule,
     NzMenuModule,
     NzIconModule,
@@ -32,7 +35,8 @@ const EXPORT_LIST = [HeaderComponent, NodeListComponent];
     NzGridModule,
     NzModalModule,
     NzTreeModule,
-    RouterModule
+    RouterModule,
+    NzToolTipModule
   ]
 })
 export class ShareModule {}

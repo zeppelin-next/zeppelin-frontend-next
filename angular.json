@@ -58,9 +58,9 @@
               }
             ],
             "styles": [
-              "src/styles.less",
               "src/styles/theme/dark/antd-dark.less",
-              "src/styles/theme/light/antd-light.less"
+              "src/styles/theme/light/antd-light.less",
+              "src/styles.less"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
