@@ -41,6 +41,7 @@ export class HeaderComponent extends DestroyHookComponent implements OnInit, OnD
       this.connectStatus = status ? 'success' : 'error';
       this.cdr.markForCheck();
     });
+    this.messageService.listNodes();
   }
 
   ngOnDestroy() {

@@ -12,6 +12,7 @@ import { AppInterceptor } from './app.interceptor';
 import { AppInitializer } from './app.initializer';
 import { ShareModule } from 'zeppelin-share/share.module';
 import { AppRoutingModule } from './app-routing.module';
+import { TRASH_FOLDER_ID_TOKEN } from 'zeppelin-interfaces';
 
 registerLocaleData(en);
 
@@ -34,6 +35,10 @@ registerLocaleData(en);
       useFactory: AppInitializer,
       deps: [HttpClient, TicketService, MessageService],
       multi: true
+    },
+    {
+      provide: TRASH_FOLDER_ID_TOKEN,
+      useValue: '~Trash'
     }
   ],
   bootstrap: [AppComponent]

@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MessageService, TicketService } from 'zeppelin-services';
 import { MessageListener, MessageListenersManager } from 'zeppelin-core';
-import { MessageReceiveDataTypeMap, OP } from 'zeppelin-sdk';
+import { OP } from 'zeppelin-sdk';
 
 @Component({
   selector: 'zeppelin-home',
@@ -10,7 +10,7 @@ import { MessageReceiveDataTypeMap, OP } from 'zeppelin-sdk';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent extends MessageListenersManager implements OnInit {
-  loading = true;
+  loading = false;
 
   reloadNoteList() {
     this.messageService.reloadAllNotesFromRepo();
@@ -18,7 +18,7 @@ export class HomeComponent extends MessageListenersManager implements OnInit {
   }
 
   @MessageListener(OP.NOTES_INFO)
-  getNotes(data: MessageReceiveDataTypeMap[OP.NOTES_INFO]) {
+  getNotes() {
     this.loading = false;
     this.cdr.markForCheck();
   }
@@ -31,7 +31,5 @@ export class HomeComponent extends MessageListenersManager implements OnInit {
     super(messageService);
   }
 
-  ngOnInit() {
-    this.messageService.listNodes();
-  }
+  ngOnInit() {}
 }
