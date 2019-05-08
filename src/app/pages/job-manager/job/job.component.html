@@ -26,9 +26,10 @@
   <div>
     <a *ngFor="let item of note.paragraphs"
       [nz-tooltip]="item.name + ' is ' + item.status"
+      nzPlacement="topLeft"
+      [nzOverlayStyle]="{ 'margin-left': '-14px' }"
       [routerLink]="['notebook', note.noteId]"
-      [queryParams]="{paragraph: item.id}"
-      nzPlacement="topLeft">
+      [queryParams]="{paragraph: item.id}">
       <zeppelin-job-manager-job-status [status]="item.status">
       </zeppelin-job-manager-job-status>
     </a>

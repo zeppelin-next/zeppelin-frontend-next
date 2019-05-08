@@ -29,12 +29,14 @@ export class JobManagerComponent extends MessageListenersManager implements OnIn
   interpreters: string[] = [];
   filteredJobs: JobsItem[] = [];
   jobs: JobsItem[];
+  loading = true;
 
   @MessageListener(OP.LIST_NOTE_JOBS)
   setJobs(data: ListNoteJobs) {
     this.jobs = data.noteJobs.jobs.filter(j => typeof j.interpreter !== 'undefined');
     const interpreters = this.jobs.map(job => job.interpreter);
     this.interpreters = Array.from(new Set(interpreters));
+    this.loading = false;
     this.filterJobs();
   }
 

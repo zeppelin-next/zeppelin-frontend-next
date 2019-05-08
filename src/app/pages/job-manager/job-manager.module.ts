@@ -7,6 +7,7 @@ import {
   NzBadgeModule,
   NzCardModule,
   NzDividerModule,
+  NzEmptyModule,
   NzFormModule,
   NzGridModule,
   NzIconModule,
@@ -14,6 +15,7 @@ import {
   NzModalModule,
   NzProgressModule,
   NzSelectModule,
+  NzSkeletonModule,
   NzToolTipModule
 } from 'ng-zorro-antd';
 import { JobManagerComponent } from './job-manager.component';
@@ -45,7 +47,9 @@ const icons: IconDefinition[] = [SearchOutline, FileOutline, FileUnknownOutline,
     NzDividerModule,
     NzCardModule,
     NzToolTipModule,
-    NzProgressModule
+    NzProgressModule,
+    NzSkeletonModule,
+    NzEmptyModule
   ],
   providers: [{ provide: NZ_ICONS, useValue: icons }]
 })
