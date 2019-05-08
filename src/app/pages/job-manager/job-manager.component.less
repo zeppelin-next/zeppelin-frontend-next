@@ -12,6 +12,14 @@
 
   .content {
     padding: @card-padding-base;
+
+    ::ng-deep .ant-skeleton-paragraph {
+      margin-bottom: 0;
+    }
+
+    nz-empty {
+      margin-top: 76px;
+    }
   }
 
   @media (max-width: 1230px) {

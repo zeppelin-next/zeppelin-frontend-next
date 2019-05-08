@@ -43,10 +43,18 @@
   </form>
 </nz-card>
 <div class="content">
-  <zeppelin-job-manager-job
-    *ngFor="let item of filteredJobs"
-    [note]="item"
-    (start)="onStart($event)"
-    (stop)="onStop($event)">
-  </zeppelin-job-manager-job>
+  <nz-card *ngIf="loading; else jobs">
+    <nz-skeleton [nzTitle]="false" [nzLoading]="true" [nzActive]="true">
+    </nz-skeleton>
+  </nz-card>
+
+  <ng-template #jobs>
+    <zeppelin-job-manager-job
+      *ngFor="let item of filteredJobs"
+      [note]="item"
+      (start)="onStart($event)"
+      (stop)="onStop($event)">
+    </zeppelin-job-manager-job>
+    <nz-empty *ngIf="filteredJobs.length === 0" nzNotFoundContent="No Job found"></nz-empty>
+  </ng-template>
 </div>
