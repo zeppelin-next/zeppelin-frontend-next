@@ -124,7 +124,7 @@ export class MessageService extends Message implements OnDestroy {
     super.updatePersonalizedMode(noteId, modeValue);
   }
 
-  noteRename(noteId: string, noteName: string, relative: boolean): void {
+  noteRename(noteId: string, noteName: string, relative?: boolean): void {
     super.noteRename(noteId, noteName, relative);
   }
 

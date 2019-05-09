@@ -1,0 +1,26 @@
+<form nz-form nzLayout="vertical">
+  <nz-form-item>
+    <nz-form-label>Import As</nz-form-label>
+    <nz-form-control>
+      <input nz-input [(ngModel)]="notename" placeholder="Insert Note Name" name="notename"/>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label>Default Interpreter</nz-form-label>
+    <nz-form-control>
+      <nz-select [(ngModel)]="defaultInterpreter" name="defaultInterpreter" nzPlaceHolder="Insert Default Interpreter" nzShowSearch>
+        <nz-option *ngFor="let i of listOfInterpreter" [nzValue]="i.name" [nzLabel]="i.name"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <nz-alert nzType="info" nzMessage="Use '/' to create folders. Example: /NoteDirA/Note1"></nz-alert>
+    </nz-form-control>
+  </nz-form-item>
+
+  <div class="modal-footer ant-modal-footer">
+    <button nz-button nzType="primary" (click)="createNote()">Create</button>
+  </div>
+</form>
+

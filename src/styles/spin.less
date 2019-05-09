@@ -8,7 +8,7 @@
   left: 0;
 
   &.transparent {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.5);
   }
 
   & > div {
@@ -16,13 +16,14 @@
     height: 220px;
     top: 50%;
     left: 50%;
+    margin-top: -60px;
     transform: translate(-50%, -50%);
     position: absolute;
     text-align: center;
 
     & > div {
-      width: 120px;
-      height: 120px;
+      width: 160px;
+      height: 160px;
       position: relative;
       margin: 0 auto;
 
@@ -46,15 +47,31 @@
       text-align: center;
       font-family: 'Patua One', cursive;
       color: #3071a9;
-      margin-top: -24px;
+      margin-top: -36px;
+      font-size: 32px;
       display: block !important;
     }
 
     .status {
       display: block !important;
       color: #999999;
-      font-weight: 200;
       animation: opacity 2.0s infinite ease;
     }
   }
 }
+
+@keyframes opacity {
+  0% {
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.7;
+  }
+}
+
+

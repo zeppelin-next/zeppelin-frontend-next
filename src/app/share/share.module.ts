@@ -17,7 +17,8 @@ import {
   NzTabsModule,
   NzUploadModule,
   NzButtonModule,
-  NzAlertModule
+  NzAlertModule,
+  NzSelectModule
 } from 'ng-zorro-antd';
 import { RouterModule } from '@angular/router';
 import { AboutZeppelinComponent } from './about-zeppelin/about-zeppelin.component';
@@ -25,8 +26,9 @@ import { NodeListComponent } from './node-list/node-list.component';
 import { FormsModule } from '@angular/forms';
 import { NoteImportComponent } from './note-import/note-import.component';
 import { HumanizeBytesPipe } from 'zeppelin-share/pipes/humanize-bytes.pipe';
+import { NoteCreateComponent } from './note-create/note-create.component';
 
-const MODAL_LIST = [AboutZeppelinComponent, NoteImportComponent];
+const MODAL_LIST = [AboutZeppelinComponent, NoteImportComponent, NoteCreateComponent];
 const EXPORT_LIST = [HeaderComponent, NodeListComponent];
 const PIPES = [HumanizeBytesPipe];
 
@@ -54,6 +56,7 @@ const PIPES = [HumanizeBytesPipe];
     NzFormModule,
     NzTabsModule,
     NzUploadModule,
+    NzSelectModule,
     NzAlertModule
   ]
 })

@@ -46,6 +46,7 @@ import {
 import { ListNoteJobs, ListUpdateNoteJobs } from './message-job.interface';
 
 import { OP } from './message-operator.interface';
+import { InterpreterSetting } from './message-interpreter.interface';
 
 export interface MessageReceiveDataTypeMap {
   [OP.NOTES_INFO]: NotesInfo;
@@ -54,6 +55,7 @@ export interface MessageReceiveDataTypeMap {
   [OP.ERROR_INFO]: ErrorInfo;
   [OP.LIST_NOTE_JOBS]: ListNoteJobs;
   [OP.LIST_UPDATE_NOTE_JOBS]: ListUpdateNoteJobs;
+  [OP.INTERPRETER_SETTINGS]: InterpreterSetting;
 }
 
 export interface MessageDataTypeMap {
@@ -61,6 +63,7 @@ export interface MessageDataTypeMap {
   [OP.CONFIGURATIONS_INFO]: never;
   [OP.NOTE]: never;
   [OP.ERROR_INFO]: never;
+  [OP.INTERPRETER_SETTINGS]: never;
 
   [OP.PING]: undefined;
   [OP.LIST_CONFIGURATIONS]: undefined;

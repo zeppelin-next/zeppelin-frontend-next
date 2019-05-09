@@ -5,6 +5,7 @@ import { MessageReceiveDataTypeMap, OP } from 'zeppelin-sdk';
 import { MessageService } from 'zeppelin-services';
 import { NzFormatEmitEvent, NzModalService, NzTreeNode } from 'ng-zorro-antd';
 import { NoteImportComponent } from 'zeppelin-share/note-import/note-import.component';
+import { NoteCreateComponent } from 'zeppelin-share/note-create/note-create.component';
 
 @Component({
   selector: 'zeppelin-node-list',
@@ -16,6 +17,10 @@ export class NodeListComponent extends MessageListenersManager implements OnInit
   searchValue: string;
   nodes = [];
   activatedId: string;
+
+  renameNote(id, path, name) {}
+
+  renameFolder(path) {}
 
   toggleFolder(node: NzTreeNode) {
     node.isExpanded = !node.isExpanded;
@@ -30,6 +35,16 @@ export class NodeListComponent extends MessageListenersManager implements OnInit
     this.nzModalService.create({
       nzTitle: 'Import New Note',
       nzContent: NoteImportComponent,
+      nzWidth: '800px',
+      nzFooter: null
+    });
+  }
+
+  createNote(path?) {
+    this.nzModalService.create({
+      nzTitle: 'Create New Note',
+      nzContent: NoteCreateComponent,
+      nzComponentParams: { path },
       nzWidth: '800px',
       nzFooter: null
     });
