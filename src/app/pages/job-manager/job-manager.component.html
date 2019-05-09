@@ -1,8 +1,8 @@
-<nz-card class="header">
-  <h2>Job</h2>
-  <p>You can monitor the status of notebook and navigate to note or paragraph.</p>
-  <nz-divider nzType="horizontal"></nz-divider>
-  <form nz-form [nzLayout]="'inline'" [formGroup]="form">
+<zeppelin-page-header
+  title="Job"
+  description="You can monitor the status of notebook and navigate to note or paragraph."
+  [divider]="true">
+  <form class="header-form" nz-form [nzLayout]="'inline'" [formGroup]="form">
     <nz-form-item>
       <nz-form-control>
         <nz-input-group [nzPrefix]="prefixSearch">
@@ -41,7 +41,7 @@
       </nz-form-control>
     </nz-form-item>
   </form>
-</nz-card>
+</zeppelin-page-header>
 <div class="content">
   <nz-card *ngIf="loading; else jobs">
     <nz-skeleton [nzTitle]="false" [nzLoading]="true" [nzActive]="true">

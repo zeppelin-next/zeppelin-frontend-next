@@ -18,6 +18,7 @@ import {
   NzSkeletonModule,
   NzToolTipModule
 } from 'ng-zorro-antd';
+import { ShareModule } from 'zeppelin-share/share.module';
 import { JobManagerComponent } from './job-manager.component';
 import { JobManagerRoutingModule } from './job-manager-routing.module';
 import { JobManagerJobComponent } from './job/job.component';
@@ -34,6 +35,7 @@ const icons: IconDefinition[] = [SearchOutline, FileOutline, FileUnknownOutline,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    ShareModule,
     NzIconModule,
     NzInputModule,
     NzBadgeModule,

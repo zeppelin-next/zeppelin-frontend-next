@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from 'zeppelin-share/header/header.component';
 import {
   NzBadgeModule,
+  NzCardModule,
+  NzDividerModule,
   NzDropDownModule,
   NzGridModule,
   NzIconModule,
@@ -29,6 +31,7 @@ import { HumanizeBytesPipe } from 'zeppelin-share/pipes/humanize-bytes.pipe';
 import { NoteCreateComponent } from './note-create/note-create.component';
 import { NoteRenameComponent } from './note-rename/note-rename.component';
 import { FolderRenameComponent } from './folder-rename/folder-rename.component';
+import { PageHeaderComponent } from './page-header/page-header.component';
 
 const MODAL_LIST = [
   AboutZeppelinComponent,
@@ -37,7 +40,7 @@ const MODAL_LIST = [
   NoteRenameComponent,
   FolderRenameComponent
 ];
-const EXPORT_LIST = [HeaderComponent, NodeListComponent];
+const EXPORT_LIST = [HeaderComponent, NodeListComponent, PageHeaderComponent];
 const PIPES = [HumanizeBytesPipe];
 
 @NgModule({
@@ -59,6 +62,8 @@ const PIPES = [HumanizeBytesPipe];
     NzButtonModule,
     NzNotificationModule,
     NzToolTipModule,
+    NzDividerModule,
+    NzCardModule,
     NzPopconfirmModule,
     NzPopconfirmModule,
     NzFormModule,
