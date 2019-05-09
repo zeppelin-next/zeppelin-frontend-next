@@ -1,6 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { TicketService } from 'zeppelin-services';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { MessageService, TicketService } from 'zeppelin-services';
 import { get } from 'lodash';
+import { NzModalRef, UploadFile } from 'ng-zorro-antd';
+import { MessageListener, MessageListenersManager } from 'zeppelin-core';
+import { OP } from 'zeppelin-sdk';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'zeppelin-note-import',
@@ -8,11 +12,83 @@ import { get } from 'lodash';
   styleUrls: ['./note-import.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NoteImportComponent implements OnInit {
+export class NoteImportComponent extends MessageListenersManager implements OnInit {
   noteImportName: string;
+  importUrl: string;
+  errorText: string;
+  importLoading = false;
   maxLimit = get(this.ticketService.configuration, ['zeppelin.websocket.max.text.message.size'], null);
 
-  constructor(private ticketService: TicketService) {}
+  @MessageListener(OP.NOTES_INFO)
+  getNotes() {
+    this.nzModalRef.destroy();
+  }
+
+  importNote() {
+    this.errorText = '';
+    this.importLoading = true;
+    this.httpClient.get(this.importUrl).subscribe(
+      data => {
+        this.importLoading = false;
+        this.processImportJson(data);
+        this.cdr.markForCheck();
+      },
+      () => {
+        this.errorText = 'Unable to Fetch URL';
+        this.importLoading = false;
+        this.cdr.markForCheck();
+      },
+      () => {}
+    );
+  }
+
+  beforeUpload = (file: UploadFile): boolean => {
+    this.errorText = '';
+    if (file.size > this.maxLimit) {
+      this.errorText = 'File size limit Exceeded!';
+    } else {
+      const reader = new FileReader();
+      // tslint:disable-next-line:no-any
+      reader.readAsText(file as any);
+      reader.onloadend = () => {
+        this.processImportJson(reader.result);
+      };
+    }
+    this.cdr.markForCheck();
+    return false;
+  };
+
+  processImportJson(result) {
+    if (typeof result !== 'object') {
+      try {
+        result = JSON.parse(result);
+      } catch (e) {
+        this.errorText = 'JSON parse exception';
+        return;
+      }
+    }
+    if (result.paragraphs && result.paragraphs.length > 0) {
+      if (!this.noteImportName) {
+        this.noteImportName = result.name;
+      } else {
+        result.name = this.noteImportName;
+      }
+      this.messageService.importNote(result);
+    } else {
+      this.errorText = 'Invalid JSON';
+    }
+    this.cdr.markForCheck();
+  }
+
+  constructor(
+    private ticketService: TicketService,
+    public messageService: MessageService,
+    private cdr: ChangeDetectorRef,
+    private nzModalRef: NzModalRef,
+    private httpClient: HttpClient
+  ) {
+    super(messageService);
+  }
 
   ngOnInit() {}
 }

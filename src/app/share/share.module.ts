@@ -13,7 +13,11 @@ import {
   NzToolTipModule,
   NzTreeModule,
   NzPopconfirmModule,
-  NzFormModule
+  NzFormModule,
+  NzTabsModule,
+  NzUploadModule,
+  NzButtonModule,
+  NzAlertModule
 } from 'ng-zorro-antd';
 import { RouterModule } from '@angular/router';
 import { AboutZeppelinComponent } from './about-zeppelin/about-zeppelin.component';
@@ -42,11 +46,15 @@ const PIPES = [HumanizeBytesPipe];
     NzModalModule,
     NzTreeModule,
     RouterModule,
+    NzButtonModule,
     NzNotificationModule,
     NzToolTipModule,
     NzPopconfirmModule,
     NzPopconfirmModule,
-    NzFormModule
+    NzFormModule,
+    NzTabsModule,
+    NzUploadModule,
+    NzAlertModule
   ]
 })
 export class ShareModule {}
