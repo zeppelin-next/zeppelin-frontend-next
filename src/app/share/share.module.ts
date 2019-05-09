@@ -27,8 +27,16 @@ import { FormsModule } from '@angular/forms';
 import { NoteImportComponent } from './note-import/note-import.component';
 import { HumanizeBytesPipe } from 'zeppelin-share/pipes/humanize-bytes.pipe';
 import { NoteCreateComponent } from './note-create/note-create.component';
+import { NoteRenameComponent } from './note-rename/note-rename.component';
+import { FolderRenameComponent } from './folder-rename/folder-rename.component';
 
-const MODAL_LIST = [AboutZeppelinComponent, NoteImportComponent, NoteCreateComponent];
+const MODAL_LIST = [
+  AboutZeppelinComponent,
+  NoteImportComponent,
+  NoteCreateComponent,
+  NoteRenameComponent,
+  FolderRenameComponent
+];
 const EXPORT_LIST = [HeaderComponent, NodeListComponent];
 const PIPES = [HumanizeBytesPipe];
 
