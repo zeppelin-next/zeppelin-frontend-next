@@ -16,6 +16,7 @@ export class TicketService {
   ticket$ = new Subject<ITicketWrapped>();
   login$ = new Subject();
   logout$ = new Subject();
+  version: string;
 
   setConfiguration(conf: ConfigurationsInfo) {
     this.configuration = conf.configurations;
@@ -28,12 +29,13 @@ export class TicketService {
     ).pipe(
       tap(data => {
         const [ticket, version] = data;
-        this.setTicket(ticket, version);
+        this.version = version;
+        this.setTicket(ticket);
       })
     );
   }
 
-  setTicket(ticket: ITicket, version: string) {
+  setTicket(ticket: ITicket) {
     if (ticket.redirectURL) {
       window.location.href = ticket.redirectURL + window.location.href;
     }
@@ -43,15 +45,25 @@ export class TicketService {
       screenUsername = ticket.principal.match(re)[1];
     }
     this.originTicket = ticket;
-    this.ticket = { ...ticket, screenUsername, version, ...{ init: true } };
+    this.ticket = { ...ticket, screenUsername, ...{ init: true } };
     this.ticket$.next(this.ticket);
   }
 
   logout() {
-    this.httpClient.post(`${this.baseUrlService.getRestApiBase()}/login/logout`, {}).subscribe(() => {
-      // TODO
-      this.notifyLogout();
-    });
+    return this.httpClient.post(`${this.baseUrlService.getRestApiBase()}/login/logout`, {}).pipe(
+      tap(() => {
+        // TODO
+        this.notifyLogout();
+      })
+    );
+  }
+
+  login(userName: string, password: string) {
+    return this.httpClient
+      .post<ITicket>(`${this.baseUrlService.getRestApiBase()}/login`, `password=${password}&userName=${userName}`, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      })
+      .pipe(tap(data => this.setTicket(data)));
   }
 
   notifyLogout() {

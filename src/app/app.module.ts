@@ -1,15 +1,14 @@
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { APP_INITIALIZER, NgModule, Injector } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { NZ_I18N, en_US } from 'ng-zorro-antd';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
-import { MessageService, TicketService } from 'zeppelin-services';
+import { TicketService } from 'zeppelin-services';
 import { AppInterceptor } from './app.interceptor';
-import { AppInitializer } from './app.initializer';
 import { ShareModule } from 'zeppelin-share/share.module';
 import { AppRoutingModule } from './app-routing.module';
 import { TRASH_FOLDER_ID_TOKEN } from 'zeppelin-interfaces';

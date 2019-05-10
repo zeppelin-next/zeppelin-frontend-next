@@ -4,7 +4,7 @@ import { MessageReceiveDataTypeMap } from 'zeppelin-sdk';
 import { MessageService } from 'zeppelin-services';
 
 export class MessageListenersManager implements OnDestroy {
-  __zeppelinMessageListeners__: Function[] = [];
+  __zeppelinMessageListeners__: Function[];
   __zeppelinMessageListeners$__ = new Subscriber();
   constructor(public messageService: MessageService) {
     if (this.__zeppelinMessageListeners__) {

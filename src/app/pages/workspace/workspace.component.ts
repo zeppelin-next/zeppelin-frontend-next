@@ -16,7 +16,6 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   constructor(public messageService: MessageService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.messageService.bootstrap();
     this.messageService.connectedStatus$.pipe(takeUntil(this.destroy$)).subscribe(data => {
       this.websocketConnected = data;
       this.cdr.markForCheck();

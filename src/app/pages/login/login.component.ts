@@ -1,4 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { TicketService } from 'zeppelin-services';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'zeppelin-login',
@@ -7,7 +9,26 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent implements OnInit {
-  constructor() {}
+  userName: string;
+  password: string;
+  loading = false;
+
+  login() {
+    this.loading = true;
+    this.ticketService.login(this.userName, this.password).subscribe(
+      () => {
+        this.loading = false;
+        this.cdr.markForCheck();
+        this.router.navigate(['/']).then();
+      },
+      () => {
+        this.loading = false;
+        this.cdr.markForCheck();
+      }
+    );
+  }
+
+  constructor(private ticketService: TicketService, private cdr: ChangeDetectorRef, private router: Router) {}
 
   ngOnInit() {}
 }

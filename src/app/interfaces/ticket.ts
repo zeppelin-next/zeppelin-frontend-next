@@ -14,5 +14,4 @@ export class IZeppelinVersion {
 export class ITicketWrapped extends ITicket {
   init = false;
   screenUsername = '';
-  version = '';
 }

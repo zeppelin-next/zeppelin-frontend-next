@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { MessageListener, MessageListenersManager } from 'zeppelin-core';
 import { MessageReceiveDataTypeMap, OP } from 'zeppelin-sdk';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'zeppelin-header',
@@ -27,7 +28,9 @@ export class HeaderComponent extends MessageListenersManager implements OnInit, 
   }
 
   logout() {
-    this.ticketService.logout();
+    this.ticketService.logout().subscribe(() => {
+      this.router.navigate(['/login']).then();
+    });
   }
 
   @MessageListener(OP.ERROR_INFO)
@@ -45,6 +48,7 @@ export class HeaderComponent extends MessageListenersManager implements OnInit, 
     private nzModalService: NzModalService,
     public messageService: MessageService,
     private nzNotificationService: NzNotificationService,
+    private router: Router,
     private cdr: ChangeDetectorRef
   ) {
     super(messageService);
