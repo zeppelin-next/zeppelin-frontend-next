@@ -13,10 +13,11 @@ import { InterpreterCreateRepositoryModalComponent } from './create-repository-m
 })
 export class InterpreterComponent implements OnInit {
   showRepository = false;
+  showCreateSetting = false;
   propertyTypes: InterpreterPropertyTypes[] = [];
   interpreterSettings: Interpreter[] = [];
   repositories: InterpreterRepository[] = [];
-  availableInterpreters: InterpreterMap = {};
+  availableInterpreters: Interpreter[] = [];
 
   triggerRepository(): void {
     this.showRepository = !this.showRepository;
@@ -38,7 +39,7 @@ export class InterpreterComponent implements OnInit {
 
   createRepository(): void {
     const modalRef = this.nzModalService.create({
-      nzTitle: 'Create new interpreter',
+      nzTitle: 'Add New Repository',
       nzContent: InterpreterCreateRepositoryModalComponent,
       nzFooter: null,
       nzWidth: '600px'
@@ -66,7 +67,9 @@ export class InterpreterComponent implements OnInit {
 
   getAvailableInterpreters(): void {
     this.interpreterService.getAvailableInterpreters().subscribe(data => {
-      this.availableInterpreters = data;
+      this.availableInterpreters = Object.keys(data)
+        .sort()
+        .map(key => data[key]);
       this.cdr.markForCheck();
     });
   }
@@ -82,9 +85,7 @@ export class InterpreterComponent implements OnInit {
     private interpreterService: InterpreterService,
     private cdr: ChangeDetectorRef,
     private nzModalService: NzModalService
-  ) {
-    console.log(interpreterService);
-  }
+  ) {}
 
   ngOnInit() {
     this.getPropertyTypes();

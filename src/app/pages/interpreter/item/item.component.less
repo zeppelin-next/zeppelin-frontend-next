@@ -1,0 +1,12 @@
+@import 'theme-mixin';
+
+.themeMixin({
+  display: block;
+  margin-bottom: 10px;
+  position: relative;
+
+  ::ng-deep .interpreter-item .ant-card-body {
+    padding: @card-padding-base / 2;
+  }
+
+});

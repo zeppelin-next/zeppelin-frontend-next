@@ -35,8 +35,12 @@
   </div>
 </zeppelin-page-header>
 <div class="content">
-  <nz-card class="create-interpreter" nzHoverable>
+  <nz-card
+    (click)="showCreateSetting = true"
+    class="create-interpreter" nzHoverable>
     <i nz-icon type="plus"></i>
     Create
   </nz-card>
+  <zeppelin-interpreter-item *ngIf="showCreateSetting" mode="create">
+  </zeppelin-interpreter-item>
 </div>

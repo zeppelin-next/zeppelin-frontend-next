@@ -1,0 +1,124 @@
+<nz-card class="interpreter-item">
+  <ng-container *ngIf="mode === 'create'">
+    <h3>Create new interpreter</h3>
+    <form nz-form [nzLayout]="'vertical'" [formGroup]="formGroup">
+      <nz-form-item>
+        <nz-form-label nzRequired>Interpreter Name</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="name" placeholder="interpreter name" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzRequired>Interpreter group</nz-form-label>
+        <nz-form-control>
+          <nz-select formControlName="group">
+            <nz-option
+              *ngFor="let item of parent.availableInterpreters; trackBy: interpretersTrackFn"
+              [nzValue]="item.name"
+              [nzLabel]="item.name"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+    <h3>Option</h3>
+    <p>
+      The interpreter will be instantiated
+      <nz-dropdown>
+        <a nz-dropdown>
+          {{ interpreterRunningOption }}
+          <i class="anticon anticon-down"></i>
+        </a>
+        <ul nz-menu>
+          <li nz-menu-item>
+            <a (click)="setInterpreterRunningOption('shared', 'shared')">Globally</a>
+          </li>
+          <li nz-menu-item>
+            <a (click)="setInterpreterRunningOption('scoped', '')">Per Note</a>
+          </li>
+          <li nz-menu-item *ngIf="this.ticketService.originTicket.principal !== 'anonymous'">
+            <a (click)="setInterpreterRunningOption('shared', 'scoped')">Per User</a>
+          </li>
+        </ul>
+      </nz-dropdown>
+      in
+      <nz-dropdown [nzDisabled]="interpreterRunningOption === runningOptionMap.globallyModeName">
+        <a nz-dropdown>
+          <span *ngIf="interpreterRunningOption === runningOptionMap.perUserModeName; else perNote">
+            {{ optionFormGroup.get('perUser').value }}
+          </span>
+          <ng-template #perNote>
+            <span>
+              {{ optionFormGroup.get('perNote').value }}
+            </span>
+          </ng-template>
+          <i class="anticon anticon-down"></i>
+        </a>
+        <ul nz-menu [ngSwitch]="interpreterRunningOption">
+          <li nz-menu-item *ngSwitchCase="runningOptionMap.globallyModeName">
+            <a (click)="setPerNoteOrUserOption('perNote', 'shared')">shared per note</a>
+          </li>
+          <ng-container *ngSwitchCase="runningOptionMap.perNoteModeName">
+            <li nz-menu-item>
+              <a (click)="setPerNoteOrUserOption('perNote', 'scoped')">scoped per note</a>
+            </li>
+            <li nz-menu-item>
+              <a (click)="setPerNoteOrUserOption('perNote', 'isolated')">isolated per note</a>
+            </li>
+          </ng-container>
+          <ng-container *ngSwitchCase="runningOptionMap.perUserModeName">
+            <li nz-menu-item>
+              <a (click)="setPerNoteOrUserOption('perUser', 'scoped')">scoped per user</a>
+            </li>
+            <li nz-menu-item>
+              <a (click)="setPerNoteOrUserOption('perUser', 'scoped')">isolated per user</a>
+            </li>
+          </ng-container>
+        </ul>
+      </nz-dropdown>
+      process
+      <a
+        target="_blank"
+        [href]="
+          'https://zeppelin.apache.org/docs/' +
+          ticketService.ticket.version +
+          '/usage/interpreter/interpreter_binding_mode.html'
+        "
+        nz-tooltip="Can manage interpreter sessions differently by setting this option. Click this button to learn more"
+      >
+        <i nz-icon nzType="info-circle" nzTheme="outline"></i>
+      </a>
+      .
+    </p>
+
+    <form nz-form [nzLayout]="'vertical'" [formGroup]="optionFormGroup">
+      <nz-form-item
+        *ngIf="
+          interpreterRunningOption === runningOptionMap.perUserModeName &&
+          optionFormGroup.get('perUser').value === sessionOptionMap.isolated
+        "
+      >
+        <nz-form-label nzRequired>User Impersonate</nz-form-label>
+        <nz-form-control>
+          <nz-switch nz-input formControlName="isUserImpersonate"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label nzRequired>Connect to existing process</nz-form-label>
+        <nz-form-control>
+          <nz-switch nz-input formControlName="isExistingProcess"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+
+      <ng-container>
+        <nz-form-item>
+          <nz-form-label nzRequired>Host</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="host" placeholder="interpreter name" />
+          </nz-form-control>
+        </nz-form-item>
+      </ng-container>
+    </form>
+  </ng-container>
+</nz-card>

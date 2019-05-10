@@ -7,6 +7,7 @@ import {
   NzCardModule,
   NzCheckboxModule,
   NzDividerModule,
+  NzDropDownModule,
   NzFormModule,
   NzIconModule,
   NzInputModule,
@@ -21,9 +22,10 @@ import { ShareModule } from 'zeppelin-share/share.module';
 import { InterpreterComponent } from './interpreter.component';
 import { InterpreterRoutingModule } from './interpreter-routing.module';
 import { InterpreterCreateRepositoryModalComponent } from './create-repository-modal/create-repository-modal.component';
+import { InterpreterItemComponent } from './item/item.component';
 
 @NgModule({
-  declarations: [InterpreterComponent, InterpreterCreateRepositoryModalComponent],
+  declarations: [InterpreterComponent, InterpreterCreateRepositoryModalComponent, InterpreterItemComponent],
   entryComponents: [InterpreterCreateRepositoryModalComponent],
   imports: [
     CommonModule,
@@ -44,6 +46,7 @@ import { InterpreterCreateRepositoryModalComponent } from './create-repository-m
     NzDividerModule,
     NzTagModule,
     NzCardModule,
+    NzDropDownModule,
     NzIconModule
   ]
 })
