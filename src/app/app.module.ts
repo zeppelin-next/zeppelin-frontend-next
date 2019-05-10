@@ -40,12 +40,6 @@ registerLocaleData(en);
       deps: [TicketService]
     },
     {
-      provide: APP_INITIALIZER,
-      useFactory: AppInitializer,
-      deps: [HttpClient, TicketService, MessageService, Injector],
-      multi: true
-    },
-    {
       provide: TRASH_FOLDER_ID_TOKEN,
       useValue: '~Trash'
     }

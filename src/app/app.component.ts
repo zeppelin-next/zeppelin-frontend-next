@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { MessageService } from 'zeppelin-services';
+import { filter, map } from 'rxjs/operators';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 
 @Component({
   selector: 'zeppelin-root',
@@ -7,5 +8,17 @@ import { MessageService } from 'zeppelin-services';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent {
-  constructor(public messageService: MessageService) {}
+  loading$ = this.router.events.pipe(
+    filter(data => data instanceof NavigationEnd || data instanceof NavigationStart),
+    map(data => {
+      if (data instanceof NavigationStart) {
+        // load ticket when redirect to workspace
+        return data.url === '/';
+      } else if (data instanceof NavigationEnd) {
+        return false;
+      }
+    })
+  );
+
+  constructor(private router: Router) {}
 }

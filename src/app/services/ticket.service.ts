@@ -13,6 +13,7 @@ export class TicketService {
   configuration: ConfigurationsInfo['configurations'];
   ticket = new ITicketWrapped();
   originTicket = new ITicket();
+  ticket$ = new Subject<ITicketWrapped>();
   login$ = new Subject();
   logout$ = new Subject();
 
@@ -43,6 +44,7 @@ export class TicketService {
     }
     this.originTicket = ticket;
     this.ticket = { ...ticket, screenUsername, version, ...{ init: true } };
+    this.ticket$.next(this.ticket);
   }
 
   logout() {

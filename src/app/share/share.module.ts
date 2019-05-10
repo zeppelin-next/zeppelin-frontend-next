@@ -32,6 +32,7 @@ import { NoteCreateComponent } from './note-create/note-create.component';
 import { NoteRenameComponent } from './note-rename/note-rename.component';
 import { FolderRenameComponent } from './folder-rename/folder-rename.component';
 import { PageHeaderComponent } from './page-header/page-header.component';
+import { SpinComponent } from './spin/spin.component';
 
 const MODAL_LIST = [
   AboutZeppelinComponent,
@@ -40,7 +41,7 @@ const MODAL_LIST = [
   NoteRenameComponent,
   FolderRenameComponent
 ];
-const EXPORT_LIST = [HeaderComponent, NodeListComponent, PageHeaderComponent];
+const EXPORT_LIST = [HeaderComponent, NodeListComponent, PageHeaderComponent, SpinComponent];
 const PIPES = [HumanizeBytesPipe];
 
 @NgModule({
