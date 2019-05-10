@@ -1,11 +1,1 @@
-<div class="content" [class.blur]="!(messageService.connectedStatus$ | async)">
-  <zeppelin-header></zeppelin-header>
-  <router-outlet></router-outlet>
-</div>
-<section class="spin transparent" *ngIf="!(messageService.connectedStatus$ | async)">
-  <div>
-    <div></div>
-    <h1 class="brand-title" style="display: none">Zeppelin</h1>
-    <span class="status" style="display: none">Connecting WebSocket ...</span>
-  </div>
-</section>
+<router-outlet></router-outlet>

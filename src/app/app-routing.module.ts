@@ -4,21 +4,13 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: './pages/home/home.module#HomeModule'
+    loadChildren: './pages/workspace/workspace.module#WorkspaceModule'
   },
   {
-    path: 'notebook',
-    loadChildren: './pages/notebook/notebook.module#NotebookModule'
+    path: 'login',
+    loadChildren: './pages/login/login.module#LoginModule'
   },
-  {
-    path: 'jobmanager',
-    loadChildren: './pages/job-manager/job-manager.module#JobManagerModule'
-  },
-  {
-    path: 'interpreter',
-    loadChildren: './pages/interpreter/interpreter.module#InterpreterModule'
-  },
-  { path: '**', redirectTo: '', pathMatch: 'full' }
+  { path: '**', redirectTo: 'login', pathMatch: 'full' }
 ];
 
 @NgModule({

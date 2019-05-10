@@ -1,13 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { NoteListService } from '../../services/note-list.service';
 import { MessageListener, MessageListenersManager } from 'zeppelin-core';
-import { FolderRename, MessageReceiveDataTypeMap, OP } from 'zeppelin-sdk';
+import { MessageReceiveDataTypeMap, OP } from 'zeppelin-sdk';
 import { MessageService } from 'zeppelin-services';
-import { NzFormatEmitEvent, NzModalService, NzTreeNode } from 'ng-zorro-antd';
-import { NoteImportComponent } from 'zeppelin-share/note-import/note-import.component';
-import { NoteCreateComponent } from 'zeppelin-share/note-create/note-create.component';
-import { NoteRenameComponent } from 'zeppelin-share/note-rename/note-rename.component';
-import { FolderRenameComponent } from 'zeppelin-share/folder-rename/folder-rename.component';
+import { NzModalService, NzTreeNode } from 'ng-zorro-antd';
 import { NoteActionService } from '../../services/note-action.service';
 
 @Component({

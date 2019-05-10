@@ -35,6 +35,11 @@ export class HeaderComponent extends MessageListenersManager implements OnInit, 
     this.nzNotificationService.warning('ERROR', data.info);
   }
 
+  @MessageListener(OP.CONFIGURATIONS_INFO)
+  getConfiguration(data: MessageReceiveDataTypeMap[OP.CONFIGURATIONS_INFO]) {
+    this.ticketService.setConfiguration(data);
+  }
+
   constructor(
     public ticketService: TicketService,
     private nzModalService: NzModalService,
@@ -46,6 +51,7 @@ export class HeaderComponent extends MessageListenersManager implements OnInit, 
   }
 
   ngOnInit() {
+    this.messageService.listConfigurations();
     this.messageService.connectedStatus$.pipe(takeUntil(this.destroy$)).subscribe(status => {
       this.connectStatus = status ? 'success' : 'error';
       this.cdr.markForCheck();

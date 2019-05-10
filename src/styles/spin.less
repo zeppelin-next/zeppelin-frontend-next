@@ -12,7 +12,7 @@
   }
 
   & > div {
-    width: 250px;
+    width: 160px;
     height: 250px;
     top: 50%;
     left: 50%;
@@ -39,7 +39,7 @@
         background-image: url(../assets/images/zeppelin_svg_logo.svg);
         background-repeat: no-repeat;
         background-position: center;
-        background-size: 60% auto;
+        background-size: 75% auto;
       }
     }
 
@@ -48,15 +48,34 @@
       font-family: 'Patua One', cursive;
       color: #3071a9;
       margin-top: -40px;
-      font-size: 32px;
+      font-size: 40px;
       display: block !important;
     }
 
     .status {
-      margin-top: -6px;
+      margin: -6px auto 0;
       display: block !important;
-      color: #999999;
-      animation: opacity 2.0s infinite ease;
+      color: #ffffff;
+      line-height: 24px;
+      height: 24px;
+      font-size: 12px;
+      position: relative;
+      background-color: rgba(48, 113, 169, 0.7);
+
+      &::before {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #3071a9;
+        transform-origin: left center;
+        transform: scaleX(0);
+        transition: transform 0.2s ease-in-out;
+        animation: move 1.0s infinite ease;
+      }
     }
   }
 }
@@ -72,6 +91,18 @@
 
   100% {
     opacity: 0.7;
+  }
+}
+
+
+@keyframes move {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+  100% {
+    transform-origin: left center;
+    transform: scaleX(1);
   }
 }
 

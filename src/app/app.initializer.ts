@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
-import { MessageService, TicketService } from 'zeppelin-services';
-export function AppInitializer(httpClient: HttpClient, ticketService: TicketService, messageService: MessageService): Function {
-  return () => {
-    return ticketService.getTicket()
-    .pipe(tap(() => messageService.bootstrap()))
-    .toPromise();
-  };
+import { catchError } from 'rxjs/operators';
+import { TicketService } from 'zeppelin-services';
+import { EMPTY } from 'rxjs';
+
+export function AppInitializer(httpClient: HttpClient, ticketService: TicketService): Function {
+  return () =>
+    ticketService
+      .getTicket()
+      .pipe(catchError(() => EMPTY))
+      .toPromise();
 }
