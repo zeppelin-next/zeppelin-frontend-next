@@ -1,7 +1,7 @@
 <nz-card class="interpreter-item">
   <ng-container *ngIf="mode === 'create'">
     <h3>Create new interpreter</h3>
-    <form nz-form [nzLayout]="'vertical'" [formGroup]="formGroup">
+    <form class="interpreter-form" nz-form [nzLayout]="'vertical'" [formGroup]="formGroup">
       <nz-form-item>
         <nz-form-label nzRequired>Interpreter Name</nz-form-label>
         <nz-form-control>
@@ -90,35 +90,112 @@
       </a>
       .
     </p>
-
-    <form nz-form [nzLayout]="'vertical'" [formGroup]="optionFormGroup">
+    <form class="option-form" nz-form [nzLayout]="'vertical'" [formGroup]="optionFormGroup" #optionForm="ngForm">
       <nz-form-item
         *ngIf="
           interpreterRunningOption === runningOptionMap.perUserModeName &&
           optionFormGroup.get('perUser').value === sessionOptionMap.isolated
         "
       >
-        <nz-form-label nzRequired>User Impersonate</nz-form-label>
+        <nz-form-label>User Impersonate</nz-form-label>
         <nz-form-control>
-          <nz-switch nz-input formControlName="isUserImpersonate"></nz-switch>
+          <nz-switch formControlName="isUserImpersonate"></nz-switch>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label nzRequired>Connect to existing process</nz-form-label>
         <nz-form-control>
-          <nz-switch nz-input formControlName="isExistingProcess"></nz-switch>
+          <label nz-checkbox formControlName="isExistingProcess">
+            <span>Connect to existing process</span>
+          </label>
         </nz-form-control>
       </nz-form-item>
 
-      <ng-container>
+      <ng-container *ngIf="optionForm.control.get('isExistingProcess').value">
         <nz-form-item>
-          <nz-form-label nzRequired>Host</nz-form-label>
+          <nz-form-label>Host</nz-form-label>
           <nz-form-control>
-            <input nz-input formControlName="host" placeholder="interpreter name" />
+            <input nz-input formControlName="host" placeholder="" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label>Port</nz-form-label>
+          <nz-form-control>
+            <input nz-input
+              formControlName="port"
+              placeholder=""
+              pattern="^()([1-9]|[1-5]?[0-9]{2,4}|6[1-4][0-9]{3}|65[1-4][0-9]{2}|655[1-2][0-9]|6553[1-5])$" />
+          </nz-form-control>
+        </nz-form-item>
+      </ng-container>
+
+      <nz-form-item>
+        <nz-form-control>
+          <label nz-checkbox formControlName="setPermission">
+            <span>Set permission</span>
+          </label>
+        </nz-form-control>
+      </nz-form-item>
+
+      <ng-container *ngIf="optionForm.control.get('setPermission').value">
+        <nz-form-item>
+          <nz-form-label>Owners</nz-form-label>
+          <nz-form-control>
+            <nz-select
+              nzMode="tags"
+              class="owners-input"
+              [nzTokenSeparators]="[',']"
+              style="width: 100%;"
+              formControlName="owners"
+              nzPlaceHolder=""
+              nzAllowClear
+              nzShowSearch
+              (nzOnSearch)="onUserSearch($event)"
+            >
+              <nz-option *ngFor="let option of userList$ | async" [nzLabel]="option" [nzValue]="option"></nz-option>
+            </nz-select>
+            <nz-form-extra>Enter comma separated users and groups in the fields. Empty field (*) implies anyone can run this interpreter.</nz-form-extra>
           </nz-form-control>
         </nz-form-item>
       </ng-container>
     </form>
+    <h3>Properties</h3>
+    <form nz-form [formGroup]="formGroup">
+      <nz-table nzTemplateMode>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Value</th>
+            <th>Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="properties">
+          <tr *ngFor="let control of propertiesFormArray.controls; index as i" [formGroupName]="i">
+            <td>{{ control.get('key').value }}</td>
+            <td><input nz-input formControlName="value" placeholder=""/></td>
+            <td>{{ control.get('description').value }}</td>
+            <td><a (click)="removeProperties(i)">Remove</a></td>
+          </tr>
+          <tr [formGroup]="editingPropertiesFormGroup">
+            <td>
+              <input nz-input formControlName="key" placeholder=""/>
+            </td>
+            <td>
+              <div class="edit-properties-value">
+                <input class="value-input" nz-input formControlName="value" placeholder=""/>
+                <nz-select class="type-selector" formControlName="type">
+                  <nz-option *ngFor="let item of parent.propertyTypes" [nzLabel]="item" [nzValue]="item"></nz-option>
+                </nz-select>
+              </div>
+            </td>
+            <td>N/A</td>
+            <td><a (click)="addProperties()">Add</a></td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </form>
+    <h3>Dependencies</h3>
+
   </ng-container>
 </nz-card>

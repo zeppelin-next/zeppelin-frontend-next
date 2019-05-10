@@ -16,7 +16,8 @@ import {
   NzSelectModule,
   NzSwitchModule,
   NzTagModule,
-  NzToolTipModule
+  NzToolTipModule,
+  NzTableModule
 } from 'ng-zorro-antd';
 import { ShareModule } from 'zeppelin-share/share.module';
 import { InterpreterComponent } from './interpreter.component';
@@ -47,7 +48,8 @@ import { InterpreterItemComponent } from './item/item.component';
     NzTagModule,
     NzCardModule,
     NzDropDownModule,
-    NzIconModule
+    NzIconModule,
+    NzTableModule
   ]
 })
 export class InterpreterModule {}

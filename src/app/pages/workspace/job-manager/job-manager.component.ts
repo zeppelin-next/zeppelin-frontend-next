@@ -28,7 +28,7 @@ export class JobManagerComponent extends MessageListenersManager implements OnIn
   sortKeys = Object.keys(JobDateSortKeys).map(k => JobDateSortKeys[k]);
   interpreters: string[] = [];
   filteredJobs: JobsItem[] = [];
-  jobs: JobsItem[];
+  jobs: JobsItem[] = [];
   loading = true;
 
   @MessageListener(OP.LIST_NOTE_JOBS)

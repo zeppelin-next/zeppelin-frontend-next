@@ -9,4 +9,32 @@
     padding: @card-padding-base / 2;
   }
 
+  nz-form-item {
+    margin-bottom: 5px;
+  }
+
+  .interpreter-form, .option-form {
+    input, nz-select {
+      width: 256px;
+    }
+    @media (max-width:959px){
+      input, nz-select {
+        width: 100%;
+      }
+    }
+  }
+
+  .edit-properties-value {
+    display: flex;
+
+    .value-input {
+      flex: 1;
+    }
+
+    .type-selector {
+      width: 150px;
+      margin-left: 5px;
+    }
+  }
+
 });

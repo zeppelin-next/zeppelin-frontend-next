@@ -46,6 +46,10 @@ export class Message {
     this.connect();
   }
 
+  getWsInstance(): WebSocketSubject<WebSocketMessage<keyof MessageDataTypeMap>> {
+    return this.ws;
+  }
+
   setWsUrl(wsUrl: string): void {
     this.wsUrl = wsUrl;
   }

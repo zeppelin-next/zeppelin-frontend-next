@@ -54,6 +54,8 @@ interface Properties {
     name: string;
     value: boolean;
     type: string;
+    defaultValue?: string;
+    description?: string;
   };
 }
 

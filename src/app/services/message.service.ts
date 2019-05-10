@@ -1,5 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
+import { WebSocketSubject } from 'rxjs/webSocket';
 import {
   MessageDataTypeMap,
   MessageReceiveDataTypeMap,
