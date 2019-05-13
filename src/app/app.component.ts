@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { filter, map } from 'rxjs/operators';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { TicketService } from 'zeppelin-services';
 
 @Component({
   selector: 'zeppelin-root',
@@ -8,6 +9,7 @@ import { NavigationEnd, NavigationStart, Router } from '@angular/router';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent {
+  logout$ = this.ticketService.logout$;
   loading$ = this.router.events.pipe(
     filter(data => data instanceof NavigationEnd || data instanceof NavigationStart),
     map(data => {
@@ -20,5 +22,5 @@ export class AppComponent {
     })
   );
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private ticketService: TicketService) {}
 }

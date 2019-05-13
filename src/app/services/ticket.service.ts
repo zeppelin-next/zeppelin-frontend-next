@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ITicket, ITicketWrapped, IZeppelinVersion } from 'zeppelin-interfaces';
-import { forkJoin, Subject } from 'rxjs';
+import { BehaviorSubject, forkJoin, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
 import { BaseUrlService } from './base-url.service';
 import { ConfigurationsInfo } from 'zeppelin-sdk';
+import { Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +16,7 @@ export class TicketService {
   ticket = new ITicketWrapped();
   originTicket = new ITicket();
   ticket$ = new Subject<ITicketWrapped>();
-  login$ = new Subject();
-  logout$ = new Subject();
+  logout$ = new BehaviorSubject<boolean>(false);
   version: string;
 
   setConfiguration(conf: ConfigurationsInfo) {
@@ -49,13 +50,22 @@ export class TicketService {
     this.ticket$.next(this.ticket);
   }
 
+  clearTicket() {
+    this.ticket = new ITicketWrapped();
+    this.originTicket = new ITicket();
+  }
+
   logout() {
-    return this.httpClient.post(`${this.baseUrlService.getRestApiBase()}/login/logout`, {}).pipe(
-      tap(() => {
-        // TODO
-        this.notifyLogout();
-      })
-    );
+    this.logout$.next(true);
+    const nextAction = () => {
+      this.nzMessageService.success('Logout Success');
+      this.router.navigate(['/login']).then();
+      this.logout$.next(false);
+      this.clearTicket();
+    };
+    return this.httpClient
+      .post(`${this.baseUrlService.getRestApiBase()}/login/logout`, {})
+      .pipe(tap(() => nextAction(), () => nextAction()));
   }
 
   login(userName: string, password: string) {
@@ -63,15 +73,17 @@ export class TicketService {
       .post<ITicket>(`${this.baseUrlService.getRestApiBase()}/login`, `password=${password}&userName=${userName}`, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       })
-      .pipe(tap(data => this.setTicket(data)));
-  }
-
-  notifyLogout() {
-    this.logout$.next();
-  }
-
-  notifyLogin() {
-    this.login$.next();
+      .pipe(
+        tap(
+          data => {
+            this.nzMessageService.success('Login Success');
+            this.setTicket(data);
+          },
+          () => {
+            this.nzMessageService.warning("The username and password that you entered don't match.");
+          }
+        )
+      );
   }
 
   getZeppelinVersion() {
@@ -80,5 +92,10 @@ export class TicketService {
       .pipe(map(data => data.version));
   }
 
-  constructor(private httpClient: HttpClient, private baseUrlService: BaseUrlService) {}
+  constructor(
+    private httpClient: HttpClient,
+    private baseUrlService: BaseUrlService,
+    private router: Router,
+    private nzMessageService: NzMessageService
+  ) {}
 }

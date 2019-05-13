@@ -20,7 +20,8 @@ import {
   NzUploadModule,
   NzButtonModule,
   NzAlertModule,
-  NzSelectModule
+  NzSelectModule,
+  NzMessageModule
 } from 'ng-zorro-antd';
 import { RouterModule } from '@angular/router';
 import { AboutZeppelinComponent } from './about-zeppelin/about-zeppelin.component';
@@ -64,6 +65,7 @@ const PIPES = [HumanizeBytesPipe];
     NzNotificationModule,
     NzToolTipModule,
     NzDividerModule,
+    NzMessageModule,
     NzCardModule,
     NzPopconfirmModule,
     NzPopconfirmModule,

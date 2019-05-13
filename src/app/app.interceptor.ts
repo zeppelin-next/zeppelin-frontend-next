@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { environment } from 'zeppelin-environment';
 import { catchError, map } from 'rxjs/operators';
 import { TicketService } from 'zeppelin-services';
+import { isNil } from 'lodash';
 
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
@@ -25,11 +26,11 @@ export class AppInterceptor implements HttpInterceptor {
       }),
       catchError(event => {
         const redirect = event.headers.get('Location');
-        if (event.status === 401 && redirect !== undefined) {
+        if (event.status === 401 && !isNil(redirect)) {
           // Handle page redirect
           window.location.href = redirect;
         } else if (event.status === 405) {
-          this.ticketService.notifyLogout();
+          this.ticketService.logout();
         }
         return throwError(event);
       })

@@ -28,9 +28,7 @@ export class HeaderComponent extends MessageListenersManager implements OnInit, 
   }
 
   logout() {
-    this.ticketService.logout().subscribe(() => {
-      this.router.navigate(['/login']).then();
-    });
+    this.ticketService.logout().subscribe();
   }
 
   @MessageListener(OP.ERROR_INFO)
