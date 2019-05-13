@@ -43,11 +43,16 @@ export class InterpreterService extends BaseRest {
   }
 
   addInterpreterSetting(interpreter: Interpreter) {
-    return this.http.post(this.restUrl`/interpreter/setting`, interpreter);
+    return this.http.post<Interpreter>(this.restUrl`/interpreter/setting`, interpreter);
   }
 
-  updateInterpreter(settingId: string, data) {
-    return this.http.put(this.restUrl`/interpreter/setting/${settingId}`, data);
+  updateInterpreter(interpreter: Interpreter) {
+    const { option, properties, dependencies } = interpreter;
+    return this.http.put<Interpreter>(this.restUrl`/interpreter/setting/${interpreter.name}`, {
+      option,
+      properties,
+      dependencies
+    });
   }
 
   removeInterpreterSetting(settingId: string) {

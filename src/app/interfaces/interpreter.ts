@@ -6,6 +6,7 @@ export interface Interpreter {
   group: string;
   properties: Properties;
   status: string;
+  errorReason?: string;
   interpreterGroup: InterpreterGroupItem[];
   dependencies: DependenciesItem[];
   option: Option;
