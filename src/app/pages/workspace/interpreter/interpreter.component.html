@@ -4,7 +4,7 @@
   [extra]="headerExtra"
 >
   <nz-input-group [nzPrefix]="prefixSearch">
-    <input class="search-input" nz-input placeholder="Search interpreters..." />
+    <input [(ngModel)]="searchInterpreter" (ngModelChange)="onSearchChange($event)" class="search-input" nz-input placeholder="Search interpreters..." />
   </nz-input-group>
   <ng-template #prefixSearch><i nz-icon nzType="search" nzTheme="outline"></i></ng-template>
   <ng-template #headerExtra>
@@ -36,11 +36,19 @@
 </zeppelin-page-header>
 <div class="content">
   <nz-card
+    *ngIf="!showCreateSetting"
     (click)="showCreateSetting = true"
     class="create-interpreter" nzHoverable>
     <i nz-icon type="plus"></i>
     Create
   </nz-card>
-  <zeppelin-interpreter-item *ngIf="showCreateSetting" mode="create">
+  <zeppelin-interpreter-item
+    *ngIf="showCreateSetting"
+    mode="create">
+  </zeppelin-interpreter-item>
+  <zeppelin-interpreter-item
+    *ngFor="let item of filteredInterpreterSettings"
+    mode="view"
+    [interpreter]="item">
   </zeppelin-interpreter-item>
 </div>
