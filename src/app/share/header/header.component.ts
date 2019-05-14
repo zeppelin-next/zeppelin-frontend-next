@@ -2,11 +2,11 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRe
 import { MessageService, TicketService } from 'zeppelin-services';
 import { NzNotificationService, NzModalService } from 'ng-zorro-antd';
 import { AboutZeppelinComponent } from 'zeppelin-share/about-zeppelin/about-zeppelin.component';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { MessageListener, MessageListenersManager } from 'zeppelin-core';
 import { MessageReceiveDataTypeMap, OP } from 'zeppelin-sdk';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'zeppelin-header',
@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 export class HeaderComponent extends MessageListenersManager implements OnInit, OnDestroy {
   private destroy$ = new Subject();
   connectStatus = 'error';
+  noteListVisible = false;
 
   about() {
     this.nzModalService.create({
@@ -58,6 +59,15 @@ export class HeaderComponent extends MessageListenersManager implements OnInit, 
       this.connectStatus = status ? 'success' : 'error';
       this.cdr.markForCheck();
     });
+    this.router.events
+      .pipe(
+        filter(e => e instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.noteListVisible = false;
+        this.cdr.markForCheck();
+      });
   }
 
   ngOnDestroy() {

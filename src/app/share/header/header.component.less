@@ -1,6 +1,19 @@
 @import 'theme-mixin';
 
 .themeMixin({
+  .small-icon {
+    margin-left: 6px;
+    font-size: 12px;
+    margin-right: 0;
+    transform: scale(0.8);
+  }
+  .node-list-trigger {
+    height: 100%;
+    display: inline-block;
+    margin: 0 -20px;
+    padding: 0 20px;
+    color: @text-color;
+  }
   .header {
     position: relative;
     z-index: 999;
@@ -58,12 +71,6 @@
       height: 50px;
       display: inline-block;
       color: @text-color;
-
-      i {
-        margin-left: 6px;
-        font-size: 12px;
-        transform: scale(0.8);
-      }
     }
   }
   .modal {
