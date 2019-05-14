@@ -82,6 +82,15 @@
   </ng-container>
   <h3 class="form-title">Option</h3>
   <p>
+    <a
+      target="_blank"
+      [href]="
+        'https://zeppelin.apache.org/docs/' + ticketService.version + '/usage/interpreter/interpreter_binding_mode.html'
+      "
+      nz-tooltip="Can manage interpreter sessions differently by setting this option. Click this button to learn more"
+    >
+      <i nz-icon nzType="info-circle" nzTheme="outline"></i>
+    </a>
     The interpreter will be instantiated
     <nz-dropdown [nzDisabled]="mode === 'view'">
       <a nz-dropdown>
@@ -130,22 +139,47 @@
             <a (click)="setPerNoteOrUserOption('perUser', 'scoped')">scoped per user</a>
           </li>
           <li nz-menu-item>
-            <a (click)="setPerNoteOrUserOption('perUser', 'scoped')">isolated per user</a>
+            <a (click)="setPerNoteOrUserOption('perUser', 'isolated')">isolated per user</a>
           </li>
         </ng-container>
       </ul>
     </nz-dropdown>
     process
-    <a
-      target="_blank"
-      [href]="
-        'https://zeppelin.apache.org/docs/' + ticketService.version + '/usage/interpreter/interpreter_binding_mode.html'
-      "
-      nz-tooltip="Can manage interpreter sessions differently by setting this option. Click this button to learn more"
-    >
-      <i nz-icon nzType="info-circle" nzTheme="outline"></i>
-    </a>
+    <ng-container *ngIf="interpreterRunningOption === runningOptionMap.perUserModeName &&
+    ticketService.ticket.principal !== 'anonymous' &&
+    optionFormGroup.get('perNote').value !== sessionOptionMap.shared">
+      and <a disabled>Per Note</a> in
+      <nz-dropdown [nzDisabled]="interpreterRunningOption === runningOptionMap.globallyModeName || mode === 'view'">
+        <a nz-dropdown>
+          {{ optionFormGroup.get('perNote').value }}
+          <i class="anticon anticon-down"></i>
+        </a>
+        <ul nz-menu>
+          <li nz-menu-item>
+            <a (click)="setPerNoteOrUserOption('perNote', 'scoped')">scoped per note</a>
+          </li>
+          <li nz-menu-item>
+            <a (click)="setPerNoteOrUserOption('perNote', 'isolated')">isolated per note</a>
+          </li>
+        </ul>
+      </nz-dropdown>
+      process
+    </ng-container>
     .
+    <ng-container *ngIf="interpreterRunningOption === runningOptionMap.perUserModeName &&
+    ticketService.ticket.principal !== 'anonymous' && mode !== 'view'">
+      <button
+        *ngIf="optionFormGroup.get('perNote').value === sessionOptionMap.shared; else minusButton"
+        nz-button
+        (click)="setPerNoteOrUserOption('perNote', 'scoped')">
+        <i nz-icon nzType="plus" nzTheme="outline"></i>
+      </button>
+      <ng-template #minusButton>
+        <button nz-button (click)="setPerNoteOrUserOption('perNote', 'shared')">
+          <i nz-icon nzType="minus" nzTheme="outline"></i>
+        </button>
+      </ng-template>
+    </ng-container>
   </p>
   <form class="option-form" nz-form [nzLayout]="'vertical'" [formGroup]="optionFormGroup" #optionForm="ngForm">
     <nz-form-item
@@ -154,9 +188,10 @@
         optionFormGroup.get('perUser').value === sessionOptionMap.isolated
       "
     >
-      <nz-form-label>User Impersonate</nz-form-label>
       <nz-form-control>
-        <nz-switch formControlName="isUserImpersonate" [nzDisabled]="mode === 'view'"></nz-switch>
+        <label nz-checkbox formControlName="isUserImpersonate" [nzDisabled]="mode === 'view'">
+          <span>User Impersonate</span>
+        </label>
       </nz-form-control>
     </nz-form-item>
 
@@ -260,7 +295,7 @@
               </ng-container>
               <ng-template #viewModePropertiesValue>
                 <ng-container [ngSwitch]="control.get('type').value">
-                  <ng-container *ngSwitchCase="'password'">***</ng-container>
+                  <ng-container *ngSwitchCase="'password'">******</ng-container>
                   <ng-container *ngSwitchCase="'url'">
                     <a [href]="control.get('value').value" target="_blank">{{control.get('value').value}}</a>
                   </ng-container>

@@ -55,6 +55,7 @@ export class InterpreterComponent implements OnInit, OnDestroy {
     this.interpreterService.addInterpreterSetting(data).subscribe(res => {
       this.interpreterSettings.push(res);
       this.showCreateSetting = false;
+      this.filterInterpreters(this.searchInterpreter);
       this.cdr.markForCheck();
     });
   }
@@ -69,6 +70,7 @@ export class InterpreterComponent implements OnInit, OnDestroy {
         current.properties = res.properties;
         current.dependencies = res.dependencies;
       }
+      this.filterInterpreters(this.searchInterpreter);
       this.cdr.markForCheck();
     });
   }
@@ -81,6 +83,7 @@ export class InterpreterComponent implements OnInit, OnDestroy {
         this.interpreterService.removeInterpreterSetting(settingId).subscribe(() => {
           const index = this.interpreterSettings.findIndex(e => e.name === settingId);
           this.interpreterSettings.splice(index, 1);
+          this.filterInterpreters(this.searchInterpreter);
           this.cdr.markForCheck();
         });
       }
