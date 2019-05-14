@@ -1,0 +1,50 @@
+<div class="bar">
+  <div class="title">
+    <zeppelin-elastic-input [value]="note.name" (valueUpdate)="updateNoteName($event)"></zeppelin-elastic-input>
+  </div>
+  <div class="control">
+    <nz-button-group nzSize="small">
+      <button nz-button nz-popconfirm nzTitle="Run all paragraphs?" (nzOnConfirm)="runAllParagraphs()"><i nz-icon nzType="play-circle" nzTheme="outline"></i></button>
+      <button nz-button nz-tooltip nzTitle="Show/hide the code" (click)="toggleAllEditor()"><i nz-icon [nzType]="editorToggled ? 'fullscreen' : 'fullscreen-exit'" nzTheme="outline"></i></button>
+      <button nz-button nz-tooltip nzTitle="Show/hide the output" (click)="toggleAllTable()"><i nz-icon [nzType]="tableToggled ? 'book' : 'read'" nzTheme="outline"></i></button>
+      <button nz-button nz-popconfirm nzTitle="Do you want to clear all output?" (nzOnConfirm)="clearAllParagraphOutput()"><i nz-icon nzType="fire" nzTheme="outline"></i></button>
+      <button nz-button nz-tooltip nzTitle="Clone this note" (click)="cloneNote()"><i nz-icon nzType="copy" nzTheme="outline"></i></button>
+      <button nz-button nz-tooltip nzTitle="Export this note" (click)="exportNote()"><i nz-icon nzType="download" nzTheme="outline"></i></button>
+      <button nz-button><i nz-icon nzType="team" nzTheme="outline"></i></button>
+    </nz-button-group>
+    <nz-button-group nzSize="small">
+      <button nz-button><i nz-icon nzType="to-top" nzTheme="outline"></i></button>
+      <button nz-button><i nz-icon nzType="rollback" nzTheme="outline"></i></button>
+      <button nz-button><i nz-icon nzType="swap" nzTheme="outline"></i></button>
+      <button nz-button>Head</button>
+      <button nz-button><i nz-icon nzType="caret-down" nzTheme="outline"></i></button>
+    </nz-button-group>
+    <nz-button-group nzSize="small">
+      <button nz-button><i nz-icon nzType="search" nzTheme="outline"></i></button>
+    </nz-button-group>
+    <nz-button-group nzSize="small">
+      <button nz-button><i nz-icon nzType="delete" nzTheme="outline"></i></button>
+    </nz-button-group>
+    <nz-button-group nzSize="small">
+      <button nz-button><i nz-icon nzType="eye" nzTheme="outline"></i></button>
+    </nz-button-group>
+    <nz-button-group nzSize="small">
+      <button nz-button><i nz-icon nzType="clock-circle" nzTheme="outline"></i></button>
+    </nz-button-group>
+  </div>
+  <div class="setting">
+    <nz-button-group nzSize="small">
+      <button nz-button nzNoAnimation><i nz-icon nzType="info-circle" nzTheme="outline"></i></button>
+      <button nz-button nzNoAnimation><i nz-icon nzType="setting" nzTheme="outline"></i></button>
+      <button nz-button nzNoAnimation><i nz-icon nzType="lock" nzTheme="outline"></i></button>
+      <nz-dropdown>
+        <button nz-button nzNoAnimation nzSize="small" nz-dropdown>Default<i nz-icon type="down"></i></button>
+        <ul nz-menu>
+          <li nz-menu-item>Default</li>
+          <li nz-menu-item>Simple</li>
+          <li nz-menu-item>Report</li>
+        </ul>
+      </nz-dropdown>
+    </nz-button-group>
+  </div>
+</div>

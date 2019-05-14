@@ -5,6 +5,9 @@ export interface ParagraphEditorSetting {
   editOnDblClick: boolean;
   completionKey: EditorCompletionKey;
   completionSupport: boolean;
+  // TODO
+  // tslint:disable-next-line no-any
+  params: any;
 }
 
 // TODO
@@ -35,6 +38,7 @@ export interface ParagraphConfig {
 export interface ParagraphResults {
   code?: string;
   msg?: ParagraphIResultsMsgItem[];
+
   [index: number]: {};
 }
 

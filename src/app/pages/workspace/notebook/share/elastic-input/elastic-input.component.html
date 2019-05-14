@@ -1,0 +1,4 @@
+<div class="elastic" #elasticElement>
+  <input #inputElement [ngModel]="editValue" (ngModelChange)="updateValue($event)" *ngIf="showEditor" (blur)="setEditorState(false)" (keydown.enter)="setEditorState(false)" (input)="updateInputWidth()">
+  <p #pElement *ngIf="!showEditor" (click)="setEditorState(true)">{{value}}</p>
+</div>

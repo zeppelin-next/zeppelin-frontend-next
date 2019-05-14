@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'zeppelin-services';
 import { Subject } from 'rxjs';
@@ -25,6 +25,7 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
       this.router.navigate(['/']).then();
     } else {
       this.note = note;
+      this.cdr.markForCheck();
     }
   }
 
@@ -36,6 +37,7 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
   constructor(
     private activatedRoute: ActivatedRoute,
     public messageService: MessageService,
+    private cdr: ChangeDetectorRef,
     private noteVarShareService: NoteVarShareService,
     private router: Router
   ) {

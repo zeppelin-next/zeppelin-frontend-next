@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Input } from '@angular/core';
 import { NoteListService } from '../../services/note-list.service';
 import { MessageListener, MessageListenersManager } from 'zeppelin-core';
 import { MessageReceiveDataTypeMap, OP } from 'zeppelin-sdk';
@@ -13,6 +13,7 @@ import { NoteActionService } from '../../services/note-action.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NodeListComponent extends MessageListenersManager implements OnInit {
+  @Input() headerMode = false;
   searchValue: string;
   nodes = [];
   activatedId: string;

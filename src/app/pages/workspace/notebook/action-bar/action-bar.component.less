@@ -1,0 +1,38 @@
+@import "theme-mixin";
+
+.themeMixin({
+  .bar {
+    height: 50px;
+    background: @component-background;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .06);
+    padding: 0 15px;
+    line-height: 50px;
+
+    .title {
+      float: left;
+      width: auto;
+      max-width: 40%;
+    }
+
+    .control {
+      float: left;
+
+      nz-button-group {
+        margin-right: 24px;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+    }
+
+    .setting {
+      float: right;
+
+      button {
+        box-shadow: none;
+        border: none;
+      }
+    }
+  }
+});

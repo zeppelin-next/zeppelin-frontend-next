@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content" [class.header-mode]="headerMode">
   <h4><a (click)="importNote()"><i nz-icon nzType="upload" nzTheme="outline"></i> Import Note</a></h4>
   <h4><a (click)="createNote()"><i nz-icon nzType="file-add" nzTheme="outline"></i> Create new Note</a></h4>
   <nz-input-group [nzPrefixIcon]="'search'" nzSize="small">

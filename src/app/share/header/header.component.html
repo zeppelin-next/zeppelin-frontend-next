@@ -10,7 +10,7 @@
       <li nz-menu-item [class.ant-menu-item-selected]="noteListVisible">
         <nz-dropdown [nzTrigger]="'click'" [(nzVisible)]="noteListVisible">
           <a nz-dropdown class="node-list-trigger">NoteBook <i class="small-icon" nz-icon nzType="caret-down"></i></a>
-          <zeppelin-node-list class="ant-dropdown-menu padding-sm" *ngIf="noteListVisible"></zeppelin-node-list>
+          <zeppelin-node-list [headerMode]="true" class="ant-dropdown-menu padding-sm" *ngIf="noteListVisible"></zeppelin-node-list>
         </nz-dropdown>
       </li>
       <li nz-menu-item routerLinkActive="ant-menu-item-selected">
