@@ -58,6 +58,12 @@ export class Message {
     this.ticket = ticket;
   }
 
+  interceptReceived(
+    data: WebSocketMessage<keyof MessageReceiveDataTypeMap>
+  ): WebSocketMessage<keyof MessageReceiveDataTypeMap> {
+    return data;
+  }
+
   connect() {
     this.ws = webSocket({
       url: this.wsUrl,
@@ -79,9 +85,9 @@ export class Message {
           )
         )
       )
-      .subscribe(e => {
+      .subscribe((e: WebSocketMessage<keyof MessageReceiveDataTypeMap>) => {
         console.log('Receive:', e);
-        this.received$.next(e as WebSocketMessage<keyof MessageReceiveDataTypeMap>);
+        this.received$.next(this.interceptReceived(e));
       });
   }
 

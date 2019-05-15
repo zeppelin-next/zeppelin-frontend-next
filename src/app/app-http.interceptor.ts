@@ -7,7 +7,7 @@ import { TicketService } from 'zeppelin-services';
 import { isNil } from 'lodash';
 
 @Injectable()
-export class AppInterceptor implements HttpInterceptor {
+export class AppHttpInterceptor implements HttpInterceptor {
   constructor(private ticketService: TicketService) {}
 
   // tslint:disable-next-line:no-any

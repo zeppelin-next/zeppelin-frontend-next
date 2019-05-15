@@ -1,6 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Note } from 'zeppelin-sdk';
 import { MessageService } from 'zeppelin-services';
+import { NzModalService } from 'ng-zorro-antd';
+import { NoteCreateComponent } from 'zeppelin-share/note-create/note-create.component';
 
 @Component({
   selector: 'zeppelin-notebook-action-bar',
@@ -41,7 +43,14 @@ export class NotebookActionBarComponent implements OnInit {
   }
 
   cloneNote() {
-    // TODO
+    this.nzModalService.create({
+      nzTitle: 'Clone Note',
+      nzContent: NoteCreateComponent,
+      nzComponentParams: {
+        cloneNote: this.note
+      },
+      nzFooter: null
+    });
   }
 
   exportNote() {
@@ -58,7 +67,7 @@ export class NotebookActionBarComponent implements OnInit {
     this.tableToggled = !this.tableToggled;
   }
 
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: MessageService, private nzModalService: NzModalService) {}
 
   ngOnInit() {}
 }

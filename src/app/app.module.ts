@@ -8,11 +8,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { TicketService } from 'zeppelin-services';
-import { AppInterceptor } from './app.interceptor';
+import { AppHttpInterceptor } from './app-http.interceptor';
 import { ShareModule } from 'zeppelin-share/share.module';
 import { AppRoutingModule } from './app-routing.module';
-import { TRASH_FOLDER_ID_TOKEN } from 'zeppelin-interfaces';
+import { MESSAGE_INTERCEPTOR, TRASH_FOLDER_ID_TOKEN } from 'zeppelin-interfaces';
 import { RouterModule } from '@angular/router';
+import { AppMessageInterceptor } from './app-message.interceptor';
 
 registerLocaleData(en);
 
@@ -34,9 +35,13 @@ registerLocaleData(en);
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AppInterceptor,
+      useClass: AppHttpInterceptor,
       multi: true,
       deps: [TicketService]
+    },
+    {
+      provide: MESSAGE_INTERCEPTOR,
+      useClass: AppMessageInterceptor
     },
     {
       provide: TRASH_FOLDER_ID_TOKEN,

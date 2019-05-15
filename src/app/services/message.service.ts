@@ -1,6 +1,5 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Inject, Injectable, OnDestroy, Optional } from '@angular/core';
 import { Observable } from 'rxjs';
-import { WebSocketSubject } from 'rxjs/webSocket';
 import {
   MessageDataTypeMap,
   MessageReceiveDataTypeMap,
@@ -16,13 +15,25 @@ import {
 } from 'zeppelin-sdk';
 import { TicketService } from './ticket.service';
 import { BaseUrlService } from './base-url.service';
+import { map, tap } from 'rxjs/operators';
+import { MESSAGE_INTERCEPTOR, MessageInterceptor } from 'zeppelin-interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService extends Message implements OnDestroy {
-  constructor(private baseUrlService: BaseUrlService, private ticketService: TicketService) {
+  constructor(
+    private baseUrlService: BaseUrlService,
+    private ticketService: TicketService,
+    @Optional() @Inject(MESSAGE_INTERCEPTOR) private messageInterceptor: MessageInterceptor
+  ) {
     super();
+  }
+
+  interceptReceived(
+    data: WebSocketMessage<keyof MessageReceiveDataTypeMap>
+  ): WebSocketMessage<keyof MessageReceiveDataTypeMap> {
+    return this.messageInterceptor ? this.messageInterceptor.received(data) : super.interceptReceived(data);
   }
 
   bootstrap(): void {

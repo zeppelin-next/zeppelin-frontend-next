@@ -57,6 +57,7 @@ export interface MessageReceiveDataTypeMap {
   [OP.LIST_UPDATE_NOTE_JOBS]: ListUpdateNoteJobs;
   [OP.INTERPRETER_SETTINGS]: InterpreterSetting;
   [OP.LIST_REVISION_HISTORY]: never; // TODO
+  [OP.NEW_NOTE]: Note;
 }
 
 export interface MessageDataTypeMap {
