@@ -1,12 +1,13 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'zeppelin-services';
+import { MessageService, SecurityService, TicketService } from 'zeppelin-services';
 import { Subject } from 'rxjs';
 import { distinctUntilKeyChanged, takeUntil } from 'rxjs/operators';
 import { NoteVarShareService } from '../../../services/note-var-share.service';
 import { MessageListener, MessageListenersManager } from 'zeppelin-core';
-import { MessageReceiveDataTypeMap, Note, OP } from 'zeppelin-sdk';
+import { MessageReceiveDataTypeMap, Note, OP, RevisionListItem } from 'zeppelin-sdk';
 import { isNil } from 'lodash';
+import { Permissions } from 'zeppelin-interfaces';
 
 @Component({
   selector: 'zeppelin-notebook',
@@ -17,6 +18,12 @@ import { isNil } from 'lodash';
 export class NotebookComponent extends MessageListenersManager implements OnInit, OnDestroy {
   private destroy$ = new Subject();
   note: Note['note'];
+  permissions: Permissions;
+  isOwner = true;
+  noteRevisions: RevisionListItem[] = [];
+  currentRevision: string;
+  collaborativeMode = false;
+  collaborativeModeUsers = [];
 
   @MessageListener(OP.NOTE)
   getNote(data: MessageReceiveDataTypeMap[OP.NOTE]) {
@@ -25,13 +32,99 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
       this.router.navigate(['/']).then();
     } else {
       this.note = note;
+      const { paragraphId } = this.activatedRoute.snapshot.params;
+      if (paragraphId) {
+        this.note = this.cleanParagraphExcept(paragraphId);
+        this.initializeLookAndFeel();
+      } else {
+        this.initializeLookAndFeel();
+        this.getInterpreterBindings();
+        this.getPermissions();
+        this.note.config.personalizedMode =
+          this.note.config.personalizedMode === undefined ? 'false' : this.note.config.personalizedMode;
+      }
       this.cdr.markForCheck();
     }
   }
 
+  @MessageListener(OP.NOTE_REVISION)
+  getNoteRevision(data: MessageReceiveDataTypeMap[OP.NOTE_REVISION]) {
+    const note = data.note;
+    if (isNil(note)) {
+      this.router.navigate(['/']).then();
+    } else {
+      this.note = data.note;
+      this.initializeLookAndFeel();
+      this.cdr.markForCheck();
+    }
+  }
+
+  @MessageListener(OP.SET_NOTE_REVISION)
+  setNoteRevision() {
+    const { noteId } = this.activatedRoute.snapshot.params;
+    this.router.navigate(['/notebook', noteId]).then();
+  }
+
+  getInterpreterBindings() {
+    this.messageService.getInterpreterBindings(this.note.id);
+  }
+
+  getPermissions() {
+    this.securityService.getPermissions(this.note.id).subscribe(data => {
+      this.permissions = data;
+      this.isOwner = !(
+        this.permissions.owners.length && this.permissions.owners.indexOf(this.ticketService.ticket.principal) < 0
+      );
+      this.cdr.markForCheck();
+    });
+  }
+
+  get viewOnly(): boolean {
+    return this.note.config.looknfeel === 'report';
+  }
+
+  initializeLookAndFeel() {
+    this.note.config.looknfeel = this.note.config.looknfeel || 'default';
+    if (this.note.paragraphs && this.note.paragraphs[0]) {
+      this.note.paragraphs[0].focus = true;
+    }
+  }
+
+  cleanParagraphExcept(paragraphId) {
+    const targetParagraph = this.note.paragraphs.find(p => p.id === paragraphId);
+    const config = targetParagraph.config || {};
+    config.editorHide = true;
+    config.tableHide = false;
+    const paragraphs = [{ ...targetParagraph, config }];
+    return { ...this.note, paragraphs };
+  }
+
+  @MessageListener(OP.INTERPRETER_BINDINGS)
+  listInterpreterBindings(data: MessageReceiveDataTypeMap[OP.INTERPRETER_BINDINGS]) {
+    // TODO
+  }
+
+  @MessageListener(OP.COLLABORATIVE_MODE_STATUS)
+  getCollaborativeModeStatus(data: MessageReceiveDataTypeMap[OP.COLLABORATIVE_MODE_STATUS]) {
+    this.collaborativeMode = Boolean(data.status);
+    this.collaborativeModeUsers = data.users;
+  }
+
   @MessageListener(OP.LIST_REVISION_HISTORY)
   listRevisionHistory(data: MessageReceiveDataTypeMap[OP.LIST_REVISION_HISTORY]) {
-    // TODO
+    this.noteRevisions = data.revisionList;
+    if (this.noteRevisions) {
+      if (this.noteRevisions.length === 0 || this.noteRevisions[0].id !== 'Head') {
+        this.noteRevisions.splice(0, 0, { id: 'Head', message: 'Head' });
+      }
+      const { revisionId } = this.activatedRoute.snapshot.params;
+      if (revisionId) {
+        this.currentRevision = this.noteRevisions.find(r => r.id === revisionId).message;
+      } else {
+        this.currentRevision = 'Head';
+      }
+    }
+    this.cdr.markForCheck();
   }
 
   constructor(
@@ -39,6 +132,8 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
     public messageService: MessageService,
     private cdr: ChangeDetectorRef,
     private noteVarShareService: NoteVarShareService,
+    private ticketService: TicketService,
+    private securityService: SecurityService,
     private router: Router
   ) {
     super(messageService);
@@ -51,11 +146,10 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
         distinctUntilKeyChanged('noteId')
       )
       .subscribe(() => {
-        // TODO noteVarShareService
         this.noteVarShareService.clear();
       });
     this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe(param => {
-      const { noteId, revisionId, paragraphId } = param;
+      const { noteId, revisionId } = param;
       if (revisionId) {
         this.messageService.noteRevision(noteId, revisionId);
       } else {

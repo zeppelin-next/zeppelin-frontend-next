@@ -6,9 +6,11 @@
     <nz-form-item>
       <nz-form-control>
         <nz-input-group [nzPrefix]="prefixSearch">
-          <input formControlName="noteName" nz-input placeholder="Search jobs..." />
+          <input formControlName="noteName" nz-input placeholder="Search jobs..."/>
         </nz-input-group>
-        <ng-template #prefixSearch><i nz-icon nzType="search" nzTheme="outline"></i></ng-template>
+        <ng-template #prefixSearch>
+          <i nz-icon nzType="search" nzTheme="outline"></i>
+        </ng-template>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>

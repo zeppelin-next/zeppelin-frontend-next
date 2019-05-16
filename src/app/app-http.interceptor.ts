@@ -29,8 +29,8 @@ export class AppHttpInterceptor implements HttpInterceptor {
         if (event.status === 401 && !isNil(redirect)) {
           // Handle page redirect
           window.location.href = redirect;
-        } else if (event.status === 405) {
-          this.ticketService.logout();
+        } else if (event.status === 405 && !event.url.contains('logout')) {
+          this.ticketService.logout().subscribe();
         }
         return throwError(event);
       })

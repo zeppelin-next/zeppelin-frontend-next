@@ -17,7 +17,7 @@ export class NoteListService {
   setNotes(notesList: NotesInfoItem[]) {
     // a flat list to boost searching
     this.notes.flatList = notesList.map(note => {
-      const isTrash = note.path ? note.path.split('/')[0] === this.TRASH_FOLDER_ID : false;
+      const isTrash = note.path ? note.path.split('/')[1] === this.TRASH_FOLDER_ID : false;
       return { ...note, isTrash };
     });
 

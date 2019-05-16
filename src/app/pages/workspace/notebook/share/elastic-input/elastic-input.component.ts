@@ -19,6 +19,7 @@ import {
 })
 export class ElasticInputComponent implements OnChanges {
   @Input() value: string;
+  @Input() readonly = false;
   @Output() valueUpdate = new EventEmitter<string>();
   @ViewChild('inputElement', { read: ElementRef }) inputElement: ElementRef;
   @ViewChild('pElement', { read: ElementRef }) pElement: ElementRef;
@@ -34,16 +35,18 @@ export class ElasticInputComponent implements OnChanges {
   }
 
   setEditorState(showEditor: boolean) {
-    this.showEditor = showEditor;
-    if (!this.showEditor) {
-      this.valueUpdate.emit(this.editValue);
-    } else {
-      const width = this.pElement.nativeElement.getBoundingClientRect().width;
-      this.renderer.setStyle(this.elasticElement.nativeElement, 'width', `${width}px`);
-      setTimeout(() => {
-        this.inputElement.nativeElement.focus();
-        this.renderer.setStyle(this.inputElement.nativeElement, 'width', `${width}px`);
-      });
+    if (!this.readonly) {
+      this.showEditor = showEditor;
+      if (!this.showEditor) {
+        this.valueUpdate.emit(this.editValue);
+      } else {
+        const width = this.pElement.nativeElement.getBoundingClientRect().width;
+        this.renderer.setStyle(this.elasticElement.nativeElement, 'width', `${width}px`);
+        setTimeout(() => {
+          this.inputElement.nativeElement.focus();
+          this.renderer.setStyle(this.inputElement.nativeElement, 'width', `${width}px`);
+        });
+      }
     }
   }
 

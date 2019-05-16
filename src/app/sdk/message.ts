@@ -124,7 +124,7 @@ export class Message {
   }
 
   receive<K extends keyof MessageReceiveDataTypeMap>(op: K): Observable<Record<K, MessageReceiveDataTypeMap[K]>[K]> {
-    return this.ws.pipe(
+    return this.received$.pipe(
       filter(message => message.op === op),
       map(message => message.data)
     ) as Observable<Record<K, MessageReceiveDataTypeMap[K]>[K]>;

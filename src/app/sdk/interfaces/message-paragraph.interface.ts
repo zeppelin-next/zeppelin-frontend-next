@@ -23,13 +23,14 @@ export interface ParagraphParams {
 }
 
 export interface ParagraphConfig {
-  editorSetting: ParagraphEditorSetting;
-  colWidth: number;
-  editorMode: EditorMode;
-  fontSize: number;
-  results: ParagraphResults;
-  enabled: boolean;
-  editorHide: boolean;
+  editorSetting?: ParagraphEditorSetting;
+  colWidth?: number;
+  editorMode?: EditorMode;
+  fontSize?: number;
+  results?: ParagraphResults;
+  enabled?: boolean;
+  tableHide?: boolean;
+  editorHide?: boolean;
   title?: boolean;
   runOnSelectionChange?: boolean;
   isZeppelinNotebookCronEnable?: boolean;
@@ -64,6 +65,7 @@ export interface ParagraphItem {
   dateFinished?: string;
   status: string;
   title?: string;
+  focus?: boolean;
 }
 
 export interface SendParagraph {

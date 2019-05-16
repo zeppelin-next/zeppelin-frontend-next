@@ -8,11 +8,15 @@ import { NotebookShareModule } from './share/share.module';
 import {
   NzButtonModule,
   NzDropDownModule,
+  NzFormModule,
   NzIconModule,
+  NzInputModule,
   NzNoAnimationModule,
   NzPopconfirmModule,
+  NzPopoverModule,
   NzToolTipModule
 } from 'ng-zorro-antd';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [NotebookComponent, NotebookActionBarComponent],
@@ -26,7 +30,11 @@ import {
     NzDropDownModule,
     NzNoAnimationModule,
     NzToolTipModule,
-    NzPopconfirmModule
+    NzPopconfirmModule,
+    NzFormModule,
+    NzPopoverModule,
+    NzInputModule,
+    FormsModule
   ]
 })
 export class NotebookModule {}

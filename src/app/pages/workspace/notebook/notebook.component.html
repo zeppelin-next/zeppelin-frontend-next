@@ -1,3 +1,8 @@
 <ng-container *ngIf="note">
-  <zeppelin-notebook-action-bar [note]="note"></zeppelin-notebook-action-bar>
+  <zeppelin-notebook-action-bar [note]="note"
+                                [isOwner]="isOwner"
+                                [collaborativeMode]="collaborativeMode"
+                                [collaborativeModeUsers]="collaborativeModeUsers"
+                                [noteRevisions]="noteRevisions"
+                                [currentRevision]="currentRevision"></zeppelin-notebook-action-bar>
 </ng-container>

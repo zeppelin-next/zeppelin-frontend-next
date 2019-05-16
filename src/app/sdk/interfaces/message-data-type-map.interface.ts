@@ -2,11 +2,13 @@ import { ConfigurationsInfo, ErrorInfo } from './message-common.interface';
 import {
   CheckpointNote,
   CloneNote,
+  CollaborativeModeStatus,
   DeleteNote,
   EditorSetting,
   FolderRename,
   GetInterpreterBindings,
   GetNode,
+  ListRevision,
   ListRevisionHistory,
   MoveFolderToTrash,
   MoveNoteToTrash,
@@ -23,6 +25,7 @@ import {
   RestoreNote,
   SaveNoteForms,
   SetNoteRevision,
+  SetNoteRevisionStatus,
   UpdatePersonalizedMode
 } from './message-notebook.interface';
 import {
@@ -52,12 +55,16 @@ export interface MessageReceiveDataTypeMap {
   [OP.NOTES_INFO]: NotesInfo;
   [OP.CONFIGURATIONS_INFO]: ConfigurationsInfo;
   [OP.NOTE]: Note;
+  [OP.NOTE_REVISION]: NoteRevision;
   [OP.ERROR_INFO]: ErrorInfo;
   [OP.LIST_NOTE_JOBS]: ListNoteJobs;
   [OP.LIST_UPDATE_NOTE_JOBS]: ListUpdateNoteJobs;
   [OP.INTERPRETER_SETTINGS]: InterpreterSetting;
-  [OP.LIST_REVISION_HISTORY]: never; // TODO
-  [OP.NEW_NOTE]: Note;
+  [OP.LIST_REVISION_HISTORY]: ListRevision;
+  [OP.INTERPRETER_BINDINGS]: never; // TODO
+  [OP.COLLABORATIVE_MODE_STATUS]: CollaborativeModeStatus;
+  [OP.SET_NOTE_REVISION]: SetNoteRevisionStatus;
+  [OP.NEW_NOTE]: NoteRevision;
 }
 
 export interface MessageDataTypeMap {
@@ -66,6 +73,8 @@ export interface MessageDataTypeMap {
   [OP.NOTE]: never;
   [OP.ERROR_INFO]: never;
   [OP.INTERPRETER_SETTINGS]: never;
+  [OP.INTERPRETER_BINDINGS]: never;
+  [OP.COLLABORATIVE_MODE_STATUS]: never;
 
   [OP.PING]: undefined;
   [OP.LIST_CONFIGURATIONS]: undefined;

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SecurityUserList } from 'zeppelin-interfaces';
+import { Permissions, SecurityUserList } from 'zeppelin-interfaces';
 import { BaseUrlService } from './base-url.service';
 import { BaseRest } from './base-rest';
 
@@ -14,5 +14,9 @@ export class SecurityService extends BaseRest {
 
   searchUsers(term: string) {
     return this.http.get<SecurityUserList>(this.restUrl`/security/userlist/${term}`);
+  }
+
+  getPermissions(id: string) {
+    return this.http.get<Permissions>(this.restUrl`/notebook/${id}/permissions`);
   }
 }

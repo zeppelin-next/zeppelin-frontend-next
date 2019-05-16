@@ -59,9 +59,9 @@ export class TicketService {
     this.logout$.next(true);
     const nextAction = () => {
       this.nzMessageService.success('Logout Success');
-      this.router.navigate(['/login']).then();
-      this.logout$.next(false);
       this.clearTicket();
+      this.logout$.next(false);
+      this.router.navigate(['/login']).then();
     };
     return this.httpClient
       .post(`${this.baseUrlService.getRestApiBase()}/login/logout`, {})

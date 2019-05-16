@@ -87,7 +87,27 @@ export interface NoteRevisionForCompare {
   position: string;
 }
 
+export interface CollaborativeModeStatus {
+  status: boolean;
+  users: string[];
+}
+
+export interface SetNoteRevisionStatus {
+  status: boolean;
+}
+
+export interface ListRevision {
+  revisionList: RevisionListItem[];
+}
+
+export interface RevisionListItem {
+  id: string;
+  message: string;
+  time?: number;
+}
+
 export interface NoteRevision {
+  note?: Note['note'];
   noteId: string;
   revisionId: string;
 }
