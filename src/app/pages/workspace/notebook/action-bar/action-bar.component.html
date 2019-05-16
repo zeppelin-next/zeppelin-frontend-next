@@ -114,10 +114,12 @@
       <button nz-button nz-tooltip nzTitle="Compare revisions" (click)="toggleRevisionsComparator()">
         <i nz-icon nzType="swap" nzTheme="outline"></i>
       </button>
-      <nz-dropdown-button nzSize="small">{{currentRevision}}
+      <nz-dropdown-button nzSize="small" nzTrigger="click">{{currentRevision}}
         <ul nz-menu>
           <li nz-menu-item *ngFor="let r of noteRevisions" (click)="visitRevision(r)">
-            {{r.message}} <em class="font-sm opacity-05"> {{r.time * 1000 | date: 'MMMM dd yyyy, h:mm:ss a'}}</em>
+            <strong>{{r.message}}</strong>
+            <nz-divider nzType="vertical"></nz-divider>
+            <em class="font-sm opacity-05"> {{(r.time * 1000 | date: 'MMMM dd yyyy, h:mm:ss a') || 'Current'}}</em>
           </li>
         </ul>
       </nz-dropdown-button>
@@ -150,10 +152,46 @@
         <i nz-icon nzType="eye" nzTheme="outline"></i>
         {{collaborativeModeUsers.length}}</button>
     </nz-button-group>
-    <nz-button-group nzSize="small">
-      <button nz-button>
-        <i nz-icon nzType="clock-circle" nzTheme="outline"></i>
-      </button>
+    <nz-button-group nzSize="small" *ngIf="note.config.isZeppelinNotebookCronEnable && !viewOnly">
+      <nz-dropdown nzTrigger="click">
+        <button nz-button
+                nz-dropdown
+                nz-tooltip
+                nzSize="small"
+                nzTitle="Run scheduler"
+                [disabled]="isTrash || revisionView"
+                [nzType]="note.config.cron ? 'primary' : (note.info.cron ? 'danger' : 'default')">
+          <i nz-icon nzType="clock-circle" nzTheme="outline"></i>
+          {{getCronOptionNameFromValue}}
+        </button>
+        <div class="ant-dropdown-menu padding-sm scheduler">
+          Run note with cron scheduler.
+          Either choose from preset or write your own
+          <a href="http://www.quartz-scheduler.org/documentation/quartz-2.1.x/tutorials/crontrigger" target="_blank">
+            cron expression
+          </a>
+          .
+          <div>
+            <span>- Preset</span>
+            <a class="cron-preset"
+               [class.selected]="cr.value === note.config.cron"
+               *ngFor="let cr of cronOption"
+               (click)="setCronScheduler(cr.value)">{{cr.name}}</a>
+          </div>
+          <div>
+            <span>- Preset</span>
+            <input nz-input nzSize="small" [(ngModel)]="note.config.cron">
+            <p *ngIf="note.info.cron">
+              {{note.info.cron}}
+            </p>
+          </div>
+          <div>
+            <label nz-checkbox
+                   [ngModel]="note.config.releaseresource"
+                   (ngModelChange)="setReleaseResource($event)">After execution stop the interpreter</label>
+          </div>
+        </div>
+      </nz-dropdown>
     </nz-button-group>
   </div>
   <div class="setting">

@@ -33,6 +33,16 @@ export class NotebookActionBarComponent implements OnInit, OnDestroy {
   showRevisionsComparator = false;
   isRevisionSupported = JSON.parse(this.ticketService.configuration.isRevisionSupported);
   revisionView = false;
+  cronOption = [
+    { name: 'None', value: undefined },
+    { name: '1m', value: '0 0/1 * * * ?' },
+    { name: '5m', value: '0 0/5 * * * ?' },
+    { name: '1h', value: '0 0 0/1 * * ?' },
+    { name: '3h', value: '0 0 0/3 * * ?' },
+    { name: '6h', value: '0 0 0/6 * * ?' },
+    { name: '12h', value: '0 0 0/12 * * ?' },
+    { name: '1d', value: '0 0 0 * * ?' }
+  ];
 
   updateNoteName(name: string) {
     const trimmedNewName = name.trim();
@@ -94,6 +104,31 @@ export class NotebookActionBarComponent implements OnInit, OnDestroy {
 
   clearAllParagraphOutput() {
     this.messageService.paragraphClearAllOutput(this.note.id);
+  }
+
+  setCronScheduler(cronExpr: string) {
+    if (cronExpr) {
+      if (!this.note.config.cronExecutingUser) {
+        this.note.config.cronExecutingUser = this.ticketService.ticket.principal;
+      }
+      if (!this.note.config.cronExecutingRoles) {
+        this.note.config.cronExecutingRoles = this.ticketService.ticket.roles;
+      }
+    } else {
+      this.note.config.cronExecutingUser = '';
+      this.note.config.cronExecutingRoles = '';
+    }
+    this.note.config.cron = cronExpr;
+    this.setConfig();
+  }
+
+  setReleaseResource(releaseresource: boolean) {
+    this.note.config.releaseresource = releaseresource;
+    this.setConfig();
+  }
+
+  setConfig() {
+    // TODO
   }
 
   cloneNote() {
@@ -204,6 +239,16 @@ export class NotebookActionBarComponent implements OnInit, OnDestroy {
           this.messageService.updatePersonalizedMode(this.note.id, this.note.config.personalizedMode);
         }
       });
+    }
+  }
+
+  get getCronOptionNameFromValue() {
+    if (!this.note.config.cron) {
+      return '';
+    } else if (this.cronOption.find(cron => cron.value === this.note.config.cron)) {
+      return this.cronOption.find(cron => cron.value === this.note.config.cron).name;
+    } else {
+      return this.note.config.cron;
     }
   }
 

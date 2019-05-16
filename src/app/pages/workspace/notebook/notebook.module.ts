@@ -7,6 +7,8 @@ import { ShareModule } from 'zeppelin-share/share.module';
 import { NotebookShareModule } from './share/share.module';
 import {
   NzButtonModule,
+  NzCheckboxModule,
+  NzDividerModule,
   NzDropDownModule,
   NzFormModule,
   NzIconModule,
@@ -17,9 +19,10 @@ import {
   NzToolTipModule
 } from 'ng-zorro-antd';
 import { FormsModule } from '@angular/forms';
+import { NotebookInterpreterBindingComponent } from './interpreter-binding/interpreter-binding.component';
 
 @NgModule({
-  declarations: [NotebookComponent, NotebookActionBarComponent],
+  declarations: [NotebookComponent, NotebookActionBarComponent, NotebookInterpreterBindingComponent],
   imports: [
     CommonModule,
     NotebookRoutingModule,
@@ -34,7 +37,9 @@ import { FormsModule } from '@angular/forms';
     NzFormModule,
     NzPopoverModule,
     NzInputModule,
-    FormsModule
+    FormsModule,
+    NzDividerModule,
+    NzCheckboxModule
   ]
 })
 export class NotebookModule {}

@@ -63,10 +63,6 @@ export class NodeListComponent extends MessageListenersManager implements OnInit
     this.cdr.markForCheck();
   }
 
-  openNote(node: NzTreeNode) {
-    // TODO
-  }
-
   renameNote(id: string, path: string, name: string) {
     this.noteActionService.renameNote(id, path, name);
   }

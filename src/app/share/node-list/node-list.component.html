@@ -58,7 +58,7 @@
           </span>
         </span>
         <span class="file" *ngSwitchCase="'note'">
-          <a class="name" (click)="openNote(node)">
+          <a class="name">
             <i nz-icon nzType="file-text" nzTheme="fill"></i><a [routerLink]="['notebook',node.origin.id]">{{ node.title }}</a></a>
             <span class="operation">
               <ng-container *ngIf="!node.origin.isTrash;else trashFileTpl">

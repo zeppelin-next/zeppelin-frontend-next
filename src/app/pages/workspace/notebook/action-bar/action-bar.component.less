@@ -1,5 +1,30 @@
 @import "theme-mixin";
 
+.scheduler {
+  width: 300px;
+
+  .cron-preset {
+    margin-right: 6px;
+
+    &.selected {
+      font-weight: bold;
+    }
+  }
+
+  > div {
+    line-height: 24px;
+
+    span {
+      margin-right: 6px;
+    }
+
+    input {
+      display: inline-block;
+      width: 160px;
+    }
+  }
+}
+
 .themeMixin({
   nz-dropdown-button {
     height: 24px;
