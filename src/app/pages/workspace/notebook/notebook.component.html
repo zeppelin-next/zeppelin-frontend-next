@@ -1,8 +1,17 @@
 <ng-container *ngIf="note">
   <zeppelin-notebook-action-bar [note]="note"
                                 [isOwner]="isOwner"
+                                [(activatedExtension)]="activatedExtension"
                                 [collaborativeMode]="collaborativeMode"
                                 [collaborativeModeUsers]="collaborativeModeUsers"
                                 [noteRevisions]="noteRevisions"
                                 [currentRevision]="currentRevision"></zeppelin-notebook-action-bar>
+  <div class="extension-area" [ngSwitch]="activatedExtension" *ngIf="activatedExtension!=='hide'">
+    <zeppelin-notebook-interpreter-binding *ngSwitchCase="'interpreter'"></zeppelin-notebook-interpreter-binding>
+    <zeppelin-notebook-permissions *ngSwitchCase="'permissions'"></zeppelin-notebook-permissions>
+    <zeppelin-notebook-revisions-comparator *ngSwitchCase="'revisions'"></zeppelin-notebook-revisions-comparator>
+  </div>
+  <div class="paragraph-area">
+    <zeppelin-notebook-paragraph *ngFor="let p of note.paragraphs" [paragraph]="p"></zeppelin-notebook-paragraph>
+  </div>
 </ng-container>

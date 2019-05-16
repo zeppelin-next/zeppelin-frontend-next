@@ -20,9 +20,19 @@ import {
 } from 'ng-zorro-antd';
 import { FormsModule } from '@angular/forms';
 import { NotebookInterpreterBindingComponent } from './interpreter-binding/interpreter-binding.component';
+import { NotebookPermissionsComponent } from './permissions/permissions.component';
+import { NotebookRevisionsComparatorComponent } from './revisions-comparator/revisions-comparator.component';
+import { NotebookParagraphComponent } from './paragraph/paragraph.component';
 
 @NgModule({
-  declarations: [NotebookComponent, NotebookActionBarComponent, NotebookInterpreterBindingComponent],
+  declarations: [
+    NotebookComponent,
+    NotebookActionBarComponent,
+    NotebookInterpreterBindingComponent,
+    NotebookPermissionsComponent,
+    NotebookRevisionsComparatorComponent,
+    NotebookParagraphComponent
+  ],
   imports: [
     CommonModule,
     NotebookRoutingModule,

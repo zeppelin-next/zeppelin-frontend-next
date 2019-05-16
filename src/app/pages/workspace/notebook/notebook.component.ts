@@ -24,6 +24,7 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
   currentRevision: string;
   collaborativeMode = false;
   collaborativeModeUsers = [];
+  activatedExtension: 'interpreter' | 'permissions' | 'revisions' | 'hide' = 'hide';
 
   @MessageListener(OP.NOTE)
   getNote(data: MessageReceiveDataTypeMap[OP.NOTE]) {

@@ -111,7 +111,11 @@
               (click)="setNoteRevision()">
         <i nz-icon nzType="rollback" nzTheme="outline"></i>
       </button>
-      <button nz-button nz-tooltip nzTitle="Compare revisions" (click)="toggleRevisionsComparator()">
+      <button nz-button
+              nz-tooltip
+              nzTitle="Compare revisions"
+              [nzType]="activatedExtension === 'revisions'? 'primary' : 'default'"
+              (click)="toggleExtension('revisions')">
         <i nz-icon nzType="swap" nzTheme="outline"></i>
       </button>
       <nz-dropdown-button nzSize="small" nzTrigger="click">{{currentRevision}}
@@ -199,11 +203,11 @@
       <button nz-button nzNoAnimation *ngIf="!revisionView" (click)="showShortCut()">
         <i nz-icon nzType="info-circle" nzTheme="outline"></i>
       </button>
-      <button nz-button nzNoAnimation *ngIf="!revisionView" (click)="toggleSetting()">
-        <i nz-icon nzType="setting" [nzTheme]="showSetting ? 'fill' : 'outline'"></i>
+      <button nz-button nzNoAnimation *ngIf="!revisionView" (click)="toggleExtension('interpreter')">
+        <i nz-icon nzType="setting" [nzTheme]="activatedExtension ==='interpreter' ? 'fill' : 'outline'"></i>
       </button>
       <button nz-button nzNoAnimation (click)="togglePermissions()">
-        <i nz-icon nzType="lock" [nzTheme]="showPermissions ? 'fill' : 'outline'"></i>
+        <i nz-icon nzType="lock" [nzTheme]="activatedExtension === 'permissions' ? 'fill' : 'outline'"></i>
       </button>
       <nz-dropdown>
         <button nz-button nzNoAnimation nzSize="small" nz-dropdown>[{{note.config.looknfeel}}]

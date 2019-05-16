@@ -1,4 +1,14 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Inject, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  Inject,
+  OnDestroy,
+  ChangeDetectorRef,
+  Output,
+  EventEmitter
+} from '@angular/core';
 import { Note, RevisionListItem } from 'zeppelin-sdk';
 import { MessageService, TicketService, SaveAsService, NoteStatusService } from 'zeppelin-services';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
@@ -22,15 +32,14 @@ export class NotebookActionBarComponent implements OnInit, OnDestroy {
   @Input() currentRevision: string;
   @Input() collaborativeMode = false;
   @Input() collaborativeModeUsers = [];
+  @Input() activatedExtension: 'interpreter' | 'permissions' | 'revisions' | 'hide' = 'hide';
+  @Output() activatedExtensionChange = new EventEmitter<'interpreter' | 'permissions' | 'revisions' | 'hide'>();
   private destroy$ = new Subject();
   lfOption: Array<'report' | 'default' | 'simple'> = ['default', 'simple', 'report'];
   principal = this.ticketService.ticket.principal;
   editorToggled = false;
   commitVisible = false;
-  showSetting = false;
-  showPermissions = false;
   tableToggled = false;
-  showRevisionsComparator = false;
   isRevisionSupported = JSON.parse(this.ticketService.configuration.isRevisionSupported);
   revisionView = false;
   cronOption = [
@@ -83,8 +92,13 @@ export class NotebookActionBarComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleRevisionsComparator() {
-    this.showRevisionsComparator = !this.showRevisionsComparator;
+  toggleExtension(extension: 'interpreter' | 'permissions' | 'revisions' | 'hide') {
+    if (this.activatedExtension === extension) {
+      this.activatedExtension = 'hide';
+    } else {
+      this.activatedExtension = extension;
+    }
+    this.activatedExtensionChange.emit(this.activatedExtension);
   }
 
   runAllParagraphs() {
@@ -196,18 +210,13 @@ export class NotebookActionBarComponent implements OnInit, OnDestroy {
     // TODO
   }
 
-  toggleSetting() {
-    this.showSetting = !this.showSetting;
-    // TODO
-  }
-
   togglePermissions() {
     const principal = this.ticketService.ticket.principal;
     const isAnonymous = principal === 'anonymous';
     if (!!principal && isAnonymous) {
       this.blockAnonUsers();
     } else {
-      this.showPermissions = !this.showPermissions;
+      this.toggleExtension('permissions');
     }
     // TODO
   }
