@@ -26,7 +26,8 @@
             <i nz-icon
                [nzType]="node.isExpanded ? 'folder-open':'folder'"
                nzTheme="fill"></i>
-            {{ node.title }}</a>
+            {{ node.title }}
+          </a>
           <span class="operation">
             <ng-container *ngIf="!node.origin.isTrash;else trashFolderTpl">
               <a nz-tooltip nzTitle="Create new note">
@@ -59,7 +60,11 @@
         </span>
         <span class="file" *ngSwitchCase="'note'">
           <a class="name">
-            <i nz-icon nzType="file-text" nzTheme="fill"></i><a [routerLink]="['notebook',node.origin.id]">{{ node.title }}</a></a>
+            <i nz-icon nzType="file-text" nzTheme="fill"></i>
+            <a [routerLink]="['/notebook',node.origin.id]">
+              {{ node.title }}
+            </a>
+          </a>
             <span class="operation">
               <ng-container *ngIf="!node.origin.isTrash;else trashFileTpl">
                 <a nz-tooltip nzTitle="Rename note">

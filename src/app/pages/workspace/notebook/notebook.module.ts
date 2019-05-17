@@ -23,6 +23,7 @@ import { NotebookInterpreterBindingComponent } from './interpreter-binding/inter
 import { NotebookPermissionsComponent } from './permissions/permissions.component';
 import { NotebookRevisionsComparatorComponent } from './revisions-comparator/revisions-comparator.component';
 import { NotebookParagraphComponent } from './paragraph/paragraph.component';
+import { NotebookAddParagraphComponent } from './add-paragraph/add-paragraph.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { NotebookParagraphComponent } from './paragraph/paragraph.component';
     NotebookInterpreterBindingComponent,
     NotebookPermissionsComponent,
     NotebookRevisionsComparatorComponent,
-    NotebookParagraphComponent
+    NotebookParagraphComponent,
+    NotebookAddParagraphComponent
   ],
   imports: [
     CommonModule,

@@ -15,20 +15,6 @@ export const ParagraphStatus = {
   providedIn: 'root'
 })
 export class NoteStatusService {
-  isNoteRunning(note: Note['note']) {
-    if (note) {
-      return false;
-    }
-
-    for (let i = 0; i < note.paragraphs.length; i++) {
-      if (this.isParagraphRunning(note.paragraphs[i])) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
   isParagraphRunning(paragraph: ParagraphItem) {
     if (!paragraph) {
       return false;
@@ -48,6 +34,14 @@ export class NoteStatusService {
 
   viewOnly(note: Note['note']): boolean {
     return note.config.looknfeel === 'report';
+  }
+
+  isNoteRunning(note: Note['note']): boolean {
+    if (!note) {
+      return false;
+    } else {
+      return note.paragraphs.some(p => this.isParagraphRunning(p));
+    }
   }
 
   constructor(@Inject(TRASH_FOLDER_ID_TOKEN) public TRASH_FOLDER_ID: string) {}

@@ -1,5 +1,6 @@
 <ng-container *ngIf="note">
   <zeppelin-notebook-action-bar [note]="note"
+                                [revisionView]="revisionView"
                                 [isOwner]="isOwner"
                                 [(activatedExtension)]="activatedExtension"
                                 [collaborativeMode]="collaborativeMode"
@@ -12,6 +13,13 @@
     <zeppelin-notebook-revisions-comparator *ngSwitchCase="'revisions'"></zeppelin-notebook-revisions-comparator>
   </div>
   <div class="paragraph-area">
-    <zeppelin-notebook-paragraph *ngFor="let p of note.paragraphs" [paragraph]="p"></zeppelin-notebook-paragraph>
+    <zeppelin-notebook-paragraph *ngFor="let p of note.paragraphs;let first = first; let last = last;"
+                                 [attr.id]="p.id + '_paragraphColumn_main'"
+                                 [paragraph]="p"
+                                 [note]="note"
+                                 [viewOnly]="viewOnly"
+                                 [revisionView]="revisionView"
+                                 [first]="first"
+                                 [last]="last"></zeppelin-notebook-paragraph>
   </div>
 </ng-container>

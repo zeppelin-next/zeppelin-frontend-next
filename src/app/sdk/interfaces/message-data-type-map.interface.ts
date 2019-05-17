@@ -17,8 +17,10 @@ import {
   NoteRename,
   NoteRevision,
   NoteRevisionForCompare,
+  NoteRunningStatus,
   NotesInfo,
   NoteUpdate,
+  ParagraphAdded,
   RemoveFolder,
   RemoveNoteForms,
   RestoreFolder,
@@ -64,6 +66,8 @@ export interface MessageReceiveDataTypeMap {
   [OP.INTERPRETER_BINDINGS]: never; // TODO
   [OP.COLLABORATIVE_MODE_STATUS]: CollaborativeModeStatus;
   [OP.SET_NOTE_REVISION]: SetNoteRevisionStatus;
+  [OP.PARAGRAPH_ADDED]: ParagraphAdded;
+  [OP.NOTE_RUNNING_STATUS]: NoteRunningStatus;
   [OP.NEW_NOTE]: NoteRevision;
 }
 
@@ -75,6 +79,8 @@ export interface MessageDataTypeMap {
   [OP.INTERPRETER_SETTINGS]: never;
   [OP.INTERPRETER_BINDINGS]: never;
   [OP.COLLABORATIVE_MODE_STATUS]: never;
+  [OP.PARAGRAPH_ADDED]: never;
+  [OP.NOTE_RUNNING_STATUS]: never;
 
   [OP.PING]: undefined;
   [OP.LIST_CONFIGURATIONS]: undefined;

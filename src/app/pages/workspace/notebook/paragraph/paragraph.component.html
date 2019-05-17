@@ -1,3 +1,15 @@
-<div class="paragraph"><pre>
-  {{paragraph.text}}
-</pre></div>
+<div class="paragraph-container" [attr.id]="paragraph.id + '_container'">
+  <zeppelin-notebook-add-paragraph *ngIf="!revisionView"
+                                   [disabled]="isNoteRunning"
+                                   (addParagraph)="insertParagraph('above')"></zeppelin-notebook-add-paragraph>
+  <div class="paragraph">
+    <div class="title" *ngIf="paragraph.config.title">
+      <zeppelin-elastic-input [value]="paragraph.title"
+                              [min]="true"
+                              (valueUpdate)="commitParagraph()"></zeppelin-elastic-input>
+    </div>
+  </div>
+  <zeppelin-notebook-add-paragraph [disabled]="isNoteRunning"
+                                   *ngIf="!viewOnly && !revisionView && last"
+                                   (addParagraph)="insertParagraph('below')"></zeppelin-notebook-add-paragraph>
+</div>

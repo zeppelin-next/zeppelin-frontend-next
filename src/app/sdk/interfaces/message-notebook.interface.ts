@@ -92,6 +92,15 @@ export interface CollaborativeModeStatus {
   users: string[];
 }
 
+export interface NoteRunningStatus {
+  status: boolean;
+}
+
+export interface ParagraphAdded {
+  index: number;
+  paragraph: ParagraphItem;
+}
+
 export interface SetNoteRevisionStatus {
   status: boolean;
 }

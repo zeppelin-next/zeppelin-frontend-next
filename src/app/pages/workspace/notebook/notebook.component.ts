@@ -1,6 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, SecurityService, TicketService } from 'zeppelin-services';
+import { MessageService, NoteStatusService, SecurityService, TicketService } from 'zeppelin-services';
 import { Subject } from 'rxjs';
 import { distinctUntilKeyChanged, takeUntil } from 'rxjs/operators';
 import { NoteVarShareService } from '../../../services/note-var-share.service';
@@ -23,6 +23,7 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
   noteRevisions: RevisionListItem[] = [];
   currentRevision: string;
   collaborativeMode = false;
+  revisionView = false;
   collaborativeModeUsers = [];
   activatedExtension: 'interpreter' | 'permissions' | 'revisions' | 'hide' = 'hide';
 
@@ -46,6 +47,19 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
       }
       this.cdr.markForCheck();
     }
+  }
+
+  @MessageListener(OP.PARAGRAPH_ADDED)
+  addPara(data: MessageReceiveDataTypeMap[OP.PARAGRAPH_ADDED]) {
+    this.note.paragraphs.splice(data.index, 0, data.paragraph).map(p => {
+      return {
+        ...p,
+        focus: p.id === data.paragraph.id
+      };
+    });
+    this.note.paragraphs = [...this.note.paragraphs];
+    this.cdr.markForCheck();
+    // TODO focus on paragraph
   }
 
   @MessageListener(OP.NOTE_REVISION)
@@ -81,7 +95,11 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
   }
 
   get viewOnly(): boolean {
-    return this.note.config.looknfeel === 'report';
+    return this.noteStatusService.viewOnly(this.note);
+  }
+
+  get isNoteRunning(): boolean {
+    return this.noteStatusService.isNoteRunning(this.note);
   }
 
   initializeLookAndFeel() {
@@ -132,6 +150,7 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
     private activatedRoute: ActivatedRoute,
     public messageService: MessageService,
     private cdr: ChangeDetectorRef,
+    private noteStatusService: NoteStatusService,
     private noteVarShareService: NoteVarShareService,
     private ticketService: TicketService,
     private securityService: SecurityService,
@@ -156,9 +175,12 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
       } else {
         this.messageService.getNote(noteId);
       }
+      this.revisionView = !!revisionId;
+      this.cdr.markForCheck();
       this.messageService.listRevisionHistory(noteId);
       // TODO scroll to current paragraph
     });
+    this.revisionView = !!this.activatedRoute.snapshot.params.revisionId;
   }
 
   ngOnDestroy(): void {

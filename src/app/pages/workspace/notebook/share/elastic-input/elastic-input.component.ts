@@ -20,12 +20,18 @@ import {
 export class ElasticInputComponent implements OnChanges {
   @Input() value: string;
   @Input() readonly = false;
+  @Input() min = false;
   @Output() valueUpdate = new EventEmitter<string>();
   @ViewChild('inputElement', { read: ElementRef }) inputElement: ElementRef;
   @ViewChild('pElement', { read: ElementRef }) pElement: ElementRef;
   @ViewChild('elasticElement', { read: ElementRef }) elasticElement: ElementRef;
   showEditor = false;
   editValue: string;
+
+  cancelEdit() {
+    this.editValue = this.value;
+    this.showEditor = false;
+  }
 
   updateValue(value: string) {
     const trimmedNewName = value.trim();

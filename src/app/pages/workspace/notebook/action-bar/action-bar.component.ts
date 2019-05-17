@@ -1,22 +1,18 @@
 import {
-  Component,
-  OnInit,
   ChangeDetectionStrategy,
-  Input,
-  Inject,
-  OnDestroy,
   ChangeDetectorRef,
-  Output,
-  EventEmitter
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  Output
 } from '@angular/core';
 import { Note, RevisionListItem } from 'zeppelin-sdk';
-import { MessageService, TicketService, SaveAsService, NoteStatusService } from 'zeppelin-services';
+import { MessageService, NoteStatusService, SaveAsService, TicketService } from 'zeppelin-services';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { NoteCreateComponent } from 'zeppelin-share/note-create/note-create.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TRASH_FOLDER_ID_TOKEN } from 'zeppelin-interfaces';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { NoteActionService } from '../../../../services/note-action.service';
 
 @Component({
@@ -25,23 +21,22 @@ import { NoteActionService } from '../../../../services/note-action.service';
   styleUrls: ['./action-bar.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotebookActionBarComponent implements OnInit, OnDestroy {
+export class NotebookActionBarComponent {
   @Input() note: Note['note'];
   @Input() isOwner = true;
   @Input() noteRevisions: RevisionListItem[] = [];
   @Input() currentRevision: string;
   @Input() collaborativeMode = false;
   @Input() collaborativeModeUsers = [];
+  @Input() revisionView = false;
   @Input() activatedExtension: 'interpreter' | 'permissions' | 'revisions' | 'hide' = 'hide';
   @Output() activatedExtensionChange = new EventEmitter<'interpreter' | 'permissions' | 'revisions' | 'hide'>();
-  private destroy$ = new Subject();
   lfOption: Array<'report' | 'default' | 'simple'> = ['default', 'simple', 'report'];
   principal = this.ticketService.ticket.principal;
   editorToggled = false;
   commitVisible = false;
   tableToggled = false;
   isRevisionSupported = JSON.parse(this.ticketService.configuration.isRevisionSupported);
-  revisionView = false;
   cronOption = [
     { name: 'None', value: undefined },
     { name: '1m', value: '0 0/1 * * * ?' },
@@ -274,17 +269,4 @@ export class NotebookActionBarComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private saveAsService: SaveAsService
   ) {}
-
-  ngOnInit() {
-    this.revisionView = !!this.activatedRoute.snapshot.params.revisionId;
-    this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      this.revisionView = !!params.revisionId;
-      this.cdr.markForCheck();
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 }

@@ -152,7 +152,7 @@
       </button>
     </nz-button-group>
     <nz-button-group nzSize="small" *ngIf="collaborativeMode">
-      <button nz-button nz-tooltip [nzTitle]="'Users who watch this note:'+ collaborativeModeUsers.join(', ')">
+      <button nz-button nz-tooltip [nzType]="collaborativeModeUsers.length? 'primary' : 'default'" [nzTitle]="'Users who watch this note:'+ collaborativeModeUsers.join(', ')">
         <i nz-icon nzType="eye" nzTheme="outline"></i>
         {{collaborativeModeUsers.length}}</button>
     </nz-button-group>
