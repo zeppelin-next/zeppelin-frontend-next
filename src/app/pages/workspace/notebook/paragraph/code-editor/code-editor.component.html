@@ -1,1 +1,5 @@
-<nz-monaco-editor [nzValue]="value" [nzEditorOptions]="{readOnly:readOnly,language:language}" (nzEditorInitialized)="initEditor($event)"></nz-monaco-editor>
+<nz-monaco-editor [style.height.px]="height"
+                  [ngModel]="value"
+                  (ngModelChange)="updateValue($event)"
+                  [nzEditorOptions]="{ readOnly : readOnly, language : language}"
+                  (nzEditorInitialized)="initEditor($event)"></nz-monaco-editor>
