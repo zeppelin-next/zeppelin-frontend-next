@@ -2,7 +2,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import { NZ_I18N, en_US } from 'ng-zorro-antd';
+import { NZ_I18N, en_US, NzNotificationService } from 'ng-zorro-antd';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
@@ -12,7 +12,7 @@ import { AppHttpInterceptor } from './app-http.interceptor';
 import { ShareModule } from 'zeppelin-share/share.module';
 import { AppRoutingModule } from './app-routing.module';
 import { MESSAGE_INTERCEPTOR, TRASH_FOLDER_ID_TOKEN } from 'zeppelin-interfaces';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AppMessageInterceptor } from './app-message.interceptor';
 
 registerLocaleData(en);
@@ -41,7 +41,8 @@ registerLocaleData(en);
     },
     {
       provide: MESSAGE_INTERCEPTOR,
-      useClass: AppMessageInterceptor
+      useClass: AppMessageInterceptor,
+      deps: [Router, NzNotificationService]
     },
     {
       provide: TRASH_FOLDER_ID_TOKEN,

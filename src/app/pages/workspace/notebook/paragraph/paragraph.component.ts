@@ -1,8 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
 import { MessageReceiveDataTypeMap, Note, OP, ParagraphConfig, ParagraphItem } from 'zeppelin-sdk';
-import { MessageService } from 'zeppelin-services';
+import { MessageService, NoteStatusService, ParagraphStatus } from 'zeppelin-services';
 import { NoteVarShareService } from '../../../../services/note-var-share.service';
 import { MessageListener, MessageListenersManager } from 'zeppelin-core';
+import { isEmpty, isEqual } from 'lodash';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph',
@@ -17,20 +18,112 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   @Input() viewOnly: boolean;
   @Input() last: boolean;
   @Input() first: boolean;
-  originalText: string;
   isNoteRunning = false;
-  chart = {};
-  colWidthOption = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-  fontSizeOption = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+  isParagraphRunning = false;
   paragraphFocused = false;
-  results = [];
-  configs = {};
 
   @MessageListener(OP.NOTE_RUNNING_STATUS)
   noteRunningStatusChange(data: MessageReceiveDataTypeMap[OP.NOTE_RUNNING_STATUS]) {
     this.isNoteRunning = data.status;
     this.cdr.markForCheck();
-    // TODO set editor readonly
+  }
+
+  @MessageListener(OP.PARAGRAPH)
+  paragraphData(data: MessageReceiveDataTypeMap[OP.PARAGRAPH]) {
+    const oldPara = this.paragraph;
+    const newPara = data.paragraph;
+    if (this.isUpdateRequired(oldPara, newPara)) {
+      this.updateParagraph(oldPara, newPara, () => {
+        if (newPara.results && newPara.results.msg) {
+          for (const i in newPara.results.msg) {
+            if (newPara.results.msg.hasOwnProperty(i)) {
+              const newResult = newPara.results.msg ? newPara.results.msg[i] : {};
+              const oldResult = oldPara.results && oldPara.results.msg ? oldPara.results.msg[i] : {};
+              const newConfig = newPara.config.results ? newPara.config.results[i] : {};
+              const oldConfig = oldPara.config.results ? oldPara.config.results[i] : {};
+              if (!isEqual(newResult, oldResult) || !isEqual(newConfig, oldConfig)) {
+                // TODO updateResult
+              }
+            }
+          }
+        }
+      });
+      this.cdr.markForCheck();
+    }
+  }
+
+  updateParagraph(oldPara: ParagraphItem, newPara: ParagraphItem, updateCallback: Function) {
+    // 1. can't update on revision view
+    if (!this.revisionView) {
+      // 2. get status, refreshed
+      const statusChanged = newPara.status !== oldPara.status;
+      const resultRefreshed =
+        newPara.dateFinished !== oldPara.dateFinished ||
+        isEmpty(newPara.results) !== isEmpty(oldPara.results) ||
+        newPara.status === ParagraphStatus.ERROR ||
+        (newPara.status === ParagraphStatus.FINISHED && statusChanged);
+
+      // 3. update texts managed by $scope
+
+      // 4. execute callback to update result
+      updateCallback();
+
+      // 5. update remaining paragraph objects
+      this.updateParagraphObjectWhenUpdated(newPara);
+
+      // 6. handle scroll down by key properly if new paragraph is added
+      if (statusChanged || resultRefreshed) {
+        // when last paragraph runs, zeppelin automatically appends new paragraph.
+        // this broadcast will focus to the newly inserted paragraph
+        // TODO
+      }
+    }
+  }
+
+  updateParagraphObjectWhenUpdated(newPara: ParagraphItem) {
+    // TODO: resize col width
+    // TODO: update font size
+    this.paragraph.aborted = newPara.aborted;
+    this.paragraph.user = newPara.user;
+    this.paragraph.dateUpdated = newPara.dateUpdated;
+    this.paragraph.dateCreated = newPara.dateCreated;
+    this.paragraph.dateFinished = newPara.dateFinished;
+    this.paragraph.dateStarted = newPara.dateStarted;
+    this.paragraph.errorMessage = newPara.errorMessage;
+    this.paragraph.jobName = newPara.jobName;
+    this.paragraph.title = newPara.title;
+    this.paragraph.lineNumbers = newPara.lineNumbers;
+    this.paragraph.status = newPara.status;
+    this.paragraph.fontSize = newPara.fontSize;
+    if (newPara.status !== ParagraphStatus.RUNNING) {
+      this.paragraph.results = newPara.results;
+    }
+    this.paragraph.settings = newPara.settings;
+    this.paragraph.runtimeInfos = newPara.runtimeInfos;
+    this.isParagraphRunning = this.noteStatusService.isParagraphRunning(newPara);
+    newPara.config.editorHide = true;
+    newPara.config.tableHide = false;
+    this.paragraph.config = newPara.config;
+    this.cdr.markForCheck();
+  }
+
+  isUpdateRequired(oldPara: ParagraphItem, newPara: ParagraphItem): boolean {
+    return (
+      newPara.id === oldPara.id &&
+      (newPara.dateCreated !== oldPara.dateCreated ||
+        newPara.text !== oldPara.text ||
+        newPara.dateFinished !== oldPara.dateFinished ||
+        newPara.dateStarted !== oldPara.dateStarted ||
+        newPara.dateUpdated !== oldPara.dateUpdated ||
+        newPara.status !== oldPara.status ||
+        newPara.jobName !== oldPara.jobName ||
+        newPara.title !== oldPara.title ||
+        isEmpty(newPara.results) !== isEmpty(oldPara.results) ||
+        newPara.errorMessage !== oldPara.errorMessage ||
+        !isEqual(newPara.settings, oldPara.settings) ||
+        !isEqual(newPara.config, oldPara.config) ||
+        !isEqual(newPara.runtimeInfos, oldPara.runtimeInfos))
+    );
   }
 
   insertParagraph(position: string) {
@@ -56,7 +149,8 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     this.messageService.insertParagraph(newIndex);
   }
 
-  commitParagraph() {
+  commitParagraph(value: string) {
+    this.paragraph.title = value;
     const {
       id,
       title,
@@ -72,6 +166,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   }
 
   constructor(
+    private noteStatusService: NoteStatusService,
     public messageService: MessageService,
     private noteVarShareService: NoteVarShareService,
     private cdr: ChangeDetectorRef
@@ -80,11 +175,6 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   }
 
   ngOnInit() {
-    if (this.paragraph.results && this.paragraph.results.code === 'SUCCESS') {
-      this.results = this.paragraph.results.msg;
-      this.configs = this.paragraph.config.results;
-    }
-    this.originalText = this.paragraph.text;
     if (this.paragraph.focus) {
       this.paragraphFocused = true;
     }
@@ -97,6 +187,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
       this.note.info.isRunning &&
       this.note.info.isRunning === true
     );
+    this.isParagraphRunning = this.noteStatusService.isParagraphRunning(this.paragraph);
     this.noteVarShareService.set(this.paragraph.id + '_paragraphScope', this);
     this.initializeDefault(this.paragraph.config);
   }

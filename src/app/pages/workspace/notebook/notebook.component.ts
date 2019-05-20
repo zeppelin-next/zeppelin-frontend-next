@@ -62,6 +62,12 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
     // TODO focus on paragraph
   }
 
+  @MessageListener(OP.SAVE_NOTE_FORMS)
+  saveNoteForms(data: MessageReceiveDataTypeMap[OP.SAVE_NOTE_FORMS]) {
+    this.note.noteForms = data.formsData.forms;
+    this.note.noteParams = data.formsData.params;
+  }
+
   @MessageListener(OP.NOTE_REVISION)
   getNoteRevision(data: MessageReceiveDataTypeMap[OP.NOTE_REVISION]) {
     const note = data.note;

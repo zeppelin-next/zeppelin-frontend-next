@@ -109,5 +109,5 @@ export interface ConfigurationsInfo {
 }
 
 export interface ErrorInfo {
-  info: string;
+  info?: string;
 }

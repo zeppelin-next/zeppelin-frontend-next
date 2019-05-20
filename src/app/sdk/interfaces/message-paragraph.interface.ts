@@ -15,7 +15,6 @@ export interface ParagraphParams {
   // tslint:disable-next-line no-any
   [key: string]: any;
 }
-
 export interface ParagraphConfigResults {
   [index: string]: ParagraphConfigResult;
 }
@@ -23,6 +22,7 @@ export interface ParagraphConfigResults {
 export interface ParagraphConfigResult {
   graph: GraphConfig;
 }
+
 export interface ParagraphConfig {
   editorSetting?: ParagraphEditorSetting;
   colWidth?: number;
@@ -64,9 +64,18 @@ export interface ParagraphItem {
   dateCreated: string;
   dateStarted?: string;
   dateFinished?: string;
+  errorMessage?: string;
+  // tslint:disable-next-line no-any TODO
+  runtimeInfos?: any;
   status: string;
   title?: string;
   focus?: boolean;
+  // tslint:disable-next-line no-any TODO
+  aborted: any;
+  // tslint:disable-next-line no-any TODO
+  lineNumbers: any;
+  // tslint:disable-next-line no-any TODO
+  fontSize: any;
 }
 
 export interface SendParagraph {

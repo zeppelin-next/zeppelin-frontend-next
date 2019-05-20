@@ -92,6 +92,17 @@ export interface CollaborativeModeStatus {
   users: string[];
 }
 
+export interface UpdateParagraph {
+  paragraph: ParagraphItem;
+}
+
+export interface SaveNoteFormsSend {
+  formsData: {
+    forms: NoteForms;
+    params: NoteParams;
+  };
+}
+
 export interface NoteRunningStatus {
   status: boolean;
 }
