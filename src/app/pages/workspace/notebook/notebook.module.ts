@@ -26,6 +26,7 @@ import { NotebookParagraphComponent } from './paragraph/paragraph.component';
 import { NotebookAddParagraphComponent } from './add-paragraph/add-paragraph.component';
 import { NzMonacoEditorModule } from '@ng-zorro/ng-plus/monaco-editor';
 import { NotebookCodeEditorComponent } from './paragraph/code-editor/code-editor.component';
+import { NotebookResultComponent } from './paragraph/result/result.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { NotebookCodeEditorComponent } from './paragraph/code-editor/code-editor
     NotebookRevisionsComparatorComponent,
     NotebookParagraphComponent,
     NotebookAddParagraphComponent,
-    NotebookCodeEditorComponent
+    NotebookCodeEditorComponent,
+    NotebookResultComponent
   ],
   imports: [
     CommonModule,

@@ -15,6 +15,7 @@ export interface ParagraphParams {
   // tslint:disable-next-line no-any
   [key: string]: any;
 }
+
 export interface ParagraphConfigResults {
   [index: string]: ParagraphConfigResult;
 }
@@ -160,9 +161,14 @@ export interface Completion {
   cursor: number;
 }
 
-export interface PatchParagraph {
+export interface PatchParagraphReceived {
   id: string;
   noteId: string;
+  patch: string;
+}
+
+export interface PatchParagraphSend {
+  paragraphId: string;
   patch: string;
 }
 
@@ -176,6 +182,7 @@ export interface GraphConfig {
   values: GraphConfigValuesItem[];
   commonSetting: GraphConfigCommonSetting;
 }
+
 interface GraphConfigSetting {
   table: VisualizationTable;
   lineChart: VisualizationLineChart;
@@ -183,6 +190,7 @@ interface GraphConfigSetting {
   multiBarChart: VisualizationMultiBarChart;
   scatterChart: VisualizationScatterChart;
 }
+
 interface VisualizationTable {
   tableGridState: TableGridState;
   tableColumnTypeState: TableColumnTypeState;
@@ -191,6 +199,7 @@ interface VisualizationTable {
   tableOptionSpecHash: string;
   tableOptionValue: TableOptionValue;
 }
+
 interface TableGridState {
   columns: ColumnsItem[];
   scrollFocus: ScrollFocus;
@@ -200,6 +209,7 @@ interface TableGridState {
   treeView: TreeView;
   pagination: Pagination;
 }
+
 interface ColumnsItem {
   name: string;
   visible: boolean;
@@ -208,18 +218,22 @@ interface ColumnsItem {
   filters: FiltersItem[];
   pinned: string;
 }
+
 interface Sort {
   // tslint:disable-next-line
   [key: string]: any;
 }
+
 interface FiltersItem {
   // tslint:disable-next-line
   [key: string]: any;
 }
+
 interface ScrollFocus {
   // tslint:disable-next-line
   [key: string]: any;
 }
+
 interface Grouping {
   // tslint:disable-next-line
   grouping: any[];
@@ -227,33 +241,40 @@ interface Grouping {
   aggregations: any[];
   rowExpandedStates: RowExpandedStates;
 }
+
 interface RowExpandedStates {
   // tslint:disable-next-line
   [key: string]: any;
 }
+
 interface TreeView {
   // tslint:disable-next-line
   [key: string]: any;
 }
+
 interface Pagination {
   paginationCurrentPage: number;
   paginationPageSize: number;
 }
+
 interface TableColumnTypeState {
   updated: boolean;
   names: Names;
 }
+
 interface Names {
   index: string;
   value: string;
   random: string;
   count: string;
 }
+
 interface TableOptionValue {
   useFilter: boolean;
   showPagination: boolean;
   showAggregationFooter: boolean;
 }
+
 interface VisualizationLineChart {
   rotate: Rotate;
   xLabelStatus: string;
@@ -261,60 +282,72 @@ interface VisualizationLineChart {
   lineWithFocus: boolean;
   isDateFormat: boolean;
 }
+
 interface Rotate {
   degree: string;
 }
+
 interface VisualizationStackedAreaChart {
   rotate: Rotate;
   xLabelStatus: string;
   style: 'stream' | 'expand' | 'stack';
 }
+
 interface VisualizationMultiBarChart {
   rotate: Rotate;
   stacked?: boolean;
   xLabelStatus: string;
 }
+
 interface VisualizationScatterChart {
   xAxis: XAxis;
   yAxis: YAxis;
   group: Group;
   size: Size;
 }
+
 interface XAxis {
   name: string;
   index: number;
   aggr: string;
 }
+
 interface YAxis {
   name: string;
   index: number;
   aggr: string;
 }
+
 interface Group {
   name: string;
   index: number;
   aggr: string;
 }
+
 interface Size {
   name: string;
   index: number;
   aggr: string;
 }
+
 interface GraphConfigKeysItem {
   name: string;
   index: number;
   aggr: string;
 }
+
 interface GraphConfigGroupsItem {
   name: string;
   index: number;
   aggr: string;
 }
+
 interface GraphConfigValuesItem {
   name: string;
   index: number;
   aggr: string;
 }
+
 interface GraphConfigCommonSetting {
   // tslint:disable-next-line
   [key: string]: any;

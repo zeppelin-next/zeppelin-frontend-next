@@ -40,7 +40,11 @@ export class NoteStatusService {
     if (!note) {
       return false;
     } else {
-      return note.paragraphs.some(p => this.isParagraphRunning(p));
+      // TODO should merge
+      return (
+        note.paragraphs.some(p => this.isParagraphRunning(p)) ||
+        !!(note.info && note.info.isRunning && note.info.isRunning === true)
+      );
     }
   }
 

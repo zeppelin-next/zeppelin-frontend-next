@@ -4,6 +4,7 @@ import { MessageService, NoteStatusService, ParagraphStatus } from 'zeppelin-ser
 import { NoteVarShareService } from '../../../../services/note-var-share.service';
 import { MessageListener, MessageListenersManager } from 'zeppelin-core';
 import { isEmpty, isEqual } from 'lodash';
+import DiffMatchPatch from 'diff-match-patch';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph',
@@ -19,8 +20,11 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   @Input() last: boolean;
   @Input() first: boolean;
   isNoteRunning = false;
+  diffMatchPatch = new DiffMatchPatch();
   isParagraphRunning = false;
   paragraphFocused = false;
+  results = [];
+  configs = {};
 
   @MessageListener(OP.NOTE_RUNNING_STATUS)
   noteRunningStatusChange(data: MessageReceiveDataTypeMap[OP.NOTE_RUNNING_STATUS]) {
@@ -48,6 +52,19 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
           }
         }
       });
+      this.cdr.markForCheck();
+    }
+  }
+
+  @MessageListener(OP.PATCH_PARAGRAPH)
+  patchParagraph(data: MessageReceiveDataTypeMap[OP.PATCH_PARAGRAPH]) {
+    if (data.paragraphId === this.paragraph.id) {
+      let patch = data.patch;
+      patch = this.diffMatchPatch.patch_fromText(patch);
+      if (!this.paragraph.text) {
+        this.paragraph.text = '';
+      }
+      this.paragraph.text = this.diffMatchPatch.patch_apply(patch, this.paragraph.text)[0];
       this.cdr.markForCheck();
     }
   }
@@ -83,6 +100,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   updateParagraphObjectWhenUpdated(newPara: ParagraphItem) {
     // TODO: resize col width
     // TODO: update font size
+    this.paragraph.text = newPara.text;
     this.paragraph.aborted = newPara.aborted;
     this.paragraph.user = newPara.user;
     this.paragraph.dateUpdated = newPara.dateUpdated;
@@ -175,18 +193,17 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   }
 
   ngOnInit() {
+    if (this.paragraph.results && this.paragraph.results.code === 'SUCCESS') {
+      this.results = this.paragraph.results.msg;
+      this.configs = this.paragraph.config.results;
+    }
     if (this.paragraph.focus) {
       this.paragraphFocused = true;
     }
     if (!this.paragraph.config) {
       this.paragraph.config = {};
     }
-    this.isNoteRunning = !!(
-      this.note &&
-      this.note.info &&
-      this.note.info.isRunning &&
-      this.note.info.isRunning === true
-    );
+    this.isNoteRunning = this.noteStatusService.isNoteRunning(this.note);
     this.isParagraphRunning = this.noteStatusService.isParagraphRunning(this.paragraph);
     this.noteVarShareService.set(this.paragraph.id + '_paragraphScope', this);
     this.initializeDefault(this.paragraph.config);

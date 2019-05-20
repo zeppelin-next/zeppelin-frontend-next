@@ -25,7 +25,7 @@ import {
   RemoveNoteForms,
   RestoreFolder,
   RestoreNote,
-  SaveNoteForms,
+  SaveNoteFormsReceived,
   SaveNoteFormsSend,
   SetNoteRevision,
   SetNoteRevisionStatus,
@@ -45,7 +45,8 @@ import {
   ParagraphClearAllOutput,
   ParagraphClearOutput,
   ParagraphRemove,
-  PatchParagraph,
+  PatchParagraphReceived,
+  PatchParagraphSend,
   RunAllParagraphs,
   RunParagraph
 } from './message-paragraph.interface';
@@ -73,6 +74,7 @@ export interface MessageReceiveDataTypeMap {
   [OP.NEW_NOTE]: NoteRevision;
   [OP.SAVE_NOTE_FORMS]: SaveNoteFormsSend;
   [OP.PARAGRAPH]: UpdateParagraph;
+  [OP.PATCH_PARAGRAPH]: PatchParagraphSend;
 }
 
 export interface MessageDataTypeMap {
@@ -122,7 +124,7 @@ export interface MessageDataTypeMap {
   [OP.PARAGRAPH_CLEAR_ALL_OUTPUT]: ParagraphClearAllOutput;
   [OP.COMPLETION]: Completion;
   [OP.COMMIT_PARAGRAPH]: CommitParagraph;
-  [OP.PATCH_PARAGRAPH]: PatchParagraph;
+  [OP.PATCH_PARAGRAPH]: PatchParagraphReceived;
   [OP.IMPORT_NOTE]: {}; // TODO
   [OP.CHECKPOINT_NOTE]: CheckpointNote;
   [OP.SET_NOTE_REVISION]: SetNoteRevision;
@@ -135,6 +137,6 @@ export interface MessageDataTypeMap {
   [OP.LIST_UPDATE_NOTE_JOBS]: undefined;
   [OP.GET_INTERPRETER_BINDINGS]: GetInterpreterBindings;
   [OP.GET_INTERPRETER_SETTINGS]: undefined;
-  [OP.SAVE_NOTE_FORMS]: SaveNoteForms;
+  [OP.SAVE_NOTE_FORMS]: SaveNoteFormsReceived;
   [OP.REMOVE_NOTE_FORMS]: RemoveNoteForms;
 }

@@ -67,7 +67,7 @@ export interface RemoveNoteForms {
   formName: string;
 }
 
-export interface SaveNoteForms {
+export interface SaveNoteFormsReceived {
   noteId: string;
   noteParams: NoteParams;
 }

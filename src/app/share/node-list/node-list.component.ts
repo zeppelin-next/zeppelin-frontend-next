@@ -9,6 +9,7 @@ import { NoteActionService } from '../../services/note-action.service';
 @Component({
   selector: 'zeppelin-node-list',
   templateUrl: './node-list.component.html',
+  providers: [NoteListService],
   styleUrls: ['./node-list.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

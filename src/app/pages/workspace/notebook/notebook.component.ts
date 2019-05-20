@@ -133,6 +133,13 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
   getCollaborativeModeStatus(data: MessageReceiveDataTypeMap[OP.COLLABORATIVE_MODE_STATUS]) {
     this.collaborativeMode = Boolean(data.status);
     this.collaborativeModeUsers = data.users;
+    this.cdr.markForCheck();
+  }
+
+  @MessageListener(OP.PATCH_PARAGRAPH)
+  patchParagraph() {
+    this.collaborativeMode = true;
+    this.cdr.markForCheck();
   }
 
   @MessageListener(OP.LIST_REVISION_HISTORY)
