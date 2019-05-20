@@ -24,7 +24,7 @@ import { NotebookPermissionsComponent } from './permissions/permissions.componen
 import { NotebookRevisionsComparatorComponent } from './revisions-comparator/revisions-comparator.component';
 import { NotebookParagraphComponent } from './paragraph/paragraph.component';
 import { NotebookAddParagraphComponent } from './add-paragraph/add-paragraph.component';
-import { NotebookResultComponent } from './paragraph/result/result.component';
+import { NzMonacoEditorModule } from '@ng-zorro/ng-plus/monaco-editor';
 import { NotebookCodeEditorComponent } from './paragraph/code-editor/code-editor.component';
 
 @NgModule({
@@ -36,7 +36,6 @@ import { NotebookCodeEditorComponent } from './paragraph/code-editor/code-editor
     NotebookRevisionsComparatorComponent,
     NotebookParagraphComponent,
     NotebookAddParagraphComponent,
-    NotebookResultComponent,
     NotebookCodeEditorComponent
   ],
   imports: [
@@ -55,7 +54,8 @@ import { NotebookCodeEditorComponent } from './paragraph/code-editor/code-editor
     NzInputModule,
     FormsModule,
     NzDividerModule,
-    NzCheckboxModule
+    NzCheckboxModule,
+    NzMonacoEditorModule
   ]
 })
 export class NotebookModule {}

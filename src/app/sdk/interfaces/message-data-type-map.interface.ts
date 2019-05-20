@@ -26,8 +26,10 @@ import {
   RestoreFolder,
   RestoreNote,
   SaveNoteForms,
+  SaveNoteFormsSend,
   SetNoteRevision,
   SetNoteRevisionStatus,
+  UpdateParagraph,
   UpdatePersonalizedMode
 } from './message-notebook.interface';
 import {
@@ -69,6 +71,8 @@ export interface MessageReceiveDataTypeMap {
   [OP.PARAGRAPH_ADDED]: ParagraphAdded;
   [OP.NOTE_RUNNING_STATUS]: NoteRunningStatus;
   [OP.NEW_NOTE]: NoteRevision;
+  [OP.SAVE_NOTE_FORMS]: SaveNoteFormsSend;
+  [OP.PARAGRAPH]: UpdateParagraph;
 }
 
 export interface MessageDataTypeMap {
@@ -81,6 +85,7 @@ export interface MessageDataTypeMap {
   [OP.COLLABORATIVE_MODE_STATUS]: never;
   [OP.PARAGRAPH_ADDED]: never;
   [OP.NOTE_RUNNING_STATUS]: never;
+  [OP.PARAGRAPH]: never;
 
   [OP.PING]: undefined;
   [OP.LIST_CONFIGURATIONS]: undefined;

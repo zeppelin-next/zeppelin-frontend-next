@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { MessageService, TicketService } from 'zeppelin-services';
-import { NzNotificationService, NzModalService } from 'ng-zorro-antd';
+import { NzModalService } from 'ng-zorro-antd';
 import { AboutZeppelinComponent } from 'zeppelin-share/about-zeppelin/about-zeppelin.component';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -32,11 +32,6 @@ export class HeaderComponent extends MessageListenersManager implements OnInit, 
     this.ticketService.logout().subscribe();
   }
 
-  @MessageListener(OP.ERROR_INFO)
-  getNotes(data: MessageReceiveDataTypeMap[OP.ERROR_INFO]) {
-    this.nzNotificationService.warning('ERROR', data.info);
-  }
-
   @MessageListener(OP.CONFIGURATIONS_INFO)
   getConfiguration(data: MessageReceiveDataTypeMap[OP.CONFIGURATIONS_INFO]) {
     this.ticketService.setConfiguration(data);
@@ -46,7 +41,6 @@ export class HeaderComponent extends MessageListenersManager implements OnInit, 
     public ticketService: TicketService,
     private nzModalService: NzModalService,
     public messageService: MessageService,
-    private nzNotificationService: NzNotificationService,
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {
