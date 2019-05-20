@@ -24,6 +24,8 @@ import { NotebookPermissionsComponent } from './permissions/permissions.componen
 import { NotebookRevisionsComparatorComponent } from './revisions-comparator/revisions-comparator.component';
 import { NotebookParagraphComponent } from './paragraph/paragraph.component';
 import { NotebookAddParagraphComponent } from './add-paragraph/add-paragraph.component';
+import { NotebookResultComponent } from './paragraph/result/result.component';
+import { NotebookCodeEditorComponent } from './paragraph/code-editor/code-editor.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { NotebookAddParagraphComponent } from './add-paragraph/add-paragraph.com
     NotebookPermissionsComponent,
     NotebookRevisionsComparatorComponent,
     NotebookParagraphComponent,
-    NotebookAddParagraphComponent
+    NotebookAddParagraphComponent,
+    NotebookResultComponent,
+    NotebookCodeEditorComponent
   ],
   imports: [
     CommonModule,

@@ -19,6 +19,8 @@
     "@angular/platform-browser": "~7.2.0",
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
+    "@antv/data-set": "^0.10.2",
+    "@antv/g2": "^3.5.4",
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
     "@commitlint/prompt-cli": "^7.5.0",

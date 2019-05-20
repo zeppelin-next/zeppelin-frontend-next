@@ -23,6 +23,8 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   colWidthOption = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   fontSizeOption = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
   paragraphFocused = false;
+  results = [];
+  configs = {};
 
   @MessageListener(OP.NOTE_RUNNING_STATUS)
   noteRunningStatusChange(data: MessageReceiveDataTypeMap[OP.NOTE_RUNNING_STATUS]) {
@@ -78,6 +80,10 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   }
 
   ngOnInit() {
+    if (this.paragraph.results && this.paragraph.results.code === 'SUCCESS') {
+      this.results = this.paragraph.results.msg;
+      this.configs = this.paragraph.config.results;
+    }
     this.originalText = this.paragraph.text;
     if (this.paragraph.focus) {
       this.paragraphFocused = true;

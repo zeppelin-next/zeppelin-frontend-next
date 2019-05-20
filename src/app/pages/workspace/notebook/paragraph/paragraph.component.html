@@ -8,6 +8,11 @@
                               [min]="true"
                               (valueUpdate)="commitParagraph()"></zeppelin-elastic-input>
     </div>
+    <zeppelin-notebook-code-editor [code]="paragraph.text"></zeppelin-notebook-code-editor>
+    <zeppelin-notebook-result *ngFor="let result of results; index as i"
+                              [config]="configs[i]"
+                              [result]="result">
+    </zeppelin-notebook-result>
   </div>
   <zeppelin-notebook-add-paragraph [disabled]="isNoteRunning"
                                    *ngIf="!viewOnly && !revisionView && last"
