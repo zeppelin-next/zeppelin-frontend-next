@@ -1,5 +1,4 @@
 <nz-monaco-editor [style.height.px]="height"
-                  [ngModel]="value"
+                  [(ngModel)]="paragraph.text"
                   (ngModelChange)="updateValue($event)"
-                  [nzEditorOptions]="{ readOnly : readOnly, language : language}"
                   (nzEditorInitialized)="initEditor($event)"></nz-monaco-editor>

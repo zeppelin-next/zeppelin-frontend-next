@@ -35,7 +35,7 @@
     "lint-staged": "^8.1.6",
     "lodash": "^4.17.11",
     "monaco-editor": "^0.17.0",
-    "ng-zorro-antd": "^7.4.0",
+    "ng-zorro-antd": "^7.4.1",
     "npm": "^6.9.0",
     "prettier": "^1.17.0",
     "rxjs": "~6.5.2",

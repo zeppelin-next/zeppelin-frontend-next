@@ -7,8 +7,12 @@
                             [value]="paragraph.title"
                             [min]="true"
                             (valueUpdate)="commitParagraph($event)"></zeppelin-elastic-input>
-    <zeppelin-notebook-code-editor [value]="paragraph.text"
-                                   [readOnly]="isNoteRunning || isParagraphRunning"
+    <zeppelin-notebook-code-editor *ngIf="!paragraph.config.editorHide && !viewOnly"
+                                   [paragraph]="paragraph"
+                                   [collaborativeMode]="collaborativeMode"
+                                   [focus]="paragraph.focus"
+                                   [lineNumbers]="paragraph.config.lineNumbers"
+                                   [readOnly]="isNoteRunning || isParagraphRunning || revisionView"
                                    [language]="paragraph.config.editorSetting?.language"></zeppelin-notebook-code-editor>
     <zeppelin-notebook-result *ngFor="let result of results; index as i"
                               [config]="configs[i]"

@@ -18,11 +18,11 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   @Input() revisionView: boolean;
   @Input() viewOnly: boolean;
   @Input() last: boolean;
+  @Input() collaborativeMode = false;
   @Input() first: boolean;
   isNoteRunning = false;
   diffMatchPatch = new DiffMatchPatch();
   isParagraphRunning = false;
-  paragraphFocused = false;
   results = [];
   configs = {};
 
@@ -196,9 +196,6 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     if (this.paragraph.results && this.paragraph.results.code === 'SUCCESS') {
       this.results = this.paragraph.results.msg;
       this.configs = this.paragraph.config.results;
-    }
-    if (this.paragraph.focus) {
-      this.paragraphFocused = true;
     }
     if (!this.paragraph.config) {
       this.paragraph.config = {};

@@ -363,7 +363,7 @@ export class InterpreterItemComponent extends DestroyHookComponent implements On
 
   constructor(
     public parent: InterpreterComponent,
-    private ticketService: TicketService,
+    public ticketService: TicketService,
     private securityService: SecurityService,
     private interpreterService: InterpreterService,
     private formBuilder: FormBuilder,

@@ -49,8 +49,22 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
     }
   }
 
+  @MessageListener(OP.PARAGRAPH_REMOVED)
+  removeParagraph(data: MessageReceiveDataTypeMap[OP.PARAGRAPH_REMOVED]) {
+    const { paragraphId } = this.activatedRoute.snapshot.params;
+    if (paragraphId || this.revisionView) {
+      return;
+    }
+    this.note.paragraphs = this.note.paragraphs.filter(p => p.id !== data.id);
+    this.cdr.markForCheck();
+  }
+
   @MessageListener(OP.PARAGRAPH_ADDED)
-  addPara(data: MessageReceiveDataTypeMap[OP.PARAGRAPH_ADDED]) {
+  addParagraph(data: MessageReceiveDataTypeMap[OP.PARAGRAPH_ADDED]) {
+    const { paragraphId } = this.activatedRoute.snapshot.params;
+    if (paragraphId || this.revisionView) {
+      return;
+    }
     this.note.paragraphs.splice(data.index, 0, data.paragraph).map(p => {
       return {
         ...p,
@@ -60,6 +74,14 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
     this.note.paragraphs = [...this.note.paragraphs];
     this.cdr.markForCheck();
     // TODO focus on paragraph
+  }
+
+  focus() {
+    console.log('focus');
+  }
+
+  blur() {
+    console.log('blur');
   }
 
   @MessageListener(OP.SAVE_NOTE_FORMS)

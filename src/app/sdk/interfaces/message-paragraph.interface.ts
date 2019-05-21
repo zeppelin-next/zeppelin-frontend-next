@@ -1,13 +1,15 @@
 import { EditorCompletionKey, EditorLanguage, EditorMode } from './message-common.interface';
 
 export interface ParagraphEditorSetting {
-  language: EditorLanguage;
-  editOnDblClick: boolean;
-  completionKey: EditorCompletionKey;
-  completionSupport: boolean;
+  language?: EditorLanguage;
+  editOnDblClick?: boolean;
+  completionKey?: EditorCompletionKey;
+  completionSupport?: boolean;
   // TODO
   // tslint:disable-next-line no-any
-  params: any;
+  params?: any;
+  // tslint:disable-next-line no-any
+  forms?: any;
 }
 
 // TODO
@@ -32,6 +34,7 @@ export interface ParagraphConfig {
   results?: ParagraphConfigResults;
   enabled?: boolean;
   tableHide?: boolean;
+  lineNumbers?: boolean;
   editorHide?: boolean;
   title?: boolean;
   runOnSelectionChange?: boolean;
@@ -170,6 +173,10 @@ export interface PatchParagraphReceived {
 export interface PatchParagraphSend {
   paragraphId: string;
   patch: string;
+}
+
+export interface ParagraphRemoved {
+  id: string;
 }
 
 export interface GraphConfig {

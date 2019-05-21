@@ -45,6 +45,7 @@ import {
   ParagraphClearAllOutput,
   ParagraphClearOutput,
   ParagraphRemove,
+  ParagraphRemoved,
   PatchParagraphReceived,
   PatchParagraphSend,
   RunAllParagraphs,
@@ -75,6 +76,7 @@ export interface MessageReceiveDataTypeMap {
   [OP.SAVE_NOTE_FORMS]: SaveNoteFormsSend;
   [OP.PARAGRAPH]: UpdateParagraph;
   [OP.PATCH_PARAGRAPH]: PatchParagraphSend;
+  [OP.PARAGRAPH_REMOVED]: ParagraphRemoved;
 }
 
 export interface MessageDataTypeMap {
@@ -88,6 +90,7 @@ export interface MessageDataTypeMap {
   [OP.PARAGRAPH_ADDED]: never;
   [OP.NOTE_RUNNING_STATUS]: never;
   [OP.PARAGRAPH]: never;
+  [OP.PARAGRAPH_REMOVED]: never;
 
   [OP.PING]: undefined;
   [OP.LIST_CONFIGURATIONS]: undefined;

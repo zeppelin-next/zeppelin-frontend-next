@@ -14,11 +14,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { MESSAGE_INTERCEPTOR, TRASH_FOLDER_ID_TOKEN } from 'zeppelin-interfaces';
 import { Router, RouterModule } from '@angular/router';
 import { AppMessageInterceptor } from './app-message.interceptor';
+import { DebuggerComponent } from './sdk/debugger.component';
 
 registerLocaleData(en);
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, DebuggerComponent],
   imports: [
     BrowserModule,
     FormsModule,
