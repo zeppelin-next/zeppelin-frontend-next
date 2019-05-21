@@ -101,18 +101,11 @@ export class NotebookResultComponent implements OnInit, AfterViewInit {
       return;
     }
     if (!this.visualizations[this.config.graph.mode].instance) {
-      if (this.config.graph.mode === 'table') {
-        instance = new this.visualizations[this.config.graph.mode].Class(
-          this.config.graph,
-          this.portalOutlet,
-          this.viewContainerRef
-        );
-      } else {
-        instance = new this.visualizations[this.config.graph.mode].Class(
-          this.config.graph,
-          this.graphEle.nativeElement
-        );
-      }
+      instance = new this.visualizations[this.config.graph.mode].Class(
+        this.config.graph,
+        this.portalOutlet,
+        this.viewContainerRef
+      );
       this.visualizations[this.config.graph.mode].instance = instance;
     } else {
       instance = this.visualizations[this.config.graph.mode].instance;

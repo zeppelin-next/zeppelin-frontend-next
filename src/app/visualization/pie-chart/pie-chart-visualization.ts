@@ -1,17 +1,22 @@
-import * as G2 from '@antv/g2';
+import { ViewContainerRef } from '@angular/core';
 import { GraphConfig } from 'zeppelin-sdk';
 import { PivotTransformation } from '../pivot-transformation';
 import { Setting, Transformation } from '../transformation';
 import { Visualization } from '../visualization';
+import { VisualizationComponentPortal } from '../visualization-component-portal';
+import { PieChartVisualizationComponent } from './pie-chart-visualization.component';
+import { CdkPortalOutlet } from '@angular/cdk/portal';
 
 export class PieChartVisualization extends Visualization {
   pivot = new PivotTransformation(this.getConfig());
-  chart = new G2.Chart({
-    forceFit: true,
-    container: this.element
-  });
+  componentPortal = new VisualizationComponentPortal<PieChartVisualization, PieChartVisualizationComponent>(
+    this,
+    PieChartVisualizationComponent,
+    this.portalOutlet,
+    this.viewContainerRef
+  );
 
-  constructor(config: GraphConfig, private element: HTMLDivElement) {
+  constructor(config: GraphConfig, private portalOutlet: CdkPortalOutlet, private viewContainerRef: ViewContainerRef) {
     super(config);
   }
 
@@ -28,23 +33,7 @@ export class PieChartVisualization extends Visualization {
   refresh(): void {}
 
   render(data): void {
-    this.chart.source(data);
-    this.chart.tooltip({
-      showTitle: false
-    });
-    this.chart.coord('theta', {
-      radius: 0.75
-    });
-    this.chart
-      .intervalStack()
-      .position('__value__')
-      .color('__key__')
-      .style({
-        lineWidth: 1,
-        stroke: '#fff'
-      })
-      .tooltip('__key__*__value__', (name, value) => ({ name, value }));
-
-    this.chart.render();
+    this.tableData = data;
+    this.componentPortal.attachComponentPortal();
   }
 }

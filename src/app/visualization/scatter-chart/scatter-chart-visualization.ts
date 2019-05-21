@@ -1,17 +1,22 @@
-import * as G2 from '@antv/g2';
+import { ViewContainerRef } from '@angular/core';
 import { GraphConfig } from 'zeppelin-sdk';
 import { PivotTransformation } from '../pivot-transformation';
 import { Setting, Transformation } from '../transformation';
 import { Visualization } from '../visualization';
+import { VisualizationComponentPortal } from '../visualization-component-portal';
+import { CdkPortalOutlet } from '@angular/cdk/portal';
+import { ScatterChartVisualizationComponent } from './scatter-chart-visualization.component';
 
 export class ScatterChartVisualization extends Visualization {
   pivot = new PivotTransformation(this.getConfig());
-  chart = new G2.Chart({
-    forceFit: true,
-    container: this.element
-  });
+  componentPortal = new VisualizationComponentPortal<ScatterChartVisualization, ScatterChartVisualizationComponent>(
+    this,
+    ScatterChartVisualizationComponent,
+    this.portalOutlet,
+    this.viewContainerRef
+  );
 
-  constructor(config: GraphConfig, private element: HTMLDivElement) {
+  constructor(config: GraphConfig, private portalOutlet: CdkPortalOutlet, private viewContainerRef: ViewContainerRef) {
     super(config);
   }
 
@@ -28,33 +33,7 @@ export class ScatterChartVisualization extends Visualization {
   refresh(): void {}
 
   render(data): void {
-    const config = this.getConfig();
-    let key = '';
-    if (config.keys && config.keys[0]) {
-      key = config.keys[0].name;
-    }
-
-    this.chart.source(data);
-    this.chart.scale(key, {
-      type: 'cat',
-      tickCount: 24
-    });
-    this.chart.tooltip({
-      crosshairs: {
-        type: 'cross'
-      }
-    });
-    this.chart.legend('__value__', false);
-    // point
-    this.chart
-      .point()
-      .position(`${key}*__value__`)
-      .color('__key__')
-      // .adjust('jitter')
-      .size('__value__')
-      .opacity(0.65)
-      .shape('circle');
-
-    this.chart.render();
+    this.tableData = data;
+    this.componentPortal.attachComponentPortal();
   }
 }

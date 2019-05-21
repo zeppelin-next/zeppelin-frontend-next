@@ -1,17 +1,21 @@
-import * as G2 from '@antv/g2';
+import { ViewContainerRef } from '@angular/core';
 import { GraphConfig } from 'zeppelin-sdk';
 import { PivotTransformation } from '../pivot-transformation';
 import { Setting, Transformation } from '../transformation';
 import { Visualization } from '../visualization';
+import { VisualizationComponentPortal } from '../visualization-component-portal';
+import { BarChartVisualizationComponent } from './bar-chart-visualization.component';
+import { CdkPortalOutlet } from '@angular/cdk/portal';
 
 export class BarChartVisualization extends Visualization {
   pivot = new PivotTransformation(this.getConfig());
-  chart = new G2.Chart({
-    forceFit: true,
-    container: this.element
-  });
-
-  constructor(config: GraphConfig, private element: HTMLDivElement) {
+  componentPortal = new VisualizationComponentPortal<BarChartVisualization, BarChartVisualizationComponent>(
+    this,
+    BarChartVisualizationComponent,
+    this.portalOutlet,
+    this.viewContainerRef
+  );
+  constructor(config: GraphConfig, private portalOutlet: CdkPortalOutlet, private viewContainerRef: ViewContainerRef) {
     super(config);
   }
 
@@ -28,37 +32,7 @@ export class BarChartVisualization extends Visualization {
   refresh(): void {}
 
   render(data): void {
-    const config = this.getConfig();
-    let key = '';
-    if (config.keys && config.keys[0]) {
-      key = config.keys[0].name;
-    }
-
-    this.chart.source(data);
-    this.chart.scale(key, {
-      type: 'cat'
-    });
-
-    if (config.setting.multiBarChart.stacked) {
-      this.chart
-        .intervalStack()
-        .position(`${key}*__value__`)
-        .color('__key__')
-        .opacity(1);
-    } else {
-      this.chart
-        .interval()
-        .position(`${key}*__value__`)
-        .color('__key__')
-        .opacity(1)
-        .adjust([
-          {
-            type: 'dodge',
-            marginRatio: 0
-          }
-        ]);
-    }
-
-    this.chart.render();
+    this.tableData = data;
+    this.componentPortal.attachComponentPortal();
   }
 }

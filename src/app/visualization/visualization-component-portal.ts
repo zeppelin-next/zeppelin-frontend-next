@@ -27,5 +27,6 @@ export class VisualizationComponentPortal<T extends Visualization, C> {
   attachComponentPortal() {
     const componentRef = this.portalOutlet.attachComponentPortal(this.getComponentPortal());
     componentRef.changeDetectorRef.markForCheck();
+    return componentRef;
   }
 }
