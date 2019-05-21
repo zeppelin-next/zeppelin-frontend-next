@@ -35,9 +35,9 @@ export class LineChartVisualization extends Visualization {
     }
 
     this.chart.source(data);
-    this.chart.scale(key, {
-      type: 'cat'
-    });
+    // this.chart.scale(key, {
+    //   type: 'cat'
+    // });
     this.chart
       .line()
       .position(`${key}*__value__`)

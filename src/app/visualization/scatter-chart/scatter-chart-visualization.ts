@@ -35,6 +35,10 @@ export class ScatterChartVisualization extends Visualization {
     }
 
     this.chart.source(data);
+    this.chart.scale(key, {
+      type: 'cat',
+      tickCount: 24
+    });
     this.chart.tooltip({
       crosshairs: {
         type: 'cross'

@@ -1,7 +1,9 @@
 import { GraphConfig } from 'zeppelin-sdk';
+import { TableData } from './dataset/table-data';
 import { Setting, Transformation } from './transformation';
 
 export abstract class Visualization {
+  tableData: TableData;
   private active = false;
   private dirty = false;
   constructor(private config: GraphConfig) {}

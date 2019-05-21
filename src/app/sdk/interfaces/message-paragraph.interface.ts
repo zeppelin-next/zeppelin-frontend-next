@@ -45,8 +45,13 @@ export interface ParagraphResults {
   [index: number]: {};
 }
 
+export enum DatasetType {
+  NETWORK = 'NETWORK',
+  TABLE = 'TABLE'
+}
+
 export interface ParagraphIResultsMsgItem {
-  type: string;
+  type: DatasetType;
   data: string;
 }
 

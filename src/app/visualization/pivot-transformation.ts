@@ -1,3 +1,4 @@
+import { TableData } from './dataset/table-data';
 import { Setting, Transformation } from './transformation';
 import { DataSet } from '@antv/data-set';
 
@@ -12,12 +13,10 @@ export class PivotTransformation extends Transformation {
   }
 
   // tslint:disable-next-line:no-any
-  transform(tableData: string): any {
+  transform(tableData: TableData): any {
     const config = this.getConfig();
     const ds = new DataSet();
-    let dv = ds.createView().source(tableData.replace(/\t/gm, ','), {
-      type: 'csv'
-    });
+    let dv = ds.createView().source(tableData.rows);
 
     let key = '';
     if (config.keys && config.keys[0]) {
@@ -104,8 +103,6 @@ export class PivotTransformation extends Transformation {
         as: '__percent__'
       });
     }
-
-    console.log(dv.rows);
 
     return dv;
   }
