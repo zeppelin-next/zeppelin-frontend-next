@@ -27,6 +27,8 @@ import { NotebookAddParagraphComponent } from './add-paragraph/add-paragraph.com
 import { NzMonacoEditorModule } from '@ng-zorro/ng-plus/monaco-editor';
 import { NotebookCodeEditorComponent } from './paragraph/code-editor/code-editor.component';
 import { NotebookResultComponent } from './paragraph/result/result.component';
+import { PortalModule } from '@angular/cdk/portal';
+import { VisualizationModule } from 'src/app/visualization/visualization.module';
 
 @NgModule({
   declarations: [
@@ -42,8 +44,10 @@ import { NotebookResultComponent } from './paragraph/result/result.component';
   ],
   imports: [
     CommonModule,
+    PortalModule,
     NotebookRoutingModule,
     ShareModule,
+    VisualizationModule,
     NotebookShareModule,
     NzButtonModule,
     NzIconModule,

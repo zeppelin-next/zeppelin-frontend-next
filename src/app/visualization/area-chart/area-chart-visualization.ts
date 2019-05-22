@@ -1,17 +1,22 @@
-import * as G2 from '@antv/g2';
+import { ViewContainerRef } from '@angular/core';
 import { GraphConfig } from 'zeppelin-sdk';
 import { PivotTransformation } from '../pivot-transformation';
 import { Setting, Transformation } from '../transformation';
 import { Visualization } from '../visualization';
+import { VisualizationComponentPortal } from '../visualization-component-portal';
+import { AreaChartVisualizationComponent } from './area-chart-visualization.component';
+import { CdkPortalOutlet } from '@angular/cdk/portal';
 
 export class AreaChartVisualization extends Visualization {
   pivot = new PivotTransformation(this.getConfig());
-  chart = new G2.Chart({
-    forceFit: true,
-    container: this.element
-  });
+  componentPortal = new VisualizationComponentPortal<AreaChartVisualization, AreaChartVisualizationComponent>(
+    this,
+    AreaChartVisualizationComponent,
+    this.portalOutlet,
+    this.viewContainerRef
+  );
 
-  constructor(config: GraphConfig, private element: HTMLDivElement) {
+  constructor(config: GraphConfig, private portalOutlet: CdkPortalOutlet, private viewContainerRef: ViewContainerRef) {
     super(config);
   }
 
@@ -28,39 +33,7 @@ export class AreaChartVisualization extends Visualization {
   refresh(): void {}
 
   render(data): void {
-    const config = this.getConfig();
-    const style = config.setting.stackedAreaChart.style;
-    let key = '';
-    if (config.keys && config.keys[0]) {
-      key = config.keys[0].name;
-    }
-
-    this.chart.source(data);
-    this.chart.scale(key, {
-      type: 'cat'
-    });
-
-    if (style === 'stack') {
-      // area:stack
-      this.chart
-        .areaStack()
-        .position(`${key}*__value__`)
-        .color('__key__');
-    } else if (style === 'stream') {
-      // area:stream
-      this.chart
-        .area()
-        .position(`${key}*__value__`)
-        .adjust(['stack', 'symmetric'])
-        .color('__key__');
-    } else {
-      // area:percent
-      this.chart
-        .areaStack()
-        .position(`${key}*__percent__`)
-        .color('__key__');
-    }
-
-    this.chart.render();
+    this.tableData = data;
+    this.componentPortal.attachComponentPortal();
   }
 }

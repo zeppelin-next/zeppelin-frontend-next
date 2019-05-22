@@ -1,17 +1,17 @@
 import { ViewContainerRef } from '@angular/core';
 import { GraphConfig } from 'zeppelin-sdk';
-import { PivotTransformation } from '../pivot-transformation';
+import { TableTransformation } from '../table-transformation';
 import { Setting, Transformation } from '../transformation';
 import { Visualization } from '../visualization';
-import { VisualizationComponentPortal } from '../visualization-component-portal';
-import { BarChartVisualizationComponent } from './bar-chart-visualization.component';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
+import { VisualizationComponentPortal } from '../visualization-component-portal';
+import { TableVisualizationComponent } from './table-visualization.component';
 
-export class BarChartVisualization extends Visualization {
-  pivot = new PivotTransformation(this.getConfig());
-  componentPortal = new VisualizationComponentPortal<BarChartVisualization, BarChartVisualizationComponent>(
+export class TableVisualization extends Visualization {
+  tableTransformation = new TableTransformation(this.getConfig());
+  componentPortal = new VisualizationComponentPortal<TableVisualization, TableVisualizationComponent>(
     this,
-    BarChartVisualizationComponent,
+    TableVisualizationComponent,
     this.portalOutlet,
     this.viewContainerRef
   );
@@ -26,7 +26,7 @@ export class BarChartVisualization extends Visualization {
   }
 
   getTransformation(): Transformation {
-    return this.pivot;
+    return this.tableTransformation;
   }
 
   refresh(): void {}

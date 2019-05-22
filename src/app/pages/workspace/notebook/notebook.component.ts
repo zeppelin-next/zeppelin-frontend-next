@@ -147,7 +147,7 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
   }
 
   @MessageListener(OP.INTERPRETER_BINDINGS)
-  listInterpreterBindings(data: MessageReceiveDataTypeMap[OP.INTERPRETER_BINDINGS]) {
+  listInterpreterBindings() {
     // TODO
   }
 
