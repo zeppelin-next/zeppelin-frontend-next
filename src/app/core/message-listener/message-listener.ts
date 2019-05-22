@@ -1,6 +1,6 @@
 import { OnDestroy } from '@angular/core';
 import { Subscriber } from 'rxjs';
-import { MessageReceiveDataTypeMap } from 'zeppelin-sdk';
+import { MessageReceiveDataTypeMap, ReceiveArgumentsType } from 'zeppelin-sdk';
 import { MessageService } from 'zeppelin-services';
 
 export class MessageListenersManager implements OnDestroy {
@@ -22,14 +22,14 @@ export function MessageListener<K extends keyof MessageReceiveDataTypeMap>(op: K
   return function(
     target: MessageListenersManager,
     propertyKey: string,
-    descriptor: TypedPropertyDescriptor<(data?: Record<K, MessageReceiveDataTypeMap[K]>[K]) => void>
+    descriptor: TypedPropertyDescriptor<ReceiveArgumentsType<K>>
   ) {
-    const oldValue = descriptor.value as (o: Record<K, MessageReceiveDataTypeMap[K]>[K]) => void;
+    const oldValue = descriptor.value as ReceiveArgumentsType<K>;
 
     const fn = function() {
       this.__zeppelinMessageListeners$__.add(
         this.messageService.receive(op).subscribe(data => {
-          oldValue.apply(this, [data as MessageReceiveDataTypeMap[K]]);
+          oldValue.apply(this, [data]);
         })
       );
     };

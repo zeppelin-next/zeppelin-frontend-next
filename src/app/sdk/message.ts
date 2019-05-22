@@ -14,6 +14,10 @@ export type SendArgumentsType<K extends keyof MessageDataTypeMap> = MessageDataT
   ? ArgumentsType<(op: K) => void>
   : ArgumentsType<(op: K, data: MessageDataTypeMap[K]) => void>;
 
+export type ReceiveArgumentsType<
+  K extends keyof MessageReceiveDataTypeMap
+> = MessageReceiveDataTypeMap[K] extends undefined ? (data) => void : (data: MessageReceiveDataTypeMap[K]) => void;
+
 export class Message {
   public connectedStatus = false;
   public connectedStatus$ = new Subject<boolean>();
