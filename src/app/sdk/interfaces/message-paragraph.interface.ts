@@ -3,6 +3,7 @@ import { EditorCompletionKey, EditorLanguage, EditorMode } from './message-commo
 export interface ParagraphEditorSetting {
   language?: EditorLanguage;
   editOnDblClick?: boolean;
+  isOutputHidden?: boolean;
   completionKey?: EditorCompletionKey;
   completionSupport?: boolean;
   // TODO

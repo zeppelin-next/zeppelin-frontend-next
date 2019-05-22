@@ -1,5 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
-import { MessageReceiveDataTypeMap, Note, OP, ParagraphConfig, ParagraphItem } from 'zeppelin-sdk';
+import {
+  MessageReceiveDataTypeMap,
+  Note,
+  OP,
+  ParagraphConfig,
+  ParagraphEditorSetting,
+  ParagraphItem
+} from 'zeppelin-sdk';
 import { MessageService, NoteStatusService, ParagraphStatus } from 'zeppelin-services';
 import { NoteVarShareService } from '../../../../services/note-var-share.service';
 import { MessageListener, MessageListenersManager } from 'zeppelin-core';
@@ -20,11 +27,14 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   @Input() last: boolean;
   @Input() collaborativeMode = false;
   @Input() first: boolean;
+  dirtyText: string;
+  originalText: string;
   isNoteRunning = false;
   diffMatchPatch = new DiffMatchPatch();
   isParagraphRunning = false;
   results = [];
   configs = {};
+  editorSetting: ParagraphEditorSetting = {};
 
   @MessageListener(OP.NOTE_RUNNING_STATUS)
   noteRunningStatusChange(data: MessageReceiveDataTypeMap[OP.NOTE_RUNNING_STATUS]) {
@@ -80,8 +90,8 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
         newPara.status === ParagraphStatus.ERROR ||
         (newPara.status === ParagraphStatus.FINISHED && statusChanged);
 
-      // 3. update texts managed by $scope
-
+      // 3. update texts managed by paragraph
+      this.updateAllScopeTexts(newPara, oldPara);
       // 4. execute callback to update result
       updateCallback();
 
@@ -97,10 +107,54 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     }
   }
 
+  textChange(text: string) {
+    this.dirtyText = text;
+    if (this.dirtyText !== this.originalText) {
+      if (this.collaborativeMode) {
+        this.sendPatch();
+      } else {
+        this.startSaveTimer();
+      }
+    }
+  }
+
+  sendPatch() {}
+
+  startSaveTimer() {}
+
+  saveParagraph() {
+    const dirtyText = this.paragraph.text;
+    if (dirtyText === undefined || dirtyText === this.originalText) {
+      return;
+    }
+    this.commitParagraph();
+    this.originalText = dirtyText;
+    this.dirtyText = undefined;
+  }
+
+  updateAllScopeTexts(oldPara: ParagraphItem, newPara: ParagraphItem) {
+    if (oldPara.text !== newPara.text) {
+      if (this.dirtyText) {
+        // check if editor has local update
+        if (this.dirtyText === newPara.text) {
+          // when local update is the same from remote, clear local update
+          this.paragraph.text = newPara.text;
+          this.dirtyText = undefined;
+          this.originalText = newPara.text;
+        } else {
+          // if there're local update, keep it.
+          this.paragraph.text = newPara.text;
+        }
+      } else {
+        this.paragraph.text = newPara.text;
+        this.originalText = newPara.text;
+      }
+    }
+  }
+
   updateParagraphObjectWhenUpdated(newPara: ParagraphItem) {
     // TODO: resize col width
     // TODO: update font size
-    this.paragraph.text = newPara.text;
     this.paragraph.aborted = newPara.aborted;
     this.paragraph.user = newPara.user;
     this.paragraph.dateUpdated = newPara.dateUpdated;
@@ -119,9 +173,8 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     this.paragraph.settings = newPara.settings;
     this.paragraph.runtimeInfos = newPara.runtimeInfos;
     this.isParagraphRunning = this.noteStatusService.isParagraphRunning(newPara);
-    newPara.config.editorHide = true;
-    newPara.config.tableHide = false;
     this.paragraph.config = newPara.config;
+    this.initializeDefault(this.paragraph.config);
     this.cdr.markForCheck();
   }
 
@@ -167,8 +220,12 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     this.messageService.insertParagraph(newIndex);
   }
 
-  commitParagraph(value: string) {
-    this.paragraph.title = value;
+  setTitle(title: string) {
+    this.paragraph.title = title;
+    this.commitParagraph();
+  }
+
+  commitParagraph() {
     const {
       id,
       title,
@@ -180,7 +237,39 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   }
 
   initializeDefault(config: ParagraphConfig) {
-    // TODO
+    const forms = this.paragraph.settings.forms;
+
+    if (!config.colWidth) {
+      config.colWidth = 12;
+    }
+
+    if (!config.fontSize) {
+      config.fontSize = 9;
+    }
+
+    if (config.enabled === undefined) {
+      config.enabled = true;
+    }
+
+    for (const idx in forms) {
+      if (forms[idx]) {
+        if (forms[idx].options) {
+          if (config.runOnSelectionChange === undefined) {
+            config.runOnSelectionChange = true;
+          }
+        }
+      }
+    }
+
+    if (!config.results) {
+      config.results = {};
+    }
+
+    if (!config.editorSetting) {
+      config.editorSetting = {};
+    } else if (config.editorSetting.editOnDblClick) {
+      this.editorSetting.isOutputHidden = config.editorSetting.editOnDblClick;
+    }
   }
 
   constructor(

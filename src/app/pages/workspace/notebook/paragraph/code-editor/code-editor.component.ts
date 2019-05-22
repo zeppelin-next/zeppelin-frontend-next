@@ -3,11 +3,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
+  Output,
   SimpleChanges
 } from '@angular/core';
 import ICodeEditor = monaco.editor.ICodeEditor;
@@ -21,22 +23,28 @@ import { ParagraphItem } from 'zeppelin-sdk';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotebookCodeEditorComponent implements OnInit, OnChanges, OnDestroy {
-  // TODO: dirtyText & originalText & focus when patch & auto height
-  @Input() paragraph: ParagraphItem;
+  // TODO:
+  //  1. cursor position
+  //  2. editor mode
   @Input() readOnly = false;
   @Input() language = 'text';
   @Input() lineNumbers = false;
   @Input() focus = false;
   @Input() collaborativeMode = false;
+  @Input() text: string;
+  @Output() textChange = new EventEmitter<string>();
+  @Output() editorBlur = new EventEmitter<void>();
   private editor: ICodeEditor;
   private monacoDisposables: IDisposable[] = [];
   height = 0;
 
   autoAdjustEditorHeight() {
-    this.height =
-      this.editor.getTopForLineNumber(Number.MAX_SAFE_INTEGER) + this.editor.getConfiguration().lineHeight * 2;
-    this.editor.layout();
-    this.cdr.markForCheck();
+    if (this.editor) {
+      this.height =
+        this.editor.getTopForLineNumber(Number.MAX_SAFE_INTEGER) + this.editor.getConfiguration().lineHeight * 2;
+      this.editor.layout();
+      this.cdr.markForCheck();
+    }
   }
 
   initEditorListener() {
@@ -47,6 +55,7 @@ export class NotebookCodeEditorComponent implements OnInit, OnChanges, OnDestroy
         });
       }),
       this.editor.onDidBlurEditorText(() => {
+        this.editorBlur.emit();
         this.ngZone.runOutsideAngular(() => {
           this.editor.updateOptions({ renderLineHighlight: 'none' });
         });
@@ -57,9 +66,10 @@ export class NotebookCodeEditorComponent implements OnInit, OnChanges, OnDestroy
   initEditor(editor: ICodeEditor) {
     this.editor = editor;
     this.updateEditorOptions();
-    this.autoAdjustEditorHeight();
     this.initEditorListener();
     this.initEditorFocus();
+
+    setTimeout(() => this.autoAdjustEditorHeight());
   }
 
   initEditorFocus() {
@@ -68,22 +78,9 @@ export class NotebookCodeEditorComponent implements OnInit, OnChanges, OnDestroy
     }
   }
 
-  updateValue(value: string) {
+  valueChange(text: string) {
+    this.textChange.emit(text);
     this.autoAdjustEditorHeight();
-    if (this.collaborativeMode) {
-      this.sendPatch();
-    } else {
-      this.startSaveTimer();
-    }
-    // TODO
-  }
-
-  sendPatch() {
-    // TODO
-  }
-
-  startSaveTimer() {
-    // TODO
   }
 
   updateEditorOptions() {
@@ -106,6 +103,10 @@ export class NotebookCodeEditorComponent implements OnInit, OnChanges, OnDestroy
 
   ngOnChanges(changes: SimpleChanges): void {
     this.updateEditorOptions();
+    const { text } = changes;
+    if (text) {
+      this.autoAdjustEditorHeight();
+    }
   }
 
   ngOnDestroy(): void {

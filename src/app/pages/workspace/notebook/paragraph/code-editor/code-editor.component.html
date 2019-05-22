@@ -1,4 +1,4 @@
 <nz-monaco-editor [style.height.px]="height"
-                  [(ngModel)]="paragraph.text"
-                  (ngModelChange)="updateValue($event)"
+                  [ngModel]="text"
+                  (ngModelChange)="valueChange($event)"
                   (nzEditorInitialized)="initEditor($event)"></nz-monaco-editor>
