@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NzTableModule } from 'ng-zorro-antd';
+import { NzCardModule, NzTableModule } from 'ng-zorro-antd';
 import { TableVisualizationComponent } from './table/table-visualization.component';
 import { AreaChartVisualizationComponent } from './area-chart/area-chart-visualization.component';
 import { BarChartVisualizationComponent } from './bar-chart/bar-chart-visualization.component';
@@ -21,6 +21,6 @@ const VisualizationComponents = [
   declarations: [...VisualizationComponents],
   entryComponents: [...VisualizationComponents],
   exports: [...VisualizationComponents],
-  imports: [CommonModule, NzTableModule]
+  imports: [CommonModule, NzTableModule, NzCardModule]
 })
 export class VisualizationModule {}

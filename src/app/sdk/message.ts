@@ -16,7 +16,7 @@ export type SendArgumentsType<K extends keyof MessageDataTypeMap> = MessageDataT
 
 export type ReceiveArgumentsType<
   K extends keyof MessageReceiveDataTypeMap
-> = MessageReceiveDataTypeMap[K] extends undefined ? (data) => void : (data: MessageReceiveDataTypeMap[K]) => void;
+> = MessageReceiveDataTypeMap[K] extends undefined ? () => void : (data?: MessageReceiveDataTypeMap[K]) => void;
 
 export class Message {
   public connectedStatus = false;
