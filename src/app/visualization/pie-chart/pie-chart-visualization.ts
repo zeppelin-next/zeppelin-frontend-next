@@ -33,7 +33,7 @@ export class PieChartVisualization extends Visualization {
   refresh(): void {}
 
   render(data): void {
-    this.tableData = data;
+    this.transformed = data;
     this.componentPortal.attachComponentPortal();
   }
 }

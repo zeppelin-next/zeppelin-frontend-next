@@ -1,9 +1,11 @@
+import { Subject } from 'rxjs';
 import { GraphConfig } from 'zeppelin-sdk';
-import { TableData } from './dataset/table-data';
 import { Setting, Transformation } from './transformation';
 
 export abstract class Visualization {
-  tableData: TableData;
+  // tslint:disable-next-line
+  transformed: any;
+  configChange$ = new Subject<GraphConfig>();
   private active = false;
   private dirty = false;
   constructor(private config: GraphConfig) {}
@@ -13,6 +15,10 @@ export abstract class Visualization {
   abstract refresh(): void;
   abstract destroy(): void;
   abstract getSetting(): Setting;
+
+  configChanged() {
+    return this.configChange$.asObservable();
+  }
 
   activate() {
     if (!this.active || this.dirty) {
@@ -25,6 +31,7 @@ export abstract class Visualization {
 
   deactivate() {
     this.active = false;
+    this.configChange$.complete();
   }
 
   isActive() {

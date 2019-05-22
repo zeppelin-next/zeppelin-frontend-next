@@ -19,12 +19,13 @@ import { VISUALIZATION } from '../visualization-component-portal';
 })
 export class BarChartVisualizationComponent implements OnInit, AfterViewInit {
   @ViewChild('graphEle') graphEle: ElementRef<HTMLDivElement>;
-  tableData;
+  transformed;
   chart: G2.Chart;
+
   constructor(@Inject(VISUALIZATION) public visualization: Visualization) {}
 
   ngOnInit() {
-    this.tableData = this.visualization.tableData;
+    this.transformed = this.visualization.transformed;
   }
 
   ngAfterViewInit() {
@@ -38,7 +39,7 @@ export class BarChartVisualizationComponent implements OnInit, AfterViewInit {
       key = config.keys[0].name;
     }
 
-    this.chart.source(this.tableData);
+    this.chart.source(this.transformed);
     this.chart.scale(key, {
       type: 'cat'
     });

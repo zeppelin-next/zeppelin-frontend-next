@@ -14,6 +14,6 @@ export class TableVisualizationComponent implements OnInit {
   constructor(@Inject(VISUALIZATION) public visualization: Visualization) {}
 
   ngOnInit() {
-    this.tableData = this.visualization.tableData;
+    this.tableData = this.visualization.transformed;
   }
 }
