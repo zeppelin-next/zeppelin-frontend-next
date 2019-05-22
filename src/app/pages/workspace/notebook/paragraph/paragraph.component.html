@@ -18,6 +18,7 @@
                                    (textChange)="textChange($event)"></zeppelin-notebook-code-editor>
     <zeppelin-notebook-result *ngFor="let result of results; index as i"
                               [config]="configs[i]"
+                              (configChange)="onConfigChange($event, i)"
                               [result]="result">
     </zeppelin-notebook-result>
   </div>

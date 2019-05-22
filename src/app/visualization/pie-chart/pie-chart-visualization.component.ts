@@ -19,12 +19,12 @@ import { VISUALIZATION } from '../visualization-component-portal';
 })
 export class PieChartVisualizationComponent implements OnInit, AfterViewInit {
   @ViewChild('graphEle') graphEle: ElementRef<HTMLDivElement>;
-  tableData;
+  transformed;
   chart: G2.Chart;
   constructor(@Inject(VISUALIZATION) public visualization: Visualization) {}
 
   ngOnInit() {
-    this.tableData = this.visualization.tableData;
+    this.transformed = this.visualization.transformed;
   }
 
   ngAfterViewInit() {
@@ -32,7 +32,7 @@ export class PieChartVisualizationComponent implements OnInit, AfterViewInit {
       forceFit: true,
       container: this.graphEle.nativeElement
     });
-    this.chart.source(this.tableData);
+    this.chart.source(this.transformed);
     this.chart.tooltip({
       showTitle: false
     });

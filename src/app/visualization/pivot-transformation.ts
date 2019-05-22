@@ -103,7 +103,6 @@ export class PivotTransformation extends Transformation {
         as: '__percent__'
       });
     }
-
     return dv;
   }
 }

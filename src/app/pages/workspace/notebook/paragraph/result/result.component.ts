@@ -7,9 +7,12 @@ import {
   ElementRef,
   AfterViewInit,
   ViewContainerRef,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { GraphConfig, ParagraphConfigResult, ParagraphIResultsMsgItem } from 'zeppelin-sdk';
+import { MessageService } from 'zeppelin-services';
 import { AreaChartVisualization } from '../../../../../visualization/area-chart/area-chart-visualization';
 import { BarChartVisualization } from '../../../../../visualization/bar-chart/bar-chart-visualization';
 import { TableData } from '../../../../../visualization/dataset/table-data';
@@ -60,6 +63,7 @@ interface Visualizations {
 export class NotebookResultComponent implements OnInit, AfterViewInit {
   @Input() result: ParagraphIResultsMsgItem;
   @Input() config: ParagraphConfigResult;
+  @Output() configChange = new EventEmitter<ParagraphConfigResult>();
   @ViewChild('graphEle') graphEle: ElementRef<HTMLDivElement>;
   @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
 
@@ -112,8 +116,14 @@ export class NotebookResultComponent implements OnInit, AfterViewInit {
     }
     this.tableData.loadParagraphResult(this.result);
     const transformation = instance.getTransformation();
+    transformation.setTableData(this.tableData);
     const transformed = transformation.transform(this.tableData);
     instance.render(transformed);
+    instance.configChanged().subscribe(config =>
+      this.configChange.emit({
+        graph: config
+      })
+    );
     this.cdr.markForCheck();
   }
 

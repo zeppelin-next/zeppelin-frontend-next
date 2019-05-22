@@ -5,6 +5,7 @@ import {
   OP,
   ParagraphConfig,
   ParagraphEditorSetting,
+  ParagraphConfigResult,
   ParagraphItem
 } from 'zeppelin-sdk';
 import { MessageService, NoteStatusService, ParagraphStatus } from 'zeppelin-services';
@@ -272,6 +273,10 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     }
   }
 
+  onConfigChange(configResult: ParagraphConfigResult, index: number) {
+    this.paragraph.config.results[index] = configResult;
+    this.commitParagraph();
+  }
   constructor(
     private noteStatusService: NoteStatusService,
     public messageService: MessageService,
