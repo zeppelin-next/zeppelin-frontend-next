@@ -75,6 +75,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
         this.paragraph.text = '';
       }
       this.paragraph.text = this.diffMatchPatch.patch_apply(patch, this.paragraph.text)[0];
+      this.originalText = this.paragraph.text;
       this.cdr.markForCheck();
     }
   }
@@ -109,6 +110,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
 
   textChange(text: string) {
     this.dirtyText = text;
+    this.paragraph.text = text;
     if (this.dirtyText !== this.originalText) {
       if (this.collaborativeMode) {
         this.sendPatch();
@@ -118,7 +120,12 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     }
   }
 
-  sendPatch() {}
+  sendPatch() {
+    this.originalText = this.originalText ? this.originalText : '';
+    const patch = this.diffMatchPatch.patch_make(this.originalText, this.dirtyText).toString();
+    this.originalText = this.dirtyText;
+    this.messageService.patchParagraph(this.paragraph.id, this.note.id, patch);
+  }
 
   startSaveTimer() {}
 
@@ -289,6 +296,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     if (!this.paragraph.config) {
       this.paragraph.config = {};
     }
+    this.originalText = this.paragraph.text;
     this.isNoteRunning = this.noteStatusService.isNoteRunning(this.note);
     this.isParagraphRunning = this.noteStatusService.isParagraphRunning(this.paragraph);
     this.noteVarShareService.set(this.paragraph.id + '_paragraphScope', this);

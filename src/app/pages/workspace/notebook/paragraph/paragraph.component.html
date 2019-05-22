@@ -9,6 +9,7 @@
                             (valueUpdate)="setTitle($event)"></zeppelin-elastic-input>
     <zeppelin-notebook-code-editor *ngIf="!paragraph.config.editorHide && !viewOnly"
                                    [text]="paragraph.text"
+                                   [dirty]="dirtyText !== originalText && dirtyText !== undefined"
                                    [collaborativeMode]="collaborativeMode"
                                    [focus]="paragraph.focus"
                                    [lineNumbers]="paragraph.config.lineNumbers"
@@ -25,3 +26,4 @@
                                    *ngIf="!viewOnly && !revisionView && last"
                                    (addParagraph)="insertParagraph('below')"></zeppelin-notebook-add-paragraph>
 </div>
+

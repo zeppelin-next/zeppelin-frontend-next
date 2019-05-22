@@ -32,6 +32,7 @@ export class NotebookCodeEditorComponent implements OnInit, OnChanges, OnDestroy
   @Input() focus = false;
   @Input() collaborativeMode = false;
   @Input() text: string;
+  @Input() dirty = false;
   @Output() textChange = new EventEmitter<string>();
   @Output() editorBlur = new EventEmitter<void>();
   private editor: ICodeEditor;
@@ -68,8 +69,7 @@ export class NotebookCodeEditorComponent implements OnInit, OnChanges, OnDestroy
     this.updateEditorOptions();
     this.initEditorListener();
     this.initEditorFocus();
-
-    setTimeout(() => this.autoAdjustEditorHeight());
+    this.autoAdjustEditorHeight();
   }
 
   initEditorFocus() {

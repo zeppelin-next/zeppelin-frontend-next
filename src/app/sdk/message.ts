@@ -122,6 +122,7 @@ export class Message {
       data: data as MessageDataTypeMap[K],
       ...this.ticket
     };
+    console.log('Send:', message);
 
     this.ws.next(message);
     this.sent$.next(message);

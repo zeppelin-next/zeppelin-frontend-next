@@ -1,8 +1,19 @@
+@import "theme-mixin";
+
 :host {
   display: block;
+}
+
+.themeMixin({
 
   nz-monaco-editor {
     display: block;
+    border-left: 4px solid @border-color-split;
     overflow: hidden;
+
+    &.dirty {
+      border-left-color: @warning-color;
+    }
   }
-}
+
+});
