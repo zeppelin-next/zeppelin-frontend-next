@@ -76,9 +76,18 @@ export interface GetInterpreterBindings {
   noteId: string;
 }
 
-export interface EditorSetting {
+export interface EditorSettingSend {
   paragraphId: string;
   magic: string;
+}
+
+export interface EditorSettingReceived {
+  paragraphId: string;
+  editor: {
+    completionSupport: boolean;
+    editOnDblClick: boolean;
+    language: string;
+  };
 }
 
 export interface NoteRevisionForCompare {

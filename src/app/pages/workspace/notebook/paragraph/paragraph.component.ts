@@ -1,4 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  ChangeDetectorRef,
+  Output,
+  EventEmitter
+} from '@angular/core';
 import {
   MessageReceiveDataTypeMap,
   Note,
@@ -6,7 +14,8 @@ import {
   ParagraphConfig,
   ParagraphEditorSetting,
   ParagraphConfigResult,
-  ParagraphItem
+  ParagraphItem,
+  InterpreterBindingItem
 } from 'zeppelin-sdk';
 import { MessageService, NoteStatusService, ParagraphStatus } from 'zeppelin-services';
 import { NoteVarShareService } from '../../../../services/note-var-share.service';
@@ -28,6 +37,8 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   @Input() last: boolean;
   @Input() collaborativeMode = false;
   @Input() first: boolean;
+  @Input() interpreterBindings: InterpreterBindingItem[] = [];
+  @Output() saveNoteTimer = new EventEmitter();
   dirtyText: string;
   originalText: string;
   isNoteRunning = false;
@@ -41,6 +52,14 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   noteRunningStatusChange(data: MessageReceiveDataTypeMap[OP.NOTE_RUNNING_STATUS]) {
     this.isNoteRunning = data.status;
     this.cdr.markForCheck();
+  }
+
+  @MessageListener(OP.EDITOR_SETTING)
+  getEditorSetting(data: MessageReceiveDataTypeMap[OP.EDITOR_SETTING]) {
+    if (this.paragraph.id === data.paragraphId) {
+      this.paragraph.config.editorSetting = { ...this.paragraph.config.editorSetting, ...data.editor };
+      this.cdr.markForCheck();
+    }
   }
 
   @MessageListener(OP.PARAGRAPH)
@@ -62,6 +81,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
             }
           }
         }
+        this.cdr.markForCheck();
       });
       this.cdr.markForCheck();
     }
@@ -106,10 +126,11 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
         // this broadcast will focus to the newly inserted paragraph
         // TODO
       }
+      this.cdr.markForCheck();
     }
   }
 
-  textChange(text: string) {
+  textChanged(text: string) {
     this.dirtyText = text;
     this.paragraph.text = text;
     if (this.dirtyText !== this.originalText) {
@@ -128,7 +149,9 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     this.messageService.patchParagraph(this.paragraph.id, this.note.id, patch);
   }
 
-  startSaveTimer() {}
+  startSaveTimer() {
+    this.saveNoteTimer.emit();
+  }
 
   saveParagraph() {
     const dirtyText = this.paragraph.text;
@@ -138,6 +161,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     this.commitParagraph();
     this.originalText = dirtyText;
     this.dirtyText = undefined;
+    this.cdr.markForCheck();
   }
 
   updateAllScopeTexts(oldPara: ParagraphItem, newPara: ParagraphItem) {
@@ -158,6 +182,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
         this.originalText = newPara.text;
       }
     }
+    this.cdr.markForCheck();
   }
 
   updateParagraphObjectWhenUpdated(newPara: ParagraphItem) {
@@ -226,11 +251,13 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
       return;
     }
     this.messageService.insertParagraph(newIndex);
+    this.cdr.markForCheck();
   }
 
   setTitle(title: string) {
     this.paragraph.title = title;
     this.commitParagraph();
+    this.cdr.markForCheck();
   }
 
   commitParagraph() {
@@ -283,7 +310,9 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   onConfigChange(configResult: ParagraphConfigResult, index: number) {
     this.paragraph.config.results[index] = configResult;
     this.commitParagraph();
+    this.cdr.markForCheck();
   }
+
   constructor(
     private noteStatusService: NoteStatusService,
     public messageService: MessageService,

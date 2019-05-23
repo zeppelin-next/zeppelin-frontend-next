@@ -13,6 +13,17 @@ export interface InterpreterItem {
   option: Option;
 }
 
+export interface InterpreterBindings {
+  interpreterBindings: InterpreterBindingItem[];
+}
+
+export interface InterpreterBindingItem {
+  id: string;
+  name: string;
+  selected: boolean;
+  interpreters: InterpreterGroupItem[];
+}
+
 interface Properties {
   [name: string]: {
     name: string;

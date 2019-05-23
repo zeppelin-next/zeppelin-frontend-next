@@ -1,4 +1,4 @@
-<div class="paragraph-container" *ngIf="paragraph" [attr.id]="paragraph.id + '_container'">
+<div class="paragraph-container" *ngIf="paragraph">
   <zeppelin-notebook-add-paragraph *ngIf="!revisionView"
                                    [disabled]="isNoteRunning"
                                    (addParagraph)="insertParagraph('above')"></zeppelin-notebook-add-paragraph>
@@ -12,11 +12,13 @@
                                    [dirty]="dirtyText !== originalText && dirtyText !== undefined"
                                    [collaborativeMode]="collaborativeMode"
                                    [focus]="paragraph.focus"
+                                   [pid]="paragraph.id"
+                                   [interpreterBindings]="interpreterBindings"
                                    [lineNumbers]="paragraph.config.lineNumbers"
                                    [readOnly]="isNoteRunning || isParagraphRunning || revisionView"
                                    [language]="paragraph.config.editorSetting?.language"
                                    (editorBlur)="saveParagraph()"
-                                   (textChange)="textChange($event)"></zeppelin-notebook-code-editor>
+                                   (textChanged)="textChanged($event)"></zeppelin-notebook-code-editor>
     <zeppelin-notebook-result *ngFor="let result of results; index as i"
                               [config]="configs[i]"
                               (configChange)="onConfigChange($event, i)"
@@ -27,4 +29,3 @@
                                    *ngIf="!viewOnly && !revisionView && last"
                                    (addParagraph)="insertParagraph('below')"></zeppelin-notebook-add-paragraph>
 </div>
-

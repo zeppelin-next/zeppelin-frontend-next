@@ -4,7 +4,8 @@ import {
   CloneNote,
   CollaborativeModeStatus,
   DeleteNote,
-  EditorSetting,
+  EditorSettingReceived,
+  EditorSettingSend,
   FolderRename,
   GetInterpreterBindings,
   GetNode,
@@ -55,7 +56,7 @@ import {
 import { ListNoteJobs, ListUpdateNoteJobs } from './message-job.interface';
 
 import { OP } from './message-operator.interface';
-import { InterpreterSetting } from './message-interpreter.interface';
+import { InterpreterBindings, InterpreterSetting } from './message-interpreter.interface';
 
 export interface MessageReceiveDataTypeMap {
   [OP.NOTES_INFO]: NotesInfo;
@@ -67,7 +68,7 @@ export interface MessageReceiveDataTypeMap {
   [OP.LIST_UPDATE_NOTE_JOBS]: ListUpdateNoteJobs;
   [OP.INTERPRETER_SETTINGS]: InterpreterSetting;
   [OP.LIST_REVISION_HISTORY]: ListRevision;
-  [OP.INTERPRETER_BINDINGS]: never; // TODO
+  [OP.INTERPRETER_BINDINGS]: InterpreterBindings;
   [OP.COLLABORATIVE_MODE_STATUS]: CollaborativeModeStatus;
   [OP.SET_NOTE_REVISION]: SetNoteRevisionStatus;
   [OP.PARAGRAPH_ADDED]: ParagraphAdded;
@@ -77,6 +78,7 @@ export interface MessageReceiveDataTypeMap {
   [OP.PARAGRAPH]: UpdateParagraph;
   [OP.PATCH_PARAGRAPH]: PatchParagraphSend;
   [OP.PARAGRAPH_REMOVED]: ParagraphRemoved;
+  [OP.EDITOR_SETTING]: EditorSettingReceived;
 }
 
 export interface MessageDataTypeMap {
@@ -134,7 +136,7 @@ export interface MessageDataTypeMap {
   [OP.LIST_REVISION_HISTORY]: ListRevisionHistory;
   [OP.NOTE_REVISION]: NoteRevision;
   [OP.NOTE_REVISION_FOR_COMPARE]: NoteRevisionForCompare;
-  [OP.EDITOR_SETTING]: EditorSetting;
+  [OP.EDITOR_SETTING]: EditorSettingSend;
   [OP.LIST_NOTE_JOBS]: undefined;
   [OP.UNSUBSCRIBE_UPDATE_NOTE_JOBS]: undefined;
   [OP.LIST_UPDATE_NOTE_JOBS]: undefined;

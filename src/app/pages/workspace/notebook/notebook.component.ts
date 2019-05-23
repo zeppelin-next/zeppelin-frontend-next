@@ -1,13 +1,22 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChildren
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, NoteStatusService, SecurityService, TicketService } from 'zeppelin-services';
 import { Subject } from 'rxjs';
 import { distinctUntilKeyChanged, takeUntil } from 'rxjs/operators';
 import { NoteVarShareService } from '../../../services/note-var-share.service';
 import { MessageListener, MessageListenersManager } from 'zeppelin-core';
-import { MessageReceiveDataTypeMap, Note, OP, RevisionListItem } from 'zeppelin-sdk';
+import { InterpreterBindingItem, MessageReceiveDataTypeMap, Note, OP, RevisionListItem } from 'zeppelin-sdk';
 import { isNil } from 'lodash';
 import { Permissions } from 'zeppelin-interfaces';
+import { NotebookParagraphComponent } from './paragraph/paragraph.component';
 
 @Component({
   selector: 'zeppelin-notebook',
@@ -16,6 +25,7 @@ import { Permissions } from 'zeppelin-interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotebookComponent extends MessageListenersManager implements OnInit, OnDestroy {
+  @ViewChildren(NotebookParagraphComponent) listOfNotebookParagraphComponent: QueryList<NotebookParagraphComponent>;
   private destroy$ = new Subject();
   note: Note['note'];
   permissions: Permissions;
@@ -25,6 +35,9 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
   collaborativeMode = false;
   revisionView = false;
   collaborativeModeUsers = [];
+  isNoteDirty = false;
+  saveTimer = null;
+  interpreterBindings: InterpreterBindingItem[] = [];
   activatedExtension: 'interpreter' | 'permissions' | 'revisions' | 'hide' = 'hide';
 
   @MessageListener(OP.NOTE)
@@ -47,6 +60,15 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
       }
       this.cdr.markForCheck();
     }
+  }
+
+  @MessageListener(OP.INTERPRETER_BINDINGS)
+  loadInterpreterBindings(data: MessageReceiveDataTypeMap[OP.INTERPRETER_BINDINGS]) {
+    this.interpreterBindings = data.interpreterBindings;
+    if (!this.interpreterBindings.some(item => item.selected)) {
+      this.activatedExtension = 'interpreter';
+    }
+    this.cdr.markForCheck();
   }
 
   @MessageListener(OP.PARAGRAPH_REMOVED)
@@ -76,14 +98,6 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
     // TODO focus on paragraph
   }
 
-  focus() {
-    console.log('focus');
-  }
-
-  blur() {
-    console.log('blur');
-  }
-
   @MessageListener(OP.SAVE_NOTE_FORMS)
   saveNoteForms(data: MessageReceiveDataTypeMap[OP.SAVE_NOTE_FORMS]) {
     this.note.noteForms = data.formsData.forms;
@@ -106,6 +120,31 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
   setNoteRevision() {
     const { noteId } = this.activatedRoute.snapshot.params;
     this.router.navigate(['/notebook', noteId]).then();
+  }
+
+  killSaveTimer() {
+    if (this.saveTimer) {
+      clearTimeout(this.saveTimer);
+      this.saveTimer = null;
+    }
+  }
+
+  startSaveTimer() {
+    this.killSaveTimer();
+    this.isNoteDirty = true;
+    this.saveTimer = setTimeout(() => {
+      this.saveNote();
+    }, 10000);
+  }
+
+  saveNote() {
+    if (this.note && this.note.paragraphs && this.listOfNotebookParagraphComponent) {
+      this.listOfNotebookParagraphComponent.toArray().forEach(p => {
+        p.saveParagraph();
+      });
+      this.isNoteDirty = null;
+      this.cdr.markForCheck();
+    }
   }
 
   getInterpreterBindings() {
@@ -220,6 +259,8 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
 
   ngOnDestroy(): void {
     super.ngOnDestroy();
+    this.killSaveTimer();
+    this.saveNote();
     this.destroy$.next();
     this.destroy$.complete();
   }

@@ -14,13 +14,14 @@
   </div>
   <div class="paragraph-area">
     <zeppelin-notebook-paragraph *ngFor="let p of note.paragraphs;let first = first; let last = last;"
-                                 [attr.id]="p.id + '_paragraphColumn_main'"
                                  [paragraph]="p"
                                  [note]="note"
+                                 [interpreterBindings]="interpreterBindings"
                                  [collaborativeMode]="collaborativeMode"
                                  [viewOnly]="viewOnly"
                                  [revisionView]="revisionView"
                                  [first]="first"
-                                 [last]="last"></zeppelin-notebook-paragraph>
+                                 [last]="last"
+                                 (saveNoteTimer)="startSaveTimer()"></zeppelin-notebook-paragraph>
   </div>
 </ng-container>

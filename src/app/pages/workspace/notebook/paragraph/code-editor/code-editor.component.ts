@@ -14,7 +14,8 @@ import {
 } from '@angular/core';
 import ICodeEditor = monaco.editor.ICodeEditor;
 import IDisposable = monaco.IDisposable;
-import { ParagraphItem } from 'zeppelin-sdk';
+import { InterpreterBindingItem } from 'zeppelin-sdk';
+import { MessageService } from 'zeppelin-services';
 
 @Component({
   selector: 'zeppelin-notebook-code-editor',
@@ -33,18 +34,23 @@ export class NotebookCodeEditorComponent implements OnInit, OnChanges, OnDestroy
   @Input() collaborativeMode = false;
   @Input() text: string;
   @Input() dirty = false;
-  @Output() textChange = new EventEmitter<string>();
+  @Input() interpreterBindings: InterpreterBindingItem[] = [];
+  @Input() pid: string;
+  @Output() textChanged = new EventEmitter<string>();
   @Output() editorBlur = new EventEmitter<void>();
   private editor: ICodeEditor;
   private monacoDisposables: IDisposable[] = [];
   height = 0;
+  interpreterName: string;
 
   autoAdjustEditorHeight() {
     if (this.editor) {
-      this.height =
-        this.editor.getTopForLineNumber(Number.MAX_SAFE_INTEGER) + this.editor.getConfiguration().lineHeight * 2;
-      this.editor.layout();
-      this.cdr.markForCheck();
+      this.ngZone.run(() => {
+        this.height =
+          this.editor.getTopForLineNumber(Number.MAX_SAFE_INTEGER) + this.editor.getConfiguration().lineHeight * 2;
+        this.editor.layout();
+        this.cdr.markForCheck();
+      });
     }
   }
 
@@ -60,15 +66,30 @@ export class NotebookCodeEditorComponent implements OnInit, OnChanges, OnDestroy
         this.ngZone.runOutsideAngular(() => {
           this.editor.updateOptions({ renderLineHighlight: 'none' });
         });
+      }),
+      this.editor.onDidChangeModelContent(() => {
+        this.autoAdjustEditorHeight();
+        const text = this.editor.getModel().getValue();
+        this.textChanged.emit(text);
+        this.text = text;
+        this.setParagraphMode(true);
       })
     );
   }
 
-  initEditor(editor: ICodeEditor) {
+  setEditorValue() {
+    if (this.editor && this.editor.getModel().getValue() !== this.text) {
+      this.editor.getModel().setValue(this.text);
+    }
+  }
+
+  initializedEditor(editor: ICodeEditor) {
     this.editor = editor;
     this.updateEditorOptions();
+    this.setParagraphMode();
     this.initEditorListener();
     this.initEditorFocus();
+    this.setEditorValue();
     this.autoAdjustEditorHeight();
   }
 
@@ -76,11 +97,6 @@ export class NotebookCodeEditorComponent implements OnInit, OnChanges, OnDestroy
     if (this.focus) {
       this.editor.focus();
     }
-  }
-
-  valueChange(text: string) {
-    this.textChange.emit(text);
-    this.autoAdjustEditorHeight();
   }
 
   updateEditorOptions() {
@@ -93,19 +109,54 @@ export class NotebookCodeEditorComponent implements OnInit, OnChanges, OnDestroy
         glyphMargin: false,
         folding: false
       });
-      monaco.editor.setModelLanguage(this.editor.getModel(), this.language);
     }
   }
 
-  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone) {}
+  getInterpreterName(paragraphText: string) {
+    const match = /^\s*%(.+?)(\s|\()/g.exec(paragraphText);
+    if (match) {
+      return match[1].trim();
+      // get default interpreter name if paragraph text doesn't start with '%'
+      // TODO(mina): dig into the cause what makes interpreterBindings to have no element
+    } else if (this.interpreterBindings && this.interpreterBindings.length !== 0) {
+      return this.interpreterBindings[0].name;
+    }
+    return '';
+  }
+
+  setParagraphMode(changed = false) {
+    if (this.editor && !changed) {
+      if (this.language) {
+        monaco.editor.setModelLanguage(this.editor.getModel(), this.language);
+      }
+    } else {
+      const interpreterName = this.getInterpreterName(this.text);
+      if (this.interpreterName !== interpreterName) {
+        this.interpreterName = interpreterName;
+        this.getEditorSetting(interpreterName);
+      }
+    }
+  }
+
+  getEditorSetting(interpreterName: string) {
+    this.messageService.editorSetting(this.pid, interpreterName);
+  }
+
+  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private messageService: MessageService) {}
 
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.updateEditorOptions();
-    const { text } = changes;
+    const { text, interpreterBindings, language, readOnly, focus, lineNumbers } = changes;
+    if (readOnly || focus || lineNumbers) {
+      this.updateEditorOptions();
+    }
     if (text) {
+      this.setEditorValue();
       this.autoAdjustEditorHeight();
+    }
+    if (interpreterBindings || language) {
+      this.setParagraphMode();
     }
   }
 
