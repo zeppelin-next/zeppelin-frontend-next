@@ -59,6 +59,8 @@ import { ListNoteJobs, ListUpdateNoteJobs } from './message-job.interface';
 import { OP } from './message-operator.interface';
 import { InterpreterBindings, InterpreterSetting } from './message-interpreter.interface';
 
+export type MixMessageDataTypeMap = MessageSendDataTypeMap & MessageReceiveDataTypeMap;
+
 export interface MessageReceiveDataTypeMap {
   [OP.NOTES_INFO]: NotesInfo;
   [OP.CONFIGURATIONS_INFO]: ConfigurationsInfo;
@@ -83,20 +85,7 @@ export interface MessageReceiveDataTypeMap {
   [OP.PROGRESS]: Progress;
 }
 
-export interface MessageDataTypeMap {
-  [OP.NOTES_INFO]: never;
-  [OP.CONFIGURATIONS_INFO]: never;
-  [OP.NOTE]: never;
-  [OP.ERROR_INFO]: never;
-  [OP.INTERPRETER_SETTINGS]: never;
-  [OP.INTERPRETER_BINDINGS]: never;
-  [OP.COLLABORATIVE_MODE_STATUS]: never;
-  [OP.PARAGRAPH_ADDED]: never;
-  [OP.NOTE_RUNNING_STATUS]: never;
-  [OP.PARAGRAPH]: never;
-  [OP.PARAGRAPH_REMOVED]: never;
-  [OP.PROGRESS]: never;
-
+export interface MessageSendDataTypeMap {
   [OP.PING]: undefined;
   [OP.LIST_CONFIGURATIONS]: undefined;
   [OP.LIST_NOTES]: undefined;

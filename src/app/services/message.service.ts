@@ -1,7 +1,7 @@
 import { Inject, Injectable, OnDestroy, Optional } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  MessageDataTypeMap,
+  MessageSendDataTypeMap,
   MessageReceiveDataTypeMap,
   NoteConfig,
   PersonalizedMode,
@@ -48,7 +48,7 @@ export class MessageService extends Message implements OnDestroy {
     return super.closed();
   }
 
-  sent(): Observable<WebSocketMessage<keyof MessageDataTypeMap>> {
+  sent(): Observable<WebSocketMessage<keyof MessageSendDataTypeMap>> {
     return super.sent();
   }
 
@@ -56,7 +56,7 @@ export class MessageService extends Message implements OnDestroy {
     return super.received();
   }
 
-  send<K extends keyof MessageDataTypeMap>(...args: SendArgumentsType<K>): void {
+  send<K extends keyof MessageSendDataTypeMap>(...args: SendArgumentsType<K>): void {
     super.send(...args);
   }
 

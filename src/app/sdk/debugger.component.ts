@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MessageListener, MessageListenersManager } from 'zeppelin-core';
-import { MessageReceiveDataTypeMap } from 'zeppelin-sdk';
+import { MessageReceiveDataTypeMap, MixMessageDataTypeMap } from 'zeppelin-sdk';
 import { MessageService } from 'zeppelin-services';
-import { WebSocketMessage, MessageDataTypeMap, ParagraphItem, OP } from 'zeppelin-sdk';
+import { WebSocketMessage, ParagraphItem, OP } from 'zeppelin-sdk';
 
 @Component({
   selector: 'zeppelin-message-debugger',
@@ -13,7 +13,7 @@ export class DebuggerComponent extends MessageListenersManager {
   status = false;
   logs: Array<{
     type: string;
-    event: WebSocketMessage<keyof MessageDataTypeMap>;
+    event: WebSocketMessage<keyof MixMessageDataTypeMap>;
   }> = [];
 
   logIndex = 0;

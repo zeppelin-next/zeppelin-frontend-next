@@ -1,7 +1,11 @@
 import { interval, Observable, Subject, Subscription } from 'rxjs';
 import { delay, filter, map, mergeMap, retryWhen, take } from 'rxjs/operators';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { MessageReceiveDataTypeMap, MessageDataTypeMap } from './interfaces/message-data-type-map.interface';
+import {
+  MessageReceiveDataTypeMap,
+  MessageSendDataTypeMap,
+  MixMessageDataTypeMap
+} from './interfaces/message-data-type-map.interface';
 import { SendNote, NoteConfig, PersonalizedMode } from './interfaces/message-notebook.interface';
 import { OP } from './interfaces/message-operator.interface';
 import { SendParagraph, ParagraphConfig, ParagraphParams } from './interfaces/message-paragraph.interface';
@@ -10,9 +14,9 @@ import { Ticket } from './interfaces/message-common.interface';
 
 export type ArgumentsType<T> = T extends (...args: infer U) => void ? U : never;
 
-export type SendArgumentsType<K extends keyof MessageDataTypeMap> = MessageDataTypeMap[K] extends undefined
+export type SendArgumentsType<K extends keyof MessageSendDataTypeMap> = MessageSendDataTypeMap[K] extends undefined
   ? ArgumentsType<(op: K) => void>
-  : ArgumentsType<(op: K, data: MessageDataTypeMap[K]) => void>;
+  : ArgumentsType<(op: K, data: MessageSendDataTypeMap[K]) => void>;
 
 export type ReceiveArgumentsType<
   K extends keyof MessageReceiveDataTypeMap
@@ -21,10 +25,10 @@ export type ReceiveArgumentsType<
 export class Message {
   public connectedStatus = false;
   public connectedStatus$ = new Subject<boolean>();
-  private ws: WebSocketSubject<WebSocketMessage<keyof MessageDataTypeMap>>;
+  private ws: WebSocketSubject<WebSocketMessage<keyof MixMessageDataTypeMap>>;
   private open$ = new Subject<Event>();
   private close$ = new Subject<CloseEvent>();
-  private sent$ = new Subject<WebSocketMessage<keyof MessageDataTypeMap>>();
+  private sent$ = new Subject<WebSocketMessage<keyof MessageSendDataTypeMap>>();
   private received$ = new Subject<WebSocketMessage<keyof MessageReceiveDataTypeMap>>();
   private pingIntervalSubscription = new Subscription();
   private wsUrl: string;
@@ -50,7 +54,7 @@ export class Message {
     this.connect();
   }
 
-  getWsInstance(): WebSocketSubject<WebSocketMessage<keyof MessageDataTypeMap>> {
+  getWsInstance(): WebSocketSubject<WebSocketMessage<keyof MixMessageDataTypeMap>> {
     return this.ws;
   }
 
@@ -107,7 +111,7 @@ export class Message {
     return this.close$.asObservable();
   }
 
-  sent(): Observable<WebSocketMessage<keyof MessageDataTypeMap>> {
+  sent(): Observable<WebSocketMessage<keyof MessageSendDataTypeMap>> {
     return this.sent$.asObservable();
   }
 
@@ -115,11 +119,11 @@ export class Message {
     return this.received$.asObservable();
   }
 
-  send<K extends keyof MessageDataTypeMap>(...args: SendArgumentsType<K>): void {
+  send<K extends keyof MessageSendDataTypeMap>(...args: SendArgumentsType<K>): void {
     const [op, data] = args;
     const message: WebSocketMessage<K> = {
       op,
-      data: data as MessageDataTypeMap[K],
+      data: data as MessageSendDataTypeMap[K],
       ...this.ticket
     };
     console.log('Send:', message);
