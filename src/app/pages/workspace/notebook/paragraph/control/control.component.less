@@ -1,0 +1,25 @@
+@import "theme-mixin";
+
+:host {
+  display: flex;
+}
+
+.themeMixin({
+  .status {
+    color: @text-color-secondary;
+    margin-right: 12px;
+  }
+  .progress {
+    color: @text-color-secondary;
+    margin-right: 12px;
+  }
+
+  a {
+    margin-left: 8px;
+    color: @text-color-secondary;
+
+    &.operate {
+      color: @primary-color;
+    }
+  }
+});

@@ -21,7 +21,8 @@ import {
   NzButtonModule,
   NzAlertModule,
   NzSelectModule,
-  NzMessageModule
+  NzMessageModule,
+  NzProgressModule
 } from 'ng-zorro-antd';
 import { RouterModule } from '@angular/router';
 import { AboutZeppelinComponent } from './about-zeppelin/about-zeppelin.component';
@@ -73,7 +74,8 @@ const PIPES = [HumanizeBytesPipe];
     NzTabsModule,
     NzUploadModule,
     NzSelectModule,
-    NzAlertModule
+    NzAlertModule,
+    NzProgressModule
   ]
 })
 export class ShareModule {}

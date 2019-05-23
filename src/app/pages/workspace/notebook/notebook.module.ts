@@ -32,6 +32,7 @@ import { PortalModule } from '@angular/cdk/portal';
 import { VisualizationModule } from 'src/app/visualization/visualization.module';
 import { NotebookParagraphProgressComponent } from './paragraph/progress/progress.component';
 import { NotebookParagraphFooterComponent } from './paragraph/footer/footer.component';
+import { NotebookParagraphControlComponent } from './paragraph/control/control.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { NotebookParagraphFooterComponent } from './paragraph/footer/footer.comp
     NotebookParagraphCodeEditorComponent,
     NotebookParagraphResultComponent,
     NotebookParagraphProgressComponent,
-    NotebookParagraphFooterComponent
+    NotebookParagraphFooterComponent,
+    NotebookParagraphControlComponent
   ],
   imports: [
     CommonModule,

@@ -7,6 +7,8 @@
                             [value]="paragraph.title"
                             [min]="true"
                             (valueUpdate)="setTitle($event)"></zeppelin-elastic-input>
+    <zeppelin-notebook-paragraph-control [status]="paragraph.status"
+                                         [progress]="progress"></zeppelin-notebook-paragraph-control>
     <zeppelin-notebook-paragraph-code-editor *ngIf="!paragraph.config.editorHide && !viewOnly"
                                              [text]="paragraph.text"
                                              [dirty]="dirtyText !== originalText && dirtyText !== undefined"
@@ -20,7 +22,7 @@
                                              (editorBlur)="saveParagraph()"
                                              (textChanged)="textChanged($event)"></zeppelin-notebook-paragraph-code-editor>
     <zeppelin-notebook-paragraph-progress *ngIf="paragraph.status === 'RUNNING'"
-                                          [pid]="paragraph.id"></zeppelin-notebook-paragraph-progress>
+                                          [progress]="progress"></zeppelin-notebook-paragraph-progress>
     <zeppelin-notebook-paragraph-result *ngFor="let result of results; index as i"
                                         [config]="configs[i]"
                                         (configChange)="onConfigChange($event, i)"

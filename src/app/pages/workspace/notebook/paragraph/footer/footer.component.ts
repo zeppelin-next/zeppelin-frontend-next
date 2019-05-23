@@ -48,12 +48,14 @@ export class NotebookParagraphFooterComponent implements OnChanges {
   }
 
   getElapsedTime() {
-    return `Started ${distanceInWordsToNow(this.dateStarted)}.`;
+    return `Started ${distanceInWordsToNow(this.dateStarted)} ago.`;
   }
 
   constructor() {}
 
   ngOnChanges() {
+    // TODO dateStarted undefined after start
+    console.log(this.dateStarted);
     this.executionTime = this.getExecutionTime();
     this.elapsedTime = this.getElapsedTime();
   }

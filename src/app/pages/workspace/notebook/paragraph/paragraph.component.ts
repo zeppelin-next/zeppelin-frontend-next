@@ -5,7 +5,8 @@ import {
   Input,
   ChangeDetectorRef,
   Output,
-  EventEmitter
+  EventEmitter,
+  OnChanges
 } from '@angular/core';
 import {
   MessageReceiveDataTypeMap,
@@ -29,7 +30,7 @@ import DiffMatchPatch from 'diff-match-patch';
   styleUrls: ['./paragraph.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotebookParagraphComponent extends MessageListenersManager implements OnInit {
+export class NotebookParagraphComponent extends MessageListenersManager implements OnInit, OnChanges {
   @Input() paragraph: ParagraphItem;
   @Input() note: Note['note'];
   @Input() revisionView: boolean;
@@ -46,7 +47,16 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   isParagraphRunning = false;
   results = [];
   configs = {};
+  progress = 0;
   editorSetting: ParagraphEditorSetting = {};
+
+  @MessageListener(OP.PROGRESS)
+  onProgress(data: MessageReceiveDataTypeMap[OP.PROGRESS]) {
+    if (data.id === this.paragraph.id) {
+      this.progress = data.progress;
+      this.cdr.markForCheck();
+    }
+  }
 
   @MessageListener(OP.NOTE_RUNNING_STATUS)
   noteRunningStatusChange(data: MessageReceiveDataTypeMap[OP.NOTE_RUNNING_STATUS]) {
@@ -335,5 +345,8 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     this.isParagraphRunning = this.noteStatusService.isParagraphRunning(this.paragraph);
     this.noteVarShareService.set(this.paragraph.id + '_paragraphScope', this);
     this.initializeDefault(this.paragraph.config);
+  }
+  ngOnChanges(): void {
+    this.isNoteRunning = this.noteStatusService.isNoteRunning(this.note);
   }
 }
