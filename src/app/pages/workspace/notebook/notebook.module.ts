@@ -16,6 +16,7 @@ import {
   NzNoAnimationModule,
   NzPopconfirmModule,
   NzPopoverModule,
+  NzProgressModule,
   NzToolTipModule
 } from 'ng-zorro-antd';
 import { FormsModule } from '@angular/forms';
@@ -25,10 +26,12 @@ import { NotebookRevisionsComparatorComponent } from './revisions-comparator/rev
 import { NotebookParagraphComponent } from './paragraph/paragraph.component';
 import { NotebookAddParagraphComponent } from './add-paragraph/add-paragraph.component';
 import { NzMonacoEditorModule } from '@ng-zorro/ng-plus/monaco-editor';
-import { NotebookCodeEditorComponent } from './paragraph/code-editor/code-editor.component';
-import { NotebookResultComponent } from './paragraph/result/result.component';
+import { NotebookParagraphCodeEditorComponent } from './paragraph/code-editor/code-editor.component';
+import { NotebookParagraphResultComponent } from './paragraph/result/result.component';
 import { PortalModule } from '@angular/cdk/portal';
 import { VisualizationModule } from 'src/app/visualization/visualization.module';
+import { NotebookParagraphProgressComponent } from './paragraph/progress/progress.component';
+import { NotebookParagraphFooterComponent } from './paragraph/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -39,8 +42,10 @@ import { VisualizationModule } from 'src/app/visualization/visualization.module'
     NotebookRevisionsComparatorComponent,
     NotebookParagraphComponent,
     NotebookAddParagraphComponent,
-    NotebookCodeEditorComponent,
-    NotebookResultComponent
+    NotebookParagraphCodeEditorComponent,
+    NotebookParagraphResultComponent,
+    NotebookParagraphProgressComponent,
+    NotebookParagraphFooterComponent
   ],
   imports: [
     CommonModule,
@@ -61,7 +66,8 @@ import { VisualizationModule } from 'src/app/visualization/visualization.module'
     FormsModule,
     NzDividerModule,
     NzCheckboxModule,
-    NzMonacoEditorModule
+    NzMonacoEditorModule,
+    NzProgressModule
   ]
 })
 export class NotebookModule {}

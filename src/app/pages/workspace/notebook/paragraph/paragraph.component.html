@@ -7,25 +7,33 @@
                             [value]="paragraph.title"
                             [min]="true"
                             (valueUpdate)="setTitle($event)"></zeppelin-elastic-input>
-    <zeppelin-notebook-code-editor *ngIf="!paragraph.config.editorHide && !viewOnly"
-                                   [text]="paragraph.text"
-                                   [dirty]="dirtyText !== originalText && dirtyText !== undefined"
-                                   [collaborativeMode]="collaborativeMode"
-                                   [focus]="paragraph.focus"
-                                   [pid]="paragraph.id"
-                                   [interpreterBindings]="interpreterBindings"
-                                   [lineNumbers]="paragraph.config.lineNumbers"
-                                   [readOnly]="isNoteRunning || isParagraphRunning || revisionView"
-                                   [language]="paragraph.config.editorSetting?.language"
-                                   (editorBlur)="saveParagraph()"
-                                   (textChanged)="textChanged($event)"></zeppelin-notebook-code-editor>
-    <zeppelin-notebook-result *ngFor="let result of results; index as i"
-                              [config]="configs[i]"
-                              (configChange)="onConfigChange($event, i)"
-                              [result]="result">
-    </zeppelin-notebook-result>
+    <zeppelin-notebook-paragraph-code-editor *ngIf="!paragraph.config.editorHide && !viewOnly"
+                                             [text]="paragraph.text"
+                                             [dirty]="dirtyText !== originalText && dirtyText !== undefined"
+                                             [collaborativeMode]="collaborativeMode"
+                                             [focus]="paragraph.focus"
+                                             [pid]="paragraph.id"
+                                             [interpreterBindings]="interpreterBindings"
+                                             [lineNumbers]="paragraph.config.lineNumbers"
+                                             [readOnly]="isNoteRunning || isParagraphRunning || revisionView"
+                                             [language]="paragraph.config.editorSetting?.language"
+                                             (editorBlur)="saveParagraph()"
+                                             (textChanged)="textChanged($event)"></zeppelin-notebook-paragraph-code-editor>
+    <zeppelin-notebook-paragraph-progress *ngIf="paragraph.status === 'RUNNING'"
+                                          [pid]="paragraph.id"></zeppelin-notebook-paragraph-progress>
+    <zeppelin-notebook-paragraph-result *ngFor="let result of results; index as i"
+                                        [config]="configs[i]"
+                                        (configChange)="onConfigChange($event, i)"
+                                        [result]="result">
+    </zeppelin-notebook-paragraph-result>
+    <zeppelin-notebook-paragraph-footer [showExecutionTime]="!paragraph.config.tableHide && !viewOnly"
+                                        [showElapsedTime]="paragraph.status === 'RUNNING'"
+                                        [user]="paragraph.user"
+                                        [dateUpdated]="paragraph.dateUpdated"
+                                        [dateStarted]="paragraph.dateStarted"
+                                        [dateFinished]="paragraph.dateFinished"></zeppelin-notebook-paragraph-footer>
   </div>
-  <zeppelin-notebook-add-paragraph [disabled]="isNoteRunning"
-                                   *ngIf="!viewOnly && !revisionView && last"
+  <zeppelin-notebook-add-paragraph *ngIf="!viewOnly && !revisionView && last"
+                                   [disabled]="isNoteRunning"
                                    (addParagraph)="insertParagraph('below')"></zeppelin-notebook-add-paragraph>
 </div>

@@ -196,6 +196,11 @@ export interface GraphConfig {
   commonSetting: GraphConfigCommonSetting;
 }
 
+export interface Progress {
+  id: string;
+  progress: number;
+}
+
 interface GraphConfigSetting {
   table: VisualizationTable;
   lineChart: VisualizationLineChart;

@@ -55,12 +55,12 @@ interface Visualizations {
 }
 
 @Component({
-  selector: 'zeppelin-notebook-result',
+  selector: 'zeppelin-notebook-paragraph-result',
   templateUrl: './result.component.html',
   styleUrls: ['./result.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotebookResultComponent implements OnInit, AfterViewInit {
+export class NotebookParagraphResultComponent implements OnInit, AfterViewInit {
   @Input() result: ParagraphIResultsMsgItem;
   @Input() config: ParagraphConfigResult;
   @Output() configChange = new EventEmitter<ParagraphConfigResult>();

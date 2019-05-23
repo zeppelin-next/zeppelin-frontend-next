@@ -49,6 +49,7 @@ import {
   ParagraphRemoved,
   PatchParagraphReceived,
   PatchParagraphSend,
+  Progress,
   RunAllParagraphs,
   RunParagraph
 } from './message-paragraph.interface';
@@ -79,6 +80,7 @@ export interface MessageReceiveDataTypeMap {
   [OP.PATCH_PARAGRAPH]: PatchParagraphSend;
   [OP.PARAGRAPH_REMOVED]: ParagraphRemoved;
   [OP.EDITOR_SETTING]: EditorSettingReceived;
+  [OP.PROGRESS]: Progress;
 }
 
 export interface MessageDataTypeMap {
@@ -93,6 +95,7 @@ export interface MessageDataTypeMap {
   [OP.NOTE_RUNNING_STATUS]: never;
   [OP.PARAGRAPH]: never;
   [OP.PARAGRAPH_REMOVED]: never;
+  [OP.PROGRESS]: never;
 
   [OP.PING]: undefined;
   [OP.LIST_CONFIGURATIONS]: undefined;

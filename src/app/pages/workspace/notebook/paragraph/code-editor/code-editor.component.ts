@@ -8,25 +8,23 @@ import {
   NgZone,
   OnChanges,
   OnDestroy,
-  OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
-import ICodeEditor = monaco.editor.ICodeEditor;
-import IDisposable = monaco.IDisposable;
 import { InterpreterBindingItem } from 'zeppelin-sdk';
 import { MessageService } from 'zeppelin-services';
+import ICodeEditor = monaco.editor.ICodeEditor;
+import IDisposable = monaco.IDisposable;
 
 @Component({
-  selector: 'zeppelin-notebook-code-editor',
+  selector: 'zeppelin-notebook-paragraph-code-editor',
   templateUrl: './code-editor.component.html',
   styleUrls: ['./code-editor.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotebookCodeEditorComponent implements OnInit, OnChanges, OnDestroy {
+export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestroy {
   // TODO:
   //  1. cursor position
-  //  2. editor mode
   @Input() readOnly = false;
   @Input() language = 'text';
   @Input() lineNumbers = false;
@@ -127,7 +125,10 @@ export class NotebookCodeEditorComponent implements OnInit, OnChanges, OnDestroy
   setParagraphMode(changed = false) {
     if (this.editor && !changed) {
       if (this.language) {
-        monaco.editor.setModelLanguage(this.editor.getModel(), this.language);
+        const convertMap = {
+          sh: 'shell'
+        };
+        monaco.editor.setModelLanguage(this.editor.getModel(), convertMap[this.language] || this.language);
       }
     } else {
       const interpreterName = this.getInterpreterName(this.text);
@@ -144,12 +145,13 @@ export class NotebookCodeEditorComponent implements OnInit, OnChanges, OnDestroy
 
   constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private messageService: MessageService) {}
 
-  ngOnInit() {}
-
   ngOnChanges(changes: SimpleChanges): void {
     const { text, interpreterBindings, language, readOnly, focus, lineNumbers } = changes;
     if (readOnly || focus || lineNumbers) {
       this.updateEditorOptions();
+    }
+    if (focus) {
+      this.initEditorFocus();
     }
     if (text) {
       this.setEditorValue();
