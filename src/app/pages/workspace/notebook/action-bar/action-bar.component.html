@@ -10,7 +10,7 @@
               nz-popconfirm
               nzTitle="Run all paragraphs?"
               (nzOnConfirm)="runAllParagraphs()"
-              [disabled]="revisionView">
+              [disabled]="revisionView || isNoteParagraphRunning">
         <i nz-icon nzType="play-circle" nzTheme="outline"></i>
       </button>
       <button nz-button
@@ -58,7 +58,7 @@
           <button *ngSwitchCase="'true'"
                   nz-tooltip
                   nzTitle="Switch to collaboration mode"
-                  [disabled]="revisionView || !isOwner"
+                  [disabled]="revisionView || !isOwner || isNoteParagraphRunning"
                   nz-button
                   nzType="primary"
                   (click)="toggleNotePersonalizedMode()">
@@ -68,7 +68,7 @@
                   nz-tooltip
                   nzTitle="Switch to personal mode"
                   nz-button
-                  [disabled]="revisionView || !isOwner"
+                  [disabled]="revisionView || !isOwner || isNoteParagraphRunning"
                   (click)="toggleNotePersonalizedMode()">
             <i nz-icon nzType="team" nzTheme="outline"></i>
           </button>
@@ -138,7 +138,7 @@
               nz-popconfirm
               nzTitle="Remove this note permanently?"
               *ngIf="isTrash"
-              [disabled]="isNoteRunning"
+              [disabled]="isNoteParagraphRunning"
               (nzOnConfirm)="deleteNote()">
         <i nz-icon nzType="delete" nzTheme="outline"></i>
       </button>
@@ -146,7 +146,7 @@
               nz-popconfirm
               nzTitle="Move this note to trash?"
               *ngIf="!isTrash"
-              [disabled]="isNoteRunning"
+              [disabled]="isNoteParagraphRunning"
               (nzOnConfirm)="moveNoteToTrash()">
         <i nz-icon nzType="delete" nzTheme="outline"></i>
       </button>

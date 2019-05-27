@@ -1,6 +1,6 @@
 <div class="paragraph-container" *ngIf="paragraph">
   <zeppelin-notebook-add-paragraph *ngIf="!revisionView"
-                                   [disabled]="isNoteRunning"
+                                   [disabled]="isEntireNoteRunning"
                                    (addParagraph)="insertParagraph('above')"></zeppelin-notebook-add-paragraph>
   <div class="paragraph">
     <zeppelin-elastic-input *ngIf="paragraph.config.title"
@@ -8,6 +8,13 @@
                             [min]="true"
                             (valueUpdate)="setTitle($event)"></zeppelin-elastic-input>
     <zeppelin-notebook-paragraph-control [status]="paragraph.status"
+                                         [enabled]="paragraph.config.enabled"
+                                         [(tableHide)]="paragraph.config.tableHide"
+                                         [(editorHide)]="paragraph.config.editorHide"
+                                         (tableHideChange)="commitParagraph()"
+                                         (editorHideChange)="commitParagraph()"
+                                         (runParagraph)="runParagraph()"
+                                         (cancelParagraph)="cancelParagraph()"
                                          [progress]="progress"></zeppelin-notebook-paragraph-control>
     <zeppelin-notebook-paragraph-code-editor *ngIf="!paragraph.config.editorHide && !viewOnly"
                                              [text]="paragraph.text"
@@ -17,7 +24,7 @@
                                              [pid]="paragraph.id"
                                              [interpreterBindings]="interpreterBindings"
                                              [lineNumbers]="paragraph.config.lineNumbers"
-                                             [readOnly]="isNoteRunning || isParagraphRunning || revisionView"
+                                             [readOnly]="isEntireNoteRunning || isParagraphRunning || revisionView"
                                              [language]="paragraph.config.editorSetting?.language"
                                              (editorBlur)="saveParagraph()"
                                              (textChanged)="textChanged($event)"></zeppelin-notebook-paragraph-code-editor>
@@ -36,6 +43,6 @@
                                         [dateFinished]="paragraph.dateFinished"></zeppelin-notebook-paragraph-footer>
   </div>
   <zeppelin-notebook-add-paragraph *ngIf="!viewOnly && !revisionView && last"
-                                   [disabled]="isNoteRunning"
+                                   [disabled]="isEntireNoteRunning"
                                    (addParagraph)="insertParagraph('below')"></zeppelin-notebook-add-paragraph>
 </div>

@@ -6,3 +6,5 @@ export * from './interpreter.service';
 export * from './security.service';
 export * from './note-status.service';
 export * from './save-as.service';
+export * from './helium.service';
+export * from './note-var-share.service';

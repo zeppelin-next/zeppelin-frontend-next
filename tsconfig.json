@@ -9,6 +9,9 @@
       "zeppelin-interfaces": [
         "src/app/interfaces"
       ],
+      "zeppelin-spell/*": [
+        "src/app/spell/*"
+      ],
       "zeppelin-core": [
         "src/app/core"
       ],

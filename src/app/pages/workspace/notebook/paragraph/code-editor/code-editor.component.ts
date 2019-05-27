@@ -92,7 +92,7 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
   }
 
   initEditorFocus() {
-    if (this.focus) {
+    if (this.focus && this.editor) {
       this.editor.focus();
     }
   }

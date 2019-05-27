@@ -5,15 +5,17 @@ import {
   EventEmitter,
   Inject,
   Input,
+  OnInit,
   Output
 } from '@angular/core';
-import { Note, RevisionListItem } from 'zeppelin-sdk';
+import { Note, OP, RevisionListItem } from 'zeppelin-sdk';
 import { MessageService, NoteStatusService, SaveAsService, TicketService } from 'zeppelin-services';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { NoteCreateComponent } from 'zeppelin-share/note-create/note-create.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TRASH_FOLDER_ID_TOKEN } from 'zeppelin-interfaces';
 import { NoteActionService } from '../../../../services/note-action.service';
+import { MessageListener, MessageListenersManager } from 'zeppelin-core';
 
 @Component({
   selector: 'zeppelin-notebook-action-bar',
@@ -21,7 +23,7 @@ import { NoteActionService } from '../../../../services/note-action.service';
   styleUrls: ['./action-bar.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotebookActionBarComponent {
+export class NotebookActionBarComponent extends MessageListenersManager implements OnInit {
   @Input() note: Note['note'];
   @Input() isOwner = true;
   @Input() noteRevisions: RevisionListItem[] = [];
@@ -32,6 +34,7 @@ export class NotebookActionBarComponent {
   @Input() activatedExtension: 'interpreter' | 'permissions' | 'revisions' | 'hide' = 'hide';
   @Output() activatedExtensionChange = new EventEmitter<'interpreter' | 'permissions' | 'revisions' | 'hide'>();
   lfOption: Array<'report' | 'default' | 'simple'> = ['default', 'simple', 'report'];
+  isNoteParagraphRunning = false;
   principal = this.ticketService.ticket.principal;
   editorToggled = false;
   commitVisible = false;
@@ -94,6 +97,12 @@ export class NotebookActionBarComponent {
       this.activatedExtension = extension;
     }
     this.activatedExtensionChange.emit(this.activatedExtension);
+  }
+
+  @MessageListener(OP.PARAGRAPH)
+  paragraphUpdate() {
+    this.updateIsNoteParagraphRunning();
+    this.cdr.markForCheck();
   }
 
   runAllParagraphs() {
@@ -197,8 +206,9 @@ export class NotebookActionBarComponent {
     return this.noteStatusService.viewOnly(this.note);
   }
 
-  get isNoteRunning(): boolean {
-    return this.noteStatusService.isNoteRunning(this.note);
+  updateIsNoteParagraphRunning() {
+    this.isNoteParagraphRunning = this.noteStatusService.isNoteParagraphRunning(this.note);
+    console.log(this.isNoteParagraphRunning);
   }
 
   showShortCut() {
@@ -257,7 +267,7 @@ export class NotebookActionBarComponent {
   }
 
   constructor(
-    private messageService: MessageService,
+    public messageService: MessageService,
     private nzModalService: NzModalService,
     private ticketService: TicketService,
     private nzMessageService: NzMessageService,
@@ -268,5 +278,11 @@ export class NotebookActionBarComponent {
     @Inject(TRASH_FOLDER_ID_TOKEN) public TRASH_FOLDER_ID: string,
     private activatedRoute: ActivatedRoute,
     private saveAsService: SaveAsService
-  ) {}
+  ) {
+    super(messageService);
+  }
+
+  ngOnInit(): void {
+    this.updateIsNoteParagraphRunning();
+  }
 }

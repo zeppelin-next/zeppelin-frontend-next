@@ -36,16 +36,16 @@ export class NoteStatusService {
     return note.config.looknfeel === 'report';
   }
 
-  isNoteRunning(note: Note['note']): boolean {
+  isNoteParagraphRunning(note: Note['note']): boolean {
     if (!note) {
       return false;
     } else {
-      // TODO should merge
-      return (
-        note.paragraphs.some(p => this.isParagraphRunning(p)) ||
-        !!(note.info && note.info.isRunning && note.info.isRunning === true)
-      );
+      return note.paragraphs.some(p => this.isParagraphRunning(p));
     }
+  }
+
+  isEntireNoteRunning(note: Note['note']): boolean {
+    return !!(note.info && note.info.isRunning && note.info.isRunning === true);
   }
 
   constructor(@Inject(TRASH_FOLDER_ID_TOKEN) public TRASH_FOLDER_ID: string) {}

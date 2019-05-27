@@ -18,11 +18,17 @@ import {
   ParagraphItem,
   InterpreterBindingItem
 } from 'zeppelin-sdk';
-import { MessageService, NoteStatusService, ParagraphStatus } from 'zeppelin-services';
-import { NoteVarShareService } from '../../../../services/note-var-share.service';
+import {
+  HeliumService,
+  MessageService,
+  NoteStatusService,
+  ParagraphStatus,
+  NoteVarShareService
+} from 'zeppelin-services';
 import { MessageListener, MessageListenersManager } from 'zeppelin-core';
 import { isEmpty, isEqual } from 'lodash';
 import DiffMatchPatch from 'diff-match-patch';
+import { SpellResult } from 'zeppelin-spell/spell-result';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph',
@@ -42,7 +48,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   @Output() saveNoteTimer = new EventEmitter();
   dirtyText: string;
   originalText: string;
-  isNoteRunning = false;
+  isEntireNoteRunning = false;
   diffMatchPatch = new DiffMatchPatch();
   isParagraphRunning = false;
   results = [];
@@ -60,7 +66,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
 
   @MessageListener(OP.NOTE_RUNNING_STATUS)
   noteRunningStatusChange(data: MessageReceiveDataTypeMap[OP.NOTE_RUNNING_STATUS]) {
-    this.isNoteRunning = data.status;
+    this.isEntireNoteRunning = data.status;
     this.cdr.markForCheck();
   }
 
@@ -172,6 +178,55 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     this.originalText = dirtyText;
     this.dirtyText = undefined;
     this.cdr.markForCheck();
+  }
+
+  runParagraph(paragraphText?: string, propagated: boolean = false) {
+    const text = paragraphText || this.paragraph.text;
+    if (text && !this.isParagraphRunning) {
+      const magic = SpellResult.extractMagic(paragraphText);
+
+      if (this.heliumService.getSpellByMagic(magic)) {
+        this.runParagraphUsingSpell(paragraphText, magic, propagated);
+      } else {
+        this.runParagraphUsingBackendInterpreter(paragraphText);
+      }
+
+      this.originalText = paragraphText;
+      this.dirtyText = undefined;
+
+      if (this.paragraph.config.editorSetting.editOnDblClick) {
+        this.paragraph.config.editorHide = true;
+        this.paragraph.config.tableHide = false;
+        this.commitParagraph();
+      } else if (this.editorSetting.isOutputHidden && !this.paragraph.config.editorSetting.editOnDblClick) {
+        // %md/%angular repl make output to be hidden by default after running
+        // so should open output if repl changed from %md/%angular to another
+        this.paragraph.config.editorHide = false;
+        this.paragraph.config.tableHide = false;
+        this.commitParagraph();
+      }
+      this.editorSetting.isOutputHidden = this.paragraph.config.editorSetting.editOnDblClick;
+    }
+  }
+
+  runParagraphUsingSpell(paragraphText: string, magic: string, propagated: boolean) {
+    // TODO
+  }
+
+  runParagraphUsingBackendInterpreter(paragraphText: string) {
+    this.messageService.runParagraph(
+      this.paragraph.id,
+      this.paragraph.title,
+      paragraphText,
+      this.paragraph.config,
+      this.paragraph.settings.params
+    );
+  }
+
+  cancelParagraph() {
+    if (!this.isEntireNoteRunning) {
+      this.messageService.cancelParagraph(this.paragraph.id);
+    }
   }
 
   updateAllScopeTexts(oldPara: ParagraphItem, newPara: ParagraphItem) {
@@ -324,6 +379,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   }
 
   constructor(
+    private heliumService: HeliumService,
     private noteStatusService: NoteStatusService,
     public messageService: MessageService,
     private noteVarShareService: NoteVarShareService,
@@ -341,12 +397,11 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
       this.paragraph.config = {};
     }
     this.originalText = this.paragraph.text;
-    this.isNoteRunning = this.noteStatusService.isNoteRunning(this.note);
+    this.isEntireNoteRunning = this.noteStatusService.isEntireNoteRunning(this.note);
     this.isParagraphRunning = this.noteStatusService.isParagraphRunning(this.paragraph);
     this.noteVarShareService.set(this.paragraph.id + '_paragraphScope', this);
     this.initializeDefault(this.paragraph.config);
   }
-  ngOnChanges(): void {
-    this.isNoteRunning = this.noteStatusService.isNoteRunning(this.note);
-  }
+
+  ngOnChanges(): void {}
 }

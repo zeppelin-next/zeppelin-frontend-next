@@ -165,10 +165,6 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
     return this.noteStatusService.viewOnly(this.note);
   }
 
-  get isNoteRunning(): boolean {
-    return this.noteStatusService.isNoteRunning(this.note);
-  }
-
   initializeLookAndFeel() {
     this.note.config.looknfeel = this.note.config.looknfeel || 'default';
     if (this.note.paragraphs && this.note.paragraphs[0]) {
