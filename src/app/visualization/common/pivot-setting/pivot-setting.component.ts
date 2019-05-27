@@ -5,12 +5,12 @@ import { TableData } from '../../dataset/table-data';
 import { Visualization } from '../../visualization';
 
 @Component({
-  selector: 'zeppelin-visualization-table-fields',
-  templateUrl: './table-fields.component.html',
-  styleUrls: ['./table-fields.component.less'],
+  selector: 'zeppelin-visualization-pivot-setting',
+  templateUrl: './pivot-setting.component.html',
+  styleUrls: ['./pivot-setting.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VisualizationTableFieldsComponent implements OnInit {
+export class VisualizationPivotSettingComponent implements OnInit {
   @Input() visualization: Visualization;
 
   tableData: TableData;

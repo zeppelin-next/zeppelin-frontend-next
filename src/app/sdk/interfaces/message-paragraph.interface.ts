@@ -293,28 +293,24 @@ interface TableOptionValue {
   showAggregationFooter: boolean;
 }
 
-interface VisualizationLineChart {
-  rotate: Rotate;
-  xLabelStatus: string;
-  forceY: boolean;
-  lineWithFocus: boolean;
-  isDateFormat: boolean;
+export interface XAxisSetting {
+  rotate: { degree: string };
+  xLabelStatus: 'default' | 'rotate' | 'hide';
 }
 
-interface Rotate {
-  degree: string;
+export interface VisualizationLineChart extends XAxisSetting {
+  forceY?: boolean;
+  lineWithFocus?: boolean;
+  isDateFormat?: boolean;
+  dateFormat: string;
 }
 
-interface VisualizationStackedAreaChart {
-  rotate: Rotate;
-  xLabelStatus: string;
+interface VisualizationStackedAreaChart extends XAxisSetting {
   style: 'stream' | 'expand' | 'stack';
 }
 
-interface VisualizationMultiBarChart {
-  rotate: Rotate;
+interface VisualizationMultiBarChart extends XAxisSetting {
   stacked?: boolean;
-  xLabelStatus: string;
 }
 
 interface VisualizationScatterChart {

@@ -8,6 +8,8 @@ import {
   AfterViewInit
 } from '@angular/core';
 import * as G2 from '@antv/g2';
+import { GraphConfig } from 'zeppelin-sdk';
+import { setChartXAxis } from '../common/util/set-x-axis';
 import { Visualization } from '../visualization';
 import { VISUALIZATION } from '../visualization-component-portal';
 
@@ -21,6 +23,13 @@ export class BarChartVisualizationComponent implements OnInit, AfterViewInit {
   @ViewChild('graphEle') graphEle: ElementRef<HTMLDivElement>;
   transformed;
   chart: G2.Chart;
+  stacked = false;
+  config: GraphConfig;
+
+  viewChange() {
+    this.config.setting.multiBarChart.stacked = this.stacked;
+    this.visualization.configChange$.next(this.config);
+  }
 
   constructor(@Inject(VISUALIZATION) public visualization: Visualization) {}
 
@@ -33,10 +42,11 @@ export class BarChartVisualizationComponent implements OnInit, AfterViewInit {
       forceFit: true,
       container: this.graphEle.nativeElement
     });
-    const config = this.visualization.getConfig();
+    this.config = this.visualization.getConfig();
+    this.stacked = this.config.setting.multiBarChart.stacked;
     let key = '';
-    if (config.keys && config.keys[0]) {
-      key = config.keys[0].name;
+    if (this.config.keys && this.config.keys[0]) {
+      key = this.config.keys[0].name;
     }
 
     this.chart.source(this.transformed);
@@ -44,7 +54,7 @@ export class BarChartVisualizationComponent implements OnInit, AfterViewInit {
       type: 'cat'
     });
 
-    if (config.setting.multiBarChart.stacked) {
+    if (this.config.setting.multiBarChart.stacked) {
       this.chart
         .intervalStack()
         .position(`${key}*__value__`)
@@ -63,6 +73,7 @@ export class BarChartVisualizationComponent implements OnInit, AfterViewInit {
           }
         ]);
     }
+    setChartXAxis(this.visualization, 'multiBarChart', this.chart, key);
 
     this.chart.render();
   }
