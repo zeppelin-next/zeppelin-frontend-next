@@ -8,6 +8,8 @@ import {
   AfterViewInit
 } from '@angular/core';
 import * as G2 from '@antv/g2';
+import { GraphConfig } from 'zeppelin-sdk';
+import { setChartXAxis } from '../common/util/set-x-axis';
 import { Visualization } from '../visualization';
 import { VISUALIZATION } from '../visualization-component-portal';
 
@@ -21,7 +23,15 @@ export class AreaChartVisualizationComponent implements OnInit, AfterViewInit {
   @ViewChild('graphEle') graphEle: ElementRef<HTMLDivElement>;
   transformed;
   chart: G2.Chart;
+  style: 'stream' | 'expand' | 'stack' = 'stack';
+  config: GraphConfig;
+
   constructor(@Inject(VISUALIZATION) public visualization: Visualization) {}
+
+  viewChange() {
+    this.config.setting.stackedAreaChart.style = this.style;
+    this.visualization.configChange$.next(this.config);
+  }
 
   ngOnInit() {
     this.transformed = this.visualization.transformed;
@@ -33,11 +43,11 @@ export class AreaChartVisualizationComponent implements OnInit, AfterViewInit {
       container: this.graphEle.nativeElement
     });
 
-    const config = this.visualization.getConfig();
-    const style = config.setting.stackedAreaChart.style;
+    this.config = this.visualization.getConfig();
+    this.style = this.config.setting.stackedAreaChart.style;
     let key = '';
-    if (config.keys && config.keys[0]) {
-      key = config.keys[0].name;
+    if (this.config.keys && this.config.keys[0]) {
+      key = this.config.keys[0].name;
     }
 
     this.chart.source(this.transformed);
@@ -45,13 +55,13 @@ export class AreaChartVisualizationComponent implements OnInit, AfterViewInit {
       type: 'cat'
     });
 
-    if (style === 'stack') {
+    if (this.style === 'stack') {
       // area:stack
       this.chart
         .areaStack()
         .position(`${key}*__value__`)
         .color('__key__');
-    } else if (style === 'stream') {
+    } else if (this.style === 'stream') {
       // area:stream
       this.chart
         .area()
@@ -65,6 +75,8 @@ export class AreaChartVisualizationComponent implements OnInit, AfterViewInit {
         .position(`${key}*__percent__`)
         .color('__key__');
     }
+
+    setChartXAxis(this.visualization, 'stackedAreaChart', this.chart, key);
 
     this.chart.render();
   }

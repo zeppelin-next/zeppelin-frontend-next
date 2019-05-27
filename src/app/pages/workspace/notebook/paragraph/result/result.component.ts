@@ -97,7 +97,11 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit {
 
   constructor(private viewContainerRef: ViewContainerRef, private cdr: ChangeDetectorRef) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.config && this.config.graph) {
+      this.renderGraph();
+    }
+  }
 
   renderGraph() {
     let instance: Visualization;
@@ -127,9 +131,5 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit {
     this.cdr.markForCheck();
   }
 
-  ngAfterViewInit(): void {
-    if (this.config && this.config.graph) {
-      this.renderGraph();
-    }
-  }
+  ngAfterViewInit(): void {}
 }

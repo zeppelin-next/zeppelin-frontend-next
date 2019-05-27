@@ -10,6 +10,7 @@ import {
 import * as G2 from '@antv/g2';
 import { Visualization } from '../visualization';
 import { VISUALIZATION } from '../visualization-component-portal';
+import { get } from 'lodash';
 
 @Component({
   selector: 'zeppelin-scatter-chart-visualization',
@@ -34,10 +35,10 @@ export class ScatterChartVisualizationComponent implements OnInit, AfterViewInit
     });
     const config = this.visualization.getConfig();
     let key = '';
+    const size = get(config.setting.scatterChart.size, 'name');
     if (config.keys && config.keys[0]) {
       key = config.keys[0].name;
     }
-
     this.chart.source(this.transformed);
     this.chart.scale(key, {
       type: 'cat',
@@ -50,14 +51,17 @@ export class ScatterChartVisualizationComponent implements OnInit, AfterViewInit
     });
     this.chart.legend('__value__', false);
     // point
-    this.chart
+    const geom = this.chart
       .point()
       .position(`${key}*__value__`)
       .color('__key__')
       // .adjust('jitter')
-      .size('__value__')
       .opacity(0.65)
       .shape('circle');
+
+    if (size) {
+      geom.size('__value__');
+    }
 
     this.chart.render();
   }

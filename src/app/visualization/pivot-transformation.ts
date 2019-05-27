@@ -1,6 +1,7 @@
 import { TableData } from './dataset/table-data';
 import { Setting, Transformation } from './transformation';
 import { DataSet } from '@antv/data-set';
+import { get } from 'lodash';
 
 // tslint:disable-next-line:no-any
 export class PivotTransformation extends Transformation {
@@ -18,11 +19,24 @@ export class PivotTransformation extends Transformation {
     const ds = new DataSet();
     let dv = ds.createView().source(tableData.rows);
 
-    let key = '';
+    let firstKey = '';
     if (config.keys && config.keys[0]) {
-      key = config.keys[0].name;
+      firstKey = config.keys[0].name;
     }
-    const fields = config.values.map(k => k.name);
+    let keys = [];
+    let groups = [];
+    let values = [];
+    let aggregates = [];
+    if (config.mode !== 'scatterChart') {
+      keys = config.keys.map(e => e.name);
+      groups = config.groups.map(e => e.name);
+      values = config.values.map(v => `${v.name}(${v.aggr})`);
+      aggregates = config.values.map(v => (v.aggr === 'avg' ? 'mean' : v.aggr));
+    } else {
+      keys = [get(config.setting.scatterChart.xAxis, 'name')];
+      values = [get(config.setting.scatterChart.yAxis, 'name')];
+      groups = [get(config.setting.scatterChart.group, 'name')];
+    }
 
     dv.transform({
       type: 'map',
@@ -40,16 +54,16 @@ export class PivotTransformation extends Transformation {
     if (config.mode !== 'scatterChart') {
       dv.transform({
         type: 'aggregate',
-        fields: fields,
-        operations: config.values.map(v => (v.aggr === 'avg' ? 'mean' : v.aggr)),
-        as: config.values.map(v => `${v.name}(${v.aggr})`),
-        groupBy: [...config.keys.map(e => e.name), ...config.groups.map(e => e.name)]
+        fields: config.values.map(v => v.name),
+        operations: aggregates,
+        as: values,
+        groupBy: [...keys, ...groups]
       });
 
       dv.transform({
         type: 'fill-rows',
-        groupBy: config.groups.map(e => e.name),
-        orderBy: config.keys.map(e => e.name),
+        groupBy: groups,
+        orderBy: keys,
         fillBy: 'order'
       });
 
@@ -59,7 +73,7 @@ export class PivotTransformation extends Transformation {
           dv.transform({
             field,
             type: 'impute',
-            groupBy: config.keys.map(e => e.name),
+            groupBy: keys,
             method: 'value',
             value: config.mode === 'stackedAreaChart' ? 0 : null
           });
@@ -68,14 +82,14 @@ export class PivotTransformation extends Transformation {
 
     dv.transform({
       type: 'fold',
-      fields: config.values.map(v => (config.mode !== 'scatterChart' ? `${v.name}(${v.aggr})` : v.name)),
+      fields: values,
       key: '__key__',
       value: '__value__'
     });
 
     dv.transform({
       type: 'partition',
-      groupBy: config.groups.map(e => e.name)
+      groupBy: groups
     });
 
     const groupsData = [];
@@ -89,17 +103,24 @@ export class PivotTransformation extends Transformation {
     });
 
     groupsData.sort(
-      (a, b) => dv.origin.findIndex(o => o[key] === a[key]) - dv.origin.findIndex(o => o[key] === b[key])
+      (a, b) =>
+        dv.origin.findIndex(o => o[firstKey] === a[firstKey]) - dv.origin.findIndex(o => o[firstKey] === b[firstKey])
     );
 
-    dv = ds.createView().source(groupsData);
+    dv = ds
+      .createView({
+        state: {
+          filterData: null
+        }
+      })
+      .source(groupsData);
 
     if (config.mode === 'stackedAreaChart' || config.mode === 'pieChart') {
       dv.transform({
         type: 'percent',
         field: '__value__',
         dimension: '__key__',
-        groupBy: config.keys.map(e => e.name),
+        groupBy: keys,
         as: '__percent__'
       });
     }
