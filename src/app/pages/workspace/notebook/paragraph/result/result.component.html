@@ -1,4 +1,5 @@
 <div #graphEle>
   <ng-template cdkPortalOutlet></ng-template>
   <div *ngIf="innerHTML" class="inner-html" [innerHTML]="innerHTML"></div>
+  <div *ngIf="plainText" class="text-plain"><pre>{{plainText}}</pre></div>
 </div>

@@ -402,7 +402,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   }
 
   ngOnInit() {
-    if (this.paragraph.results && this.paragraph.results.code === 'SUCCESS') {
+    if (this.paragraph.results) {
       this.results = this.paragraph.results.msg;
       this.configs = this.paragraph.config.results;
     }

@@ -69,6 +69,7 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit {
   @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
 
   innerHTML: string | SafeHtml = '';
+  plainText = '';
   tableData = new TableData();
   visualizations: Visualizations = {
     table: {
@@ -104,31 +105,33 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    if (this.config && this.config.graph) {
-      this.renderDefaultDisplay();
-      this.cdr.markForCheck();
-    }
+    this.renderDefaultDisplay();
   }
 
   renderDefaultDisplay() {
     switch (this.result.type) {
       case DatasetType.TABLE:
-        this.renderGraph();
+        if (this.config && this.config.graph) {
+          this.renderGraph();
+        }
         break;
       case DatasetType.TEXT:
         this.renderText();
         break;
       case DatasetType.HTML:
         this.renderHTML();
+        break;
     }
+    this.cdr.markForCheck();
   }
 
   renderHTML(): void {
     this.innerHTML = this.sanitizer.bypassSecurityTrustHtml(this.result.data);
-    console.log(this.result.data);
   }
 
-  renderText(): void {}
+  renderText(): void {
+    this.plainText = this.result.data;
+  }
 
   renderGraph() {
     let instance: Visualization;
