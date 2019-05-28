@@ -25,6 +25,7 @@
                                    [revisionView]="revisionView"
                                    [first]="first"
                                    [last]="last"
+                                   (triggerSaveParagraph)="saveParagraph($event)"
                                    (saveNoteTimer)="startSaveTimer()"></zeppelin-notebook-paragraph>
     </div>
   </div>

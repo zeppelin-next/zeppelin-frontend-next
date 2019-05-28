@@ -70,19 +70,19 @@
           Ctrl+{{ isMac ? 'Option' : 'Alt'}}+B
         </span>
       </li>
-      <li nz-menu-item class="list-item" [nzDisabled]="isEntireNoteRunning" *ngIf="last" (click)="trigger(runAllToThis)">
+      <li nz-menu-item class="list-item" [nzDisabled]="isEntireNoteRunning" *ngIf="!first" (click)="trigger(runAllAbove)">
         <span><i nz-icon nzType="up-square" nzTheme="outline"></i> Run all above</span>
         <span class="short-cut">
           Ctrl+Shift+Enter
         </span>
       </li>
-      <li nz-menu-item class="list-item" [nzDisabled]="isEntireNoteRunning" *ngIf="first" (click)="trigger(runAllFromThis)">
+      <li nz-menu-item class="list-item" [nzDisabled]="isEntireNoteRunning" *ngIf="!last" (click)="trigger(runAllBelowAndCurrent)">
         <span><i nz-icon nzType="down-square" nzTheme="outline"></i> Run all below</span>
         <span class="short-cut">
           Ctrl+Shift+Enter
         </span>
       </li>
-      <li nz-menu-item class="list-item" [nzDisabled]="isEntireNoteRunning">
+      <li nz-menu-item class="list-item" [nzDisabled]="isEntireNoteRunning" (click)="trigger(cloneParagraph)">
         <span><i nz-icon nzType="copy" nzTheme="outline"></i> Clone paragraph</span>
         <span class="short-cut">
           Ctrl+Shift+C

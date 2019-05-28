@@ -101,6 +101,11 @@ export interface CollaborativeModeStatus {
   users: string[];
 }
 
+export interface ParagraphMoved {
+  index: number;
+  id: string;
+}
+
 export interface UpdateParagraph {
   paragraph: ParagraphItem;
 }

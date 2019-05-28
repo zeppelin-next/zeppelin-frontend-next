@@ -22,6 +22,7 @@ import {
   NotesInfo,
   NoteUpdate,
   ParagraphAdded,
+  ParagraphMoved,
   RemoveFolder,
   RemoveNoteForms,
   RestoreFolder,
@@ -83,6 +84,7 @@ export interface MessageReceiveDataTypeMap {
   [OP.PARAGRAPH_REMOVED]: ParagraphRemoved;
   [OP.EDITOR_SETTING]: EditorSettingReceived;
   [OP.PROGRESS]: Progress;
+  [OP.PARAGRAPH_MOVED]: ParagraphMoved;
 }
 
 export interface MessageSendDataTypeMap {

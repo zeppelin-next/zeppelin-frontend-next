@@ -31,6 +31,7 @@ import { isEmpty, isEqual } from 'lodash';
 import DiffMatchPatch from 'diff-match-patch';
 import { SpellResult } from 'zeppelin-spell/spell-result';
 import { NotebookParagraphCodeEditorComponent } from './code-editor/code-editor.component';
+import { NzModalService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph',
@@ -50,6 +51,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   @Input() first: boolean;
   @Input() interpreterBindings: InterpreterBindingItem[] = [];
   @Output() saveNoteTimer = new EventEmitter();
+  @Output() triggerSaveParagraph = new EventEmitter<string>();
   dirtyText: string;
   originalText: string;
   isEntireNoteRunning = false;
@@ -134,7 +136,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
         (newPara.status === ParagraphStatus.FINISHED && statusChanged);
 
       // 3. update texts managed by paragraph
-      this.updateAllScopeTexts(newPara, oldPara);
+      this.updateAllScopeTexts(oldPara, newPara);
       // 4. execute callback to update result
       updateCallback();
 
@@ -183,6 +185,84 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     this.originalText = dirtyText;
     this.dirtyText = undefined;
     this.cdr.markForCheck();
+  }
+
+  runAllAbove() {
+    // TODO bug
+    const index = this.note.paragraphs.findIndex(p => p.id === this.paragraph.id);
+    const toRunParagraphs = this.note.paragraphs.filter((p, i) => i < index);
+
+    const paragraphs = toRunParagraphs.map(p => {
+      return {
+        id: p.id,
+        title: p.title,
+        paragraph: p.text,
+        config: p.config,
+        params: p.settings.params
+      };
+    });
+    this.nzModalService.confirm({
+      nzTitle: 'Run all above?',
+      nzContent: 'Are you sure to run all above paragraphs?',
+      nzOnOk: () => {
+        this.messageService.runAllParagraphs(this.note.id, paragraphs);
+      }
+    });
+    // TODO: save cursor
+  }
+
+  runAllBelowAndCurrent() {
+    // TODO bug
+    const index = this.note.paragraphs.findIndex(p => p.id === this.paragraph.id);
+    const toRunParagraphs = this.note.paragraphs.filter((p, i) => i >= index);
+
+    const paragraphs = toRunParagraphs.map(p => {
+      return {
+        id: p.id,
+        title: p.title,
+        paragraph: p.text,
+        config: p.config,
+        params: p.settings.params
+      };
+    });
+    this.nzModalService.confirm({
+      nzTitle: 'Run current and all below?',
+      nzContent: 'Are you sure to run current and all below?',
+      nzOnOk: () => {
+        this.messageService.runAllParagraphs(this.note.id, paragraphs);
+      }
+    });
+    // TODO: save cursor
+  }
+
+  cloneParagraph(position: string = 'below') {
+    let newIndex = -1;
+    for (let i = 0; i < this.note.paragraphs.length; i++) {
+      if (this.note.paragraphs[i].id === this.paragraph.id) {
+        // determine position of where to add new paragraph; default is below
+        if (position === 'above') {
+          newIndex = i;
+        } else {
+          newIndex = i + 1;
+        }
+        break;
+      }
+    }
+
+    if (newIndex < 0 || newIndex > this.note.paragraphs.length) {
+      return;
+    }
+
+    const config = this.paragraph.config;
+    config.editorHide = false;
+
+    this.messageService.copyParagraph(
+      newIndex,
+      this.paragraph.title,
+      this.paragraph.text,
+      config,
+      this.paragraph.settings.params
+    );
   }
 
   runParagraph(paragraphText?: string, propagated: boolean = false) {
@@ -378,6 +458,32 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     }
   }
 
+  moveUpParagraph() {
+    const newIndex = this.note.paragraphs.findIndex(p => p.id === this.paragraph.id) - 1;
+    if (newIndex < 0 || newIndex >= this.note.paragraphs.length) {
+      return;
+    }
+    // save dirtyText of moving paragraphs.
+    const prevParagraph = this.note.paragraphs[newIndex];
+    // TODO: save pre paragraph?
+    this.saveParagraph();
+    this.triggerSaveParagraph.emit(prevParagraph.id);
+    this.messageService.moveParagraph(this.paragraph.id, newIndex);
+  }
+
+  moveDownParagraph() {
+    const newIndex = this.note.paragraphs.findIndex(p => p.id === this.paragraph.id) + 1;
+    if (newIndex < 0 || newIndex >= this.note.paragraphs.length) {
+      return;
+    }
+    // save dirtyText of moving paragraphs.
+    const nextParagraph = this.note.paragraphs[newIndex];
+    // TODO: save pre paragraph?
+    this.saveParagraph();
+    this.triggerSaveParagraph.emit(nextParagraph.id);
+    this.messageService.moveParagraph(this.paragraph.id, newIndex);
+  }
+
   changeColWidth(needCommit: boolean) {
     if (needCommit) {
       this.commitParagraph();
@@ -395,6 +501,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     private heliumService: HeliumService,
     private noteStatusService: NoteStatusService,
     public messageService: MessageService,
+    private nzModalService: NzModalService,
     private noteVarShareService: NoteVarShareService,
     private cdr: ChangeDetectorRef
   ) {

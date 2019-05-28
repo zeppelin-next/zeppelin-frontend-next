@@ -36,8 +36,9 @@ export class NotebookParagraphControlComponent implements OnInit {
   @Output() moveUp = new EventEmitter<void>();
   @Output() moveDown = new EventEmitter<void>();
   @Output() insertNew = new EventEmitter<void>();
-  @Output() runAllToThis = new EventEmitter<void>();
-  @Output() runAllFromThis = new EventEmitter<void>();
+  @Output() runAllAbove = new EventEmitter<void>();
+  @Output() runAllBelowAndCurrent = new EventEmitter<void>();
+  @Output() cloneParagraph = new EventEmitter<void>();
   fontSizeOption = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
   dropdownVisible = false;
   isMac = navigator.appVersion.indexOf('Mac') !== -1;

@@ -30,6 +30,12 @@
                                          (editorHideChange)="commitParagraph()"
                                          (runOnSelectionChangeChange)="commitParagraph()"
                                          (runParagraph)="runParagraph()"
+                                         (moveUp)="moveUpParagraph()"
+                                         (moveDown)="moveDownParagraph()"
+                                         (insertNew)="insertParagraph('below')"
+                                         (runAllAbove)="runAllAbove()"
+                                         (runAllBelowAndCurrent)="runAllBelowAndCurrent()"
+                                         (cloneParagraph)="cloneParagraph()"
                                          (cancelParagraph)="cancelParagraph()"></zeppelin-notebook-paragraph-control>
     <zeppelin-notebook-paragraph-code-editor *ngIf="!paragraph.config.editorHide && !viewOnly"
                                              [text]="paragraph.text"
@@ -46,11 +52,13 @@
                                              (textChanged)="textChanged($event)"></zeppelin-notebook-paragraph-code-editor>
     <zeppelin-notebook-paragraph-progress *ngIf="paragraph.status === 'RUNNING'"
                                           [progress]="progress"></zeppelin-notebook-paragraph-progress>
-    <zeppelin-notebook-paragraph-result *ngFor="let result of results; index as i"
-                                        [config]="configs[i]"
-                                        (configChange)="onConfigChange($event, i)"
-                                        [result]="result">
-    </zeppelin-notebook-paragraph-result>
+    <ng-container *ngIf="!paragraph.config.tableHide">
+      <zeppelin-notebook-paragraph-result *ngFor="let result of results; index as i"
+                                          [config]="configs[i]"
+                                          (configChange)="onConfigChange($event, i)"
+                                          [result]="result">
+      </zeppelin-notebook-paragraph-result>
+    </ng-container>
     <zeppelin-notebook-paragraph-footer [showExecutionTime]="!paragraph.config.tableHide && !viewOnly"
                                         [showElapsedTime]="paragraph.status === 'RUNNING'"
                                         [user]="paragraph.user"

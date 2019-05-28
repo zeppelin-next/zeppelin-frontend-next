@@ -122,6 +122,25 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
     this.router.navigate(['/notebook', noteId]).then();
   }
 
+  @MessageListener(OP.PARAGRAPH_MOVED)
+  moveParagraph(data: MessageReceiveDataTypeMap[OP.PARAGRAPH_MOVED]) {
+    if (!this.revisionView) {
+      const movedPara = this.note.paragraphs.find(p => p.id === data.id);
+      if (movedPara) {
+        const listOfRestPara = this.note.paragraphs.filter(p => p.id !== data.id);
+        this.note.paragraphs = [...listOfRestPara.slice(0, data.index), movedPara, ...listOfRestPara.slice(data.index)];
+        this.cdr.markForCheck();
+      }
+    }
+  }
+
+  saveParagraph(id: string) {
+    this.listOfNotebookParagraphComponent
+      .toArray()
+      .find(p => p.paragraph.id === id)
+      .saveParagraph();
+  }
+
   killSaveTimer() {
     if (this.saveTimer) {
       clearTimeout(this.saveTimer);
