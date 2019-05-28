@@ -51,7 +51,9 @@ export interface ParagraphResults {
 
 export enum DatasetType {
   NETWORK = 'NETWORK',
-  TABLE = 'TABLE'
+  TABLE = 'TABLE',
+  HTML = 'HTML',
+  TEXT = 'TEXT'
 }
 
 export interface ParagraphIResultsMsgItem {

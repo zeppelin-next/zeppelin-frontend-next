@@ -11,7 +11,8 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { GraphConfig, ParagraphConfigResult, ParagraphIResultsMsgItem } from 'zeppelin-sdk';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DatasetType, GraphConfig, ParagraphConfigResult, ParagraphIResultsMsgItem } from 'zeppelin-sdk';
 import { MessageService } from 'zeppelin-services';
 import { AreaChartVisualization } from '../../../../../visualization/area-chart/area-chart-visualization';
 import { BarChartVisualization } from '../../../../../visualization/bar-chart/bar-chart-visualization';
@@ -67,6 +68,7 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit {
   @ViewChild('graphEle') graphEle: ElementRef<HTMLDivElement>;
   @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
 
+  innerHTML: string | SafeHtml = '';
   tableData = new TableData();
   visualizations: Visualizations = {
     table: {
@@ -95,13 +97,38 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit {
     }
   };
 
-  constructor(private viewContainerRef: ViewContainerRef, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private viewContainerRef: ViewContainerRef,
+    private cdr: ChangeDetectorRef,
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit() {
     if (this.config && this.config.graph) {
-      this.renderGraph();
+      this.renderDefaultDisplay();
+      this.cdr.markForCheck();
     }
   }
+
+  renderDefaultDisplay() {
+    switch (this.result.type) {
+      case DatasetType.TABLE:
+        this.renderGraph();
+        break;
+      case DatasetType.TEXT:
+        this.renderText();
+        break;
+      case DatasetType.HTML:
+        this.renderHTML();
+    }
+  }
+
+  renderHTML(): void {
+    this.innerHTML = this.sanitizer.bypassSecurityTrustHtml(this.result.data);
+    console.log(this.result.data);
+  }
+
+  renderText(): void {}
 
   renderGraph() {
     let instance: Visualization;
@@ -128,7 +155,6 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit {
         graph: config
       })
     );
-    this.cdr.markForCheck();
   }
 
   ngAfterViewInit(): void {}
