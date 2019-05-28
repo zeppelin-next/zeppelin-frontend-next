@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
+  NzButtonModule,
   NzCardModule,
   NzCheckboxModule,
   NzDropDownModule,
@@ -57,7 +58,8 @@ const VisualizationComponents = [
     NzMenuModule,
     NzDropDownModule,
     NzRadioModule,
-    NzCheckboxModule
+    NzCheckboxModule,
+    NzButtonModule
   ]
 })
 export class VisualizationModule {}

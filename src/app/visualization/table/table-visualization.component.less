@@ -1,0 +1,27 @@
+@import "theme-mixin";
+
+.th-dropdown {
+  .search-bar.ant-menu-item-group {
+    padding: 5px 12px;
+    ::ng-deep .ant-menu-item-group-title{
+      display: none;
+    }
+  }
+}
+
+.export-dropdown {
+  margin-bottom: 10px;
+}
+
+.themeMixin({
+  ::ng-deep .filter-icon svg {
+    transition: transform 300ms;
+  }
+
+  .aggregation-wrap {
+    text-align: right;
+    .aggregation-item {
+      margin-left: 10px;
+    }
+  }
+});
