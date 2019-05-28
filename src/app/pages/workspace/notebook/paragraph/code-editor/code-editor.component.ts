@@ -31,6 +31,7 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
   @Input() focus = false;
   @Input() collaborativeMode = false;
   @Input() text: string;
+  @Input() fontSize: number;
   @Input() dirty = false;
   @Input() interpreterBindings: InterpreterBindingItem[] = [];
   @Input() pid: string;
@@ -76,8 +77,8 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
   }
 
   setEditorValue() {
-    if (this.editor && this.editor.getModel().getValue() !== this.text) {
-      this.editor.getModel().setValue(this.text);
+    if (this.editor && this.editor.getModel() && this.editor.getModel().getValue() !== this.text) {
+      this.editor.getModel().setValue(this.text || '');
     }
   }
 
@@ -101,6 +102,7 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
     if (this.editor) {
       this.editor.updateOptions({
         readOnly: this.readOnly,
+        fontSize: this.fontSize,
         renderLineHighlight: this.focus ? 'all' : 'none',
         minimap: { enabled: false },
         lineNumbers: this.lineNumbers ? 'on' : 'off',
@@ -143,11 +145,19 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
     this.messageService.editorSetting(this.pid, interpreterName);
   }
 
+  layout() {
+    if (this.editor) {
+      setTimeout(() => {
+        this.editor.layout();
+      });
+    }
+  }
+
   constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private messageService: MessageService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { text, interpreterBindings, language, readOnly, focus, lineNumbers } = changes;
-    if (readOnly || focus || lineNumbers) {
+    const { text, interpreterBindings, language, readOnly, focus, lineNumbers, fontSize } = changes;
+    if (readOnly || focus || lineNumbers || fontSize) {
       this.updateEditorOptions();
     }
     if (focus) {
@@ -155,10 +165,13 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
     }
     if (text) {
       this.setEditorValue();
-      this.autoAdjustEditorHeight();
     }
+
     if (interpreterBindings || language) {
       this.setParagraphMode();
+    }
+    if (text || fontSize) {
+      this.autoAdjustEditorHeight();
     }
   }
 

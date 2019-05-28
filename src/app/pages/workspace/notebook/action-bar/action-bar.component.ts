@@ -208,7 +208,6 @@ export class NotebookActionBarComponent extends MessageListenersManager implemen
 
   updateIsNoteParagraphRunning() {
     this.isNoteParagraphRunning = this.noteStatusService.isNoteParagraphRunning(this.note);
-    console.log(this.isNoteParagraphRunning);
   }
 
   showShortCut() {

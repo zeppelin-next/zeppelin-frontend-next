@@ -11,12 +11,15 @@ import {
   NzDividerModule,
   NzDropDownModule,
   NzFormModule,
+  NzGridModule,
   NzIconModule,
   NzInputModule,
   NzNoAnimationModule,
   NzPopconfirmModule,
   NzPopoverModule,
   NzProgressModule,
+  NzSelectModule,
+  NzSwitchModule,
   NzToolTipModule
 } from 'ng-zorro-antd';
 import { FormsModule } from '@angular/forms';
@@ -69,7 +72,10 @@ import { NotebookParagraphControlComponent } from './paragraph/control/control.c
     NzDividerModule,
     NzCheckboxModule,
     NzMonacoEditorModule,
-    NzProgressModule
+    NzProgressModule,
+    NzSwitchModule,
+    NzSelectModule,
+    NzGridModule
   ]
 })
 export class NotebookModule {}

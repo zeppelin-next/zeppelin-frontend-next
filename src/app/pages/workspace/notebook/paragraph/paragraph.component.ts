@@ -6,7 +6,8 @@ import {
   ChangeDetectorRef,
   Output,
   EventEmitter,
-  OnChanges
+  OnChanges,
+  ViewChild
 } from '@angular/core';
 import {
   MessageReceiveDataTypeMap,
@@ -29,6 +30,7 @@ import { MessageListener, MessageListenersManager } from 'zeppelin-core';
 import { isEmpty, isEqual } from 'lodash';
 import DiffMatchPatch from 'diff-match-patch';
 import { SpellResult } from 'zeppelin-spell/spell-result';
+import { NotebookParagraphCodeEditorComponent } from './code-editor/code-editor.component';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph',
@@ -37,6 +39,8 @@ import { SpellResult } from 'zeppelin-spell/spell-result';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotebookParagraphComponent extends MessageListenersManager implements OnInit, OnChanges {
+  @ViewChild(NotebookParagraphCodeEditorComponent)
+  notebookParagraphCodeEditorComponent: NotebookParagraphCodeEditorComponent;
   @Input() paragraph: ParagraphItem;
   @Input() note: Note['note'];
   @Input() revisionView: boolean;
@@ -54,6 +58,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   results = [];
   configs = {};
   progress = 0;
+  colWidthOption = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   editorSetting: ParagraphEditorSetting = {};
 
   @MessageListener(OP.PROGRESS)
@@ -251,8 +256,9 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   }
 
   updateParagraphObjectWhenUpdated(newPara: ParagraphItem) {
-    // TODO: resize col width
-    // TODO: update font size
+    if (this.paragraph.config.colWidth !== newPara.config.colWidth) {
+      this.changeColWidth(false);
+    }
     this.paragraph.aborted = newPara.aborted;
     this.paragraph.user = newPara.user;
     this.paragraph.dateUpdated = newPara.dateUpdated;
@@ -370,6 +376,13 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     } else if (config.editorSetting.editOnDblClick) {
       this.editorSetting.isOutputHidden = config.editorSetting.editOnDblClick;
     }
+  }
+
+  changeColWidth(needCommit: boolean) {
+    if (needCommit) {
+      this.commitParagraph();
+    }
+    this.notebookParagraphCodeEditorComponent.layout();
   }
 
   onConfigChange(configResult: ParagraphConfigResult, index: number) {

@@ -13,15 +13,19 @@
     <zeppelin-notebook-revisions-comparator *ngSwitchCase="'revisions'"></zeppelin-notebook-revisions-comparator>
   </div>
   <div class="paragraph-area">
-    <zeppelin-notebook-paragraph *ngFor="let p of note.paragraphs;let first = first; let last = last;"
-                                 [paragraph]="p"
-                                 [note]="note"
-                                 [interpreterBindings]="interpreterBindings"
-                                 [collaborativeMode]="collaborativeMode"
-                                 [viewOnly]="viewOnly"
-                                 [revisionView]="revisionView"
-                                 [first]="first"
-                                 [last]="last"
-                                 (saveNoteTimer)="startSaveTimer()"></zeppelin-notebook-paragraph>
+    <div class="paragraph-inner" nz-row [nzGutter]="8">
+      <zeppelin-notebook-paragraph nz-col
+                                   [nzSpan]="p.config.colWidth * 2"
+                                   *ngFor="let p of note.paragraphs;let first = first; let last = last;"
+                                   [paragraph]="p"
+                                   [note]="note"
+                                   [interpreterBindings]="interpreterBindings"
+                                   [collaborativeMode]="collaborativeMode"
+                                   [viewOnly]="viewOnly"
+                                   [revisionView]="revisionView"
+                                   [first]="first"
+                                   [last]="last"
+                                   (saveNoteTimer)="startSaveTimer()"></zeppelin-notebook-paragraph>
+    </div>
   </div>
 </ng-container>
