@@ -93,7 +93,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
       this.updateParagraph(oldPara, newPara, () => {
         if (newPara.results && newPara.results.msg) {
           for (const i in newPara.results.msg) {
-            if (newPara.results.msg.hasOwnProperty(i)) {
+            if (newPara.results.msg[i]) {
               const newResult = newPara.results.msg ? newPara.results.msg[i] : {};
               const oldResult = oldPara.results && oldPara.results.msg ? oldPara.results.msg[i] : {};
               const newConfig = newPara.config.results ? newPara.config.results[i] : {};
@@ -266,15 +266,15 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   runParagraph(paragraphText?: string, propagated: boolean = false) {
     const text = paragraphText || this.paragraph.text;
     if (text && !this.isParagraphRunning) {
-      const magic = SpellResult.extractMagic(paragraphText);
+      const magic = SpellResult.extractMagic(text);
 
       if (this.heliumService.getSpellByMagic(magic)) {
-        this.runParagraphUsingSpell(paragraphText, magic, propagated);
+        this.runParagraphUsingSpell(text, magic, propagated);
       } else {
-        this.runParagraphUsingBackendInterpreter(paragraphText);
+        this.runParagraphUsingBackendInterpreter(text);
       }
 
-      this.originalText = paragraphText;
+      this.originalText = text;
       this.dirtyText = undefined;
 
       if (this.paragraph.config.editorSetting.editOnDblClick) {
