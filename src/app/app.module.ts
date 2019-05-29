@@ -15,6 +15,7 @@ import { MESSAGE_INTERCEPTOR, TRASH_FOLDER_ID_TOKEN } from 'zeppelin-interfaces'
 import { Router, RouterModule } from '@angular/router';
 import { AppMessageInterceptor } from './app-message.interceptor';
 import { DebuggerComponent } from './sdk/debugger.component';
+import { RUNTIME_COMPILER_PROVIDERS } from './app-runtime-compiler.providers';
 
 registerLocaleData(en);
 
@@ -30,6 +31,7 @@ registerLocaleData(en);
     RouterModule
   ],
   providers: [
+    ...RUNTIME_COMPILER_PROVIDERS,
     {
       provide: NZ_I18N,
       useValue: en_US

@@ -53,7 +53,8 @@ export enum DatasetType {
   NETWORK = 'NETWORK',
   TABLE = 'TABLE',
   HTML = 'HTML',
-  TEXT = 'TEXT'
+  TEXT = 'TEXT',
+  ANGULAR = 'ANGULAR'
 }
 
 export interface ParagraphIResultsMsgItem {

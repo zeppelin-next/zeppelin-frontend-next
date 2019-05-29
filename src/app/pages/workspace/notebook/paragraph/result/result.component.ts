@@ -23,6 +23,7 @@ import { ScatterChartVisualization } from '../../../../../visualization/scatter-
 import { TableVisualization } from '../../../../../visualization/table/table-visualization';
 import { Visualization } from '../../../../../visualization/visualization';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
+import { DynamicTemplate, RuntimeCompilerService } from '../../../../../services/runtime-compiler.service';
 
 interface Visualizations {
   table: {
@@ -68,6 +69,7 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit {
   @ViewChild('graphEle') graphEle: ElementRef<HTMLDivElement>;
   @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
 
+  angularComponent: DynamicTemplate;
   innerHTML: string | SafeHtml = '';
   plainText = '';
   tableData = new TableData();
@@ -101,6 +103,7 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit {
   constructor(
     private viewContainerRef: ViewContainerRef,
     private cdr: ChangeDetectorRef,
+    private runtimeCompilerService: RuntimeCompilerService,
     private sanitizer: DomSanitizer
   ) {}
 
@@ -121,12 +124,22 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit {
       case DatasetType.HTML:
         this.renderHTML();
         break;
+      case DatasetType.ANGULAR:
+        this.renderAngular();
+        break;
     }
     this.cdr.markForCheck();
   }
 
   renderHTML(): void {
     this.innerHTML = this.sanitizer.bypassSecurityTrustHtml(this.result.data);
+  }
+
+  renderAngular(): void {
+    this.runtimeCompilerService.createAndCompileTemplate(this, this.result.data).then(data => {
+      this.angularComponent = data;
+      this.cdr.markForCheck();
+    });
   }
 
   renderText(): void {
