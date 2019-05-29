@@ -69,8 +69,8 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
       this.editor.onDidChangeModelContent(() => {
         this.autoAdjustEditorHeight();
         const text = this.editor.getModel().getValue();
-        this.textChanged.emit(text);
         this.text = text;
+        this.textChanged.emit(text);
         this.setParagraphMode(true);
       })
     );
