@@ -1,6 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { copyTextToClipboard } from 'zeppelin-core';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
+import { ActivatedRoute } from '@angular/router';
+import { MessageService } from 'zeppelin-services';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph-control',
@@ -28,6 +30,7 @@ export class NotebookParagraphControlComponent implements OnInit {
   @Input() paragraphLength: number;
   @Output() colWidthChange = new EventEmitter<number>();
   @Output() titleChange = new EventEmitter<boolean>();
+  @Output() enabledChange = new EventEmitter<boolean>();
   @Output() fontSizeChange = new EventEmitter<number>();
   @Output() tableHideChange = new EventEmitter<boolean>();
   @Output() runParagraph = new EventEmitter();
@@ -70,6 +73,19 @@ export class NotebookParagraphControlComponent implements OnInit {
     this.lineNumbersChange.emit(this.lineNumbers);
   }
 
+  toggleEnabled() {
+    this.enabled = !this.enabled;
+    this.enabledChange.emit(this.enabled);
+  }
+
+  goToSingleParagraph() {
+    // TODO asIframe
+    const { noteId } = this.activatedRoute.snapshot.params;
+    const redirectToUrl =
+      location.protocol + '//' + location.host + location.pathname + '#/notebook/' + noteId + '/paragraph/' + this.pid;
+    window.open(redirectToUrl);
+  }
+
   changeColWidth(colWidth: number) {
     this.colWidth = +colWidth;
     this.colWidthChange.emit(this.colWidth);
@@ -86,6 +102,30 @@ export class NotebookParagraphControlComponent implements OnInit {
     this.nzMessageService.info('Paragraph id copied');
   }
 
+  clearParagraphOutput() {
+    this.messageService.paragraphClearOutput(this.pid);
+  }
+
+  removeParagraph() {
+    if (!this.isEntireNoteRunning) {
+      if (this.paragraphLength === 1) {
+        this.nzModalService.warning({
+          nzTitle: `Warning`,
+          nzContent: `All the paragraphs can't be deleted`
+        });
+      } else {
+        this.nzModalService.confirm({
+          nzTitle: 'Delete Paragraph',
+          nzContent: 'Do you want to delete this paragraph?',
+          nzOnOk: () => {
+            this.messageService.paragraphRemove(this.pid);
+            // TODO moveFocusToNextParagraph
+          }
+        });
+      }
+    }
+  }
+
   trigger(event: EventEmitter<void>) {
     if (!this.isEntireNoteRunning) {
       this.dropdownVisible = false;
@@ -93,7 +133,12 @@ export class NotebookParagraphControlComponent implements OnInit {
     }
   }
 
-  constructor(private nzMessageService: NzMessageService) {}
+  constructor(
+    private nzMessageService: NzMessageService,
+    private activatedRoute: ActivatedRoute,
+    private messageService: MessageService,
+    private nzModalService: NzModalService
+  ) {}
 
   ngOnInit() {}
 }
