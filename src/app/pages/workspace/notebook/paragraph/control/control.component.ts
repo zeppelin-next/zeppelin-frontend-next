@@ -27,9 +27,11 @@ export class NotebookParagraphControlComponent implements OnInit {
   @Input() lineNumbers = false;
   @Input() paragraphLength: number;
   @Output() colWidthChange = new EventEmitter<number>();
+  @Output() titleChange = new EventEmitter<boolean>();
   @Output() fontSizeChange = new EventEmitter<number>();
   @Output() tableHideChange = new EventEmitter<boolean>();
   @Output() runParagraph = new EventEmitter();
+  @Output() lineNumbersChange = new EventEmitter<boolean>();
   @Output() cancelParagraph = new EventEmitter();
   @Output() editorHideChange = new EventEmitter<boolean>();
   @Output() runOnSelectionChangeChange = new EventEmitter<boolean>();
@@ -58,6 +60,16 @@ export class NotebookParagraphControlComponent implements OnInit {
     this.runOnSelectionChangeChange.emit(this.runOnSelectionChange);
   }
 
+  toggleTitle() {
+    this.title = !this.title;
+    this.titleChange.emit(this.title);
+  }
+
+  toggleLineNumbers() {
+    this.lineNumbers = !this.lineNumbers;
+    this.lineNumbersChange.emit(this.lineNumbers);
+  }
+
   changeColWidth(colWidth: number) {
     this.colWidth = +colWidth;
     this.colWidthChange.emit(this.colWidth);
@@ -76,6 +88,7 @@ export class NotebookParagraphControlComponent implements OnInit {
 
   trigger(event: EventEmitter<void>) {
     if (!this.isEntireNoteRunning) {
+      this.dropdownVisible = false;
       event.emit();
     }
   }

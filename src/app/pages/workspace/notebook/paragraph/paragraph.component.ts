@@ -188,7 +188,6 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   }
 
   runAllAbove() {
-    // TODO bug
     const index = this.note.paragraphs.findIndex(p => p.id === this.paragraph.id);
     const toRunParagraphs = this.note.paragraphs.filter((p, i) => i < index);
 
@@ -212,7 +211,6 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   }
 
   runAllBelowAndCurrent() {
-    // TODO bug
     const index = this.note.paragraphs.findIndex(p => p.id === this.paragraph.id);
     const toRunParagraphs = this.note.paragraphs.filter((p, i) => i >= index);
 

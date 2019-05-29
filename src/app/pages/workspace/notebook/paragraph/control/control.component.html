@@ -88,13 +88,13 @@
           Ctrl+Shift+C
         </span>
       </li>
-      <li nz-menu-item class="list-item">
+      <li nz-menu-item class="list-item" (click)="toggleTitle()">
         <span><i nz-icon nzType="font-colors" nzTheme="outline"></i> {{title? 'Hide': 'Show'}} title</span>
         <span class="short-cut">
           Ctrl+{{ isMac ? 'Option' : 'Alt'}}+T
         </span>
       </li>
-      <li nz-menu-item class="list-item">
+      <li nz-menu-item class="list-item" (click)="toggleLineNumbers()">
         <span><i nz-icon nzType="ordered-list" nzTheme="outline"></i> {{lineNumbers? 'Hide':'Show'}} line numbers</span>
         <span class="short-cut">
           Ctrl+{{ isMac ? 'Option' : 'Alt'}}+M

@@ -7,5 +7,5 @@
          (keydown.esc)="cancelEdit()"
          (keydown.enter)="setEditorState(false)"
          (input)="updateInputWidth()">
-  <p #pElement *ngIf="!showEditor" (click)="setEditorState(true)">{{value}}</p>
+  <p #pElement *ngIf="!showEditor" (click)="setEditorState(true)">{{value || 'Untitled'}}</p>
 </div>
