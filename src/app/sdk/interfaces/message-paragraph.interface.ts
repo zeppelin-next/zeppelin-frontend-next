@@ -57,9 +57,9 @@ export enum DatasetType {
   ANGULAR = 'ANGULAR'
 }
 
-export interface ParagraphIResultsMsgItem {
-  type: DatasetType;
-  data: string;
+export class ParagraphIResultsMsgItem {
+  type: DatasetType = DatasetType.TEXT;
+  data = '';
 }
 
 export interface ParagraphItem {
@@ -188,14 +188,22 @@ export interface ParagraphRemoved {
   id: string;
 }
 
-export interface GraphConfig {
-  mode: 'table' | 'lineChart' | 'stackedAreaChart' | 'multiBarChart' | 'scatterChart' | 'pieChart';
-  height: number;
-  optionOpen: boolean;
-  setting: GraphConfigSetting;
-  keys: GraphConfigKeysItem[];
-  groups: GraphConfigGroupsItem[];
-  values: GraphConfigValuesItem[];
+export type VisualizationMode =
+  | 'table'
+  | 'lineChart'
+  | 'stackedAreaChart'
+  | 'multiBarChart'
+  | 'scatterChart'
+  | 'pieChart'
+  | string;
+export class GraphConfig {
+  mode: VisualizationMode = 'table';
+  height = 300;
+  optionOpen = false;
+  setting: GraphConfigSetting = {};
+  keys: GraphConfigKeysItem[] = [];
+  groups: GraphConfigGroupsItem[] = [];
+  values: GraphConfigValuesItem[] = [];
   commonSetting: GraphConfigCommonSetting;
 }
 
@@ -205,11 +213,11 @@ export interface Progress {
 }
 
 interface GraphConfigSetting {
-  table: VisualizationTable;
-  lineChart: VisualizationLineChart;
-  stackedAreaChart: VisualizationStackedAreaChart;
-  multiBarChart: VisualizationMultiBarChart;
-  scatterChart: VisualizationScatterChart;
+  table?: VisualizationTable;
+  lineChart?: VisualizationLineChart;
+  stackedAreaChart?: VisualizationStackedAreaChart;
+  multiBarChart?: VisualizationMultiBarChart;
+  scatterChart?: VisualizationScatterChart;
 }
 
 interface VisualizationTable {
@@ -296,31 +304,33 @@ interface TableOptionValue {
   showAggregationFooter: boolean;
 }
 
-export interface XAxisSetting {
-  rotate: { degree: string };
-  xLabelStatus: 'default' | 'rotate' | 'hide';
+export type XLabelStatus = 'default' | 'rotate' | 'hide';
+
+export class XAxisSetting {
+  rotate = { degree: '45' };
+  xLabelStatus: XLabelStatus = 'default';
 }
 
-export interface VisualizationLineChart extends XAxisSetting {
-  forceY?: boolean;
-  lineWithFocus?: boolean;
-  isDateFormat?: boolean;
-  dateFormat: string;
+export class VisualizationLineChart extends XAxisSetting {
+  forceY = false;
+  lineWithFocus = false;
+  isDateFormat = false;
+  dateFormat = '';
 }
 
-interface VisualizationStackedAreaChart extends XAxisSetting {
-  style: 'stream' | 'expand' | 'stack';
+export class VisualizationStackedAreaChart extends XAxisSetting {
+  style: 'stream' | 'expand' | 'stack' = 'stack';
 }
 
-interface VisualizationMultiBarChart extends XAxisSetting {
-  stacked?: boolean;
+export class VisualizationMultiBarChart extends XAxisSetting {
+  stacked = false;
 }
 
-interface VisualizationScatterChart {
-  xAxis: XAxis;
-  yAxis: YAxis;
-  group: Group;
-  size: Size;
+export class VisualizationScatterChart {
+  xAxis?: XAxis;
+  yAxis?: YAxis;
+  group?: Group;
+  size?: Size;
 }
 
 interface XAxis {

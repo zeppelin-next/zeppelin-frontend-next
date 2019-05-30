@@ -13,9 +13,36 @@ export class PivotTransformation extends Transformation {
     return undefined;
   }
 
+  setDefaultConfig(tableData: TableData) {
+    const config = this.getConfig();
+    if (config.keys.length === 0 && config.groups.length === 0 && config.values.length === 0) {
+      if (config.keys.length === 0 && tableData.columns[0]) {
+        config.keys = [
+          {
+            name: tableData.columns[0],
+            index: 0,
+            aggr: 'sum'
+          }
+        ];
+      }
+
+      if (config.values.length === 0 && tableData.columns[1]) {
+        config.values = [
+          {
+            name: tableData.columns[1],
+            index: 1,
+            aggr: 'sum'
+          }
+        ];
+      }
+    }
+  }
+
   // tslint:disable-next-line:no-any
   transform(tableData: TableData): any {
     const config = this.getConfig();
+    this.setDefaultConfig(tableData);
+    console.log(config);
     const ds = new DataSet();
     let dv = ds.createView().source(tableData.rows);
 
@@ -33,9 +60,12 @@ export class PivotTransformation extends Transformation {
       values = config.values.map(v => `${v.name}(${v.aggr})`);
       aggregates = config.values.map(v => (v.aggr === 'avg' ? 'mean' : v.aggr));
     } else {
-      keys = [get(config.setting.scatterChart.xAxis, 'name')];
-      values = [get(config.setting.scatterChart.yAxis, 'name')];
-      groups = [get(config.setting.scatterChart.group, 'name')];
+      const xAxis = get(config.setting, 'scatterChart.xAxis.name', tableData.columns[0]);
+      const yAxis = get(config.setting, 'scatterChart.yAxis.name', tableData.columns[1]);
+      const group = get(config.setting, 'scatterChart.group.name');
+      keys = xAxis ? [xAxis] : [];
+      values = yAxis ? [yAxis] : [];
+      groups = group ? [group] : [];
     }
 
     dv.transform({

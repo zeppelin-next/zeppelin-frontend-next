@@ -7,7 +7,7 @@ import { CdkPortalOutlet } from '@angular/cdk/portal';
 import { VisualizationComponentPortal } from '../visualization-component-portal';
 import { TableVisualizationComponent } from './table-visualization.component';
 
-export class TableVisualization extends Visualization {
+export class TableVisualization extends Visualization<TableVisualizationComponent> {
   tableTransformation = new TableTransformation(this.getConfig());
   componentPortal = new VisualizationComponentPortal<TableVisualization, TableVisualizationComponent>(
     this,
@@ -19,7 +19,14 @@ export class TableVisualization extends Visualization {
     super(config);
   }
 
-  destroy(): void {}
+  destroy(): void {
+    if (this.componentRef) {
+      this.componentRef.destroy();
+      this.componentRef = null;
+    }
+    this.configChange$.complete();
+    this.configChange$ = null;
+  }
 
   getSetting(): Setting {
     return undefined;
@@ -33,6 +40,9 @@ export class TableVisualization extends Visualization {
 
   render(data): void {
     this.transformed = data;
-    this.componentPortal.attachComponentPortal();
+    if (!this.componentRef) {
+      this.componentRef = this.componentPortal.attachComponentPortal();
+    }
+    this.componentRef.instance.render();
   }
 }

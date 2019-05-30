@@ -7,7 +7,8 @@ import {
   ElementRef,
   Inject
 } from '@angular/core';
-import * as G2 from '@antv/g2';
+import { VisualizationPivotSettingComponent } from '../common/pivot-setting/pivot-setting.component';
+import { G2VisualizationComponentBase } from '../g2-visualization-component-base';
 import { Visualization } from '../visualization';
 import { VISUALIZATION } from '../visualization-component-portal';
 
@@ -17,22 +18,21 @@ import { VISUALIZATION } from '../visualization-component-portal';
   styleUrls: ['./pie-chart-visualization.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PieChartVisualizationComponent implements OnInit, AfterViewInit {
-  @ViewChild('graphEle') graphEle: ElementRef<HTMLDivElement>;
-  transformed;
-  chart: G2.Chart;
-  constructor(@Inject(VISUALIZATION) public visualization: Visualization) {}
+export class PieChartVisualizationComponent extends G2VisualizationComponentBase implements OnInit, AfterViewInit {
+  @ViewChild('container') container: ElementRef<HTMLDivElement>;
+  @ViewChild(VisualizationPivotSettingComponent) pivotSettingComponent: VisualizationPivotSettingComponent;
 
-  ngOnInit() {
-    this.transformed = this.visualization.transformed;
+  constructor(@Inject(VISUALIZATION) public visualization: Visualization) {
+    super(visualization);
   }
 
-  ngAfterViewInit() {
-    this.chart = new G2.Chart({
-      forceFit: true,
-      container: this.graphEle.nativeElement
-    });
-    this.chart.source(this.transformed);
+  ngOnInit() {}
+
+  refreshSetting() {
+    this.pivotSettingComponent.init();
+  }
+
+  renderBefore() {
     this.chart.tooltip({
       showTitle: false
     });
@@ -48,7 +48,9 @@ export class PieChartVisualizationComponent implements OnInit, AfterViewInit {
         stroke: '#fff'
       })
       .tooltip('__key__*__value__', (name, value) => ({ name, value }));
+  }
 
-    this.chart.render();
+  ngAfterViewInit() {
+    this.render();
   }
 }

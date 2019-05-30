@@ -148,12 +148,15 @@ export class TableVisualizationComponent implements OnInit {
 
   constructor(@Inject(VISUALIZATION) public visualization: Visualization, private cdr: ChangeDetectorRef) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  render() {
     this.tableData = this.visualization.transformed;
     this.columns = this.tableData.columns;
     this.rows = [...this.tableData.rows];
     this.columns.forEach(col => {
       this.colOptions.set(col, new FilterOption());
     });
+    this.filterRows();
   }
 }

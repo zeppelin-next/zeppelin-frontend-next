@@ -9,11 +9,22 @@ import {
   ViewContainerRef,
   ChangeDetectorRef,
   Output,
-  EventEmitter
+  EventEmitter,
+  OnDestroy
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { DatasetType, GraphConfig, ParagraphConfigResult, ParagraphIResultsMsgItem } from 'zeppelin-sdk';
-import { MessageService } from 'zeppelin-services';
+import { Subscription } from 'rxjs';
+import {
+  DatasetType,
+  GraphConfig,
+  ParagraphConfigResult,
+  ParagraphIResultsMsgItem,
+  VisualizationLineChart,
+  VisualizationMode,
+  VisualizationMultiBarChart,
+  VisualizationScatterChart,
+  VisualizationStackedAreaChart
+} from 'zeppelin-sdk';
 import { AreaChartVisualization } from '../../../../../visualization/area-chart/area-chart-visualization';
 import { BarChartVisualization } from '../../../../../visualization/bar-chart/bar-chart-visualization';
 import { TableData } from '../../../../../visualization/dataset/table-data';
@@ -25,80 +36,74 @@ import { Visualization } from '../../../../../visualization/visualization';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
 import { DynamicTemplate, RuntimeCompilerService } from '../../../../../services/runtime-compiler.service';
 
-interface Visualizations {
-  table: {
-    Class: typeof TableVisualization;
-    instance: Visualization;
-  };
-
-  lineChart: {
-    Class: typeof LineChartVisualization;
-    instance: Visualization;
-  };
-
-  multiBarChart: {
-    Class: typeof BarChartVisualization;
-    instance: Visualization;
-  };
-
-  stackedAreaChart: {
-    Class: typeof AreaChartVisualization;
-    instance: Visualization;
-  };
-
-  pieChart: {
-    Class: typeof PieChartVisualization;
-    instance: Visualization;
-  };
-  scatterChart: {
-    Class: typeof ScatterChartVisualization;
-    instance: Visualization;
-  };
-}
-
 @Component({
   selector: 'zeppelin-notebook-paragraph-result',
   templateUrl: './result.component.html',
   styleUrls: ['./result.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotebookParagraphResultComponent implements OnInit, AfterViewInit {
+export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() result: ParagraphIResultsMsgItem;
   @Input() config: ParagraphConfigResult;
   @Output() configChange = new EventEmitter<ParagraphConfigResult>();
   @ViewChild('graphEle') graphEle: ElementRef<HTMLDivElement>;
   @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
+  datasetType = DatasetType;
 
   angularComponent: DynamicTemplate;
   innerHTML: string | SafeHtml = '';
   plainText = '';
   tableData = new TableData();
-  visualizations: Visualizations = {
-    table: {
+  visualizations = [
+    {
+      id: 'table',
+      name: 'Table',
+      icon: 'table',
       Class: TableVisualization,
+      changeSubscription: null,
       instance: undefined
     },
-    lineChart: {
-      Class: LineChartVisualization,
-      instance: undefined
-    },
-    multiBarChart: {
+    {
+      id: 'multiBarChart',
+      name: 'Bar Chart',
+      icon: 'bar-chart',
       Class: BarChartVisualization,
+      changeSubscription: null,
       instance: undefined
     },
-    stackedAreaChart: {
-      Class: AreaChartVisualization,
-      instance: undefined
-    },
-    pieChart: {
+    {
+      id: 'pieChart',
+      name: 'Pie Chart',
+      icon: 'pie-chart',
       Class: PieChartVisualization,
+      changeSubscription: null,
       instance: undefined
     },
-    scatterChart: {
+    {
+      id: 'lineChart',
+      name: 'Line Chart',
+      icon: 'line-chart',
+      Class: LineChartVisualization,
+      changeSubscription: null,
+      instance: undefined
+    },
+    {
+      id: 'stackedAreaChart',
+      name: 'Area Chart',
+      icon: 'area-chart',
+      Class: AreaChartVisualization,
+      changeSubscription: null,
+      instance: undefined
+    },
+    {
+      id: 'scatterChart',
+      name: 'Scatter Chart',
+      icon: 'dot-chart',
       Class: ScatterChartVisualization,
+      changeSubscription: null,
       instance: undefined
     }
-  };
+  ];
 
   constructor(
     private viewContainerRef: ViewContainerRef,
@@ -111,12 +116,22 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit {
     this.renderDefaultDisplay();
   }
 
+  switchMode(mode: VisualizationMode) {
+    this.config.graph.mode = mode;
+    this.renderGraph();
+    this.configChange.emit(this.config);
+  }
+
+  updateResult(config: ParagraphConfigResult, result: ParagraphIResultsMsgItem) {
+    this.config = config;
+    this.result = result;
+    this.renderDefaultDisplay();
+  }
+
   renderDefaultDisplay() {
     switch (this.result.type) {
       case DatasetType.TABLE:
-        if (this.config && this.config.graph) {
-          this.renderGraph();
-        }
+        this.renderGraph();
         break;
       case DatasetType.TEXT:
         this.renderText();
@@ -147,31 +162,80 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit {
   }
 
   renderGraph() {
+    this.setDefaultConfig();
     let instance: Visualization;
-    if (!this.visualizations[this.config.graph.mode]) {
+    const visualizationItem = this.visualizations.find(v => v.id === this.config.graph.mode);
+    if (!visualizationItem) {
       return;
     }
-    if (!this.visualizations[this.config.graph.mode].instance) {
-      instance = new this.visualizations[this.config.graph.mode].Class(
-        this.config.graph,
-        this.portalOutlet,
-        this.viewContainerRef
-      );
-      this.visualizations[this.config.graph.mode].instance = instance;
+    this.destroyVisualizations(this.config.graph.mode);
+    if (!visualizationItem.instance) {
+      instance = new visualizationItem.Class(this.config.graph, this.portalOutlet, this.viewContainerRef);
+      visualizationItem.instance = instance;
+      visualizationItem.changeSubscription = instance.configChanged().subscribe(config => {
+        this.config.graph = config;
+        this.renderGraph();
+        this.configChange.emit({
+          graph: config
+        });
+      });
     } else {
-      instance = this.visualizations[this.config.graph.mode].instance;
+      instance = visualizationItem.instance;
+      instance.setConfig(this.config.graph);
     }
     this.tableData.loadParagraphResult(this.result);
     const transformation = instance.getTransformation();
+    transformation.setConfig(this.config.graph);
     transformation.setTableData(this.tableData);
     const transformed = transformation.transform(this.tableData);
     instance.render(transformed);
-    instance.configChanged().subscribe(config =>
-      this.configChange.emit({
-        graph: config
-      })
-    );
+  }
+
+  destroyVisualizations(omit?: string) {
+    this.visualizations.forEach(v => {
+      if (v.id !== omit && v.instance) {
+        if (v.changeSubscription instanceof Subscription) {
+          v.changeSubscription.unsubscribe();
+          v.changeSubscription = null;
+        }
+        if (typeof v.instance.destroy === 'function') {
+          v.instance.destroy();
+        }
+        v.instance = undefined;
+      }
+    });
+  }
+
+  setDefaultConfig() {
+    if (!this.config || !this.config.graph) {
+      this.config = { graph: new GraphConfig() };
+    }
+    if (!this.config.graph.setting) {
+      this.config.graph.setting = {};
+    }
+    if (!this.config.graph.setting[this.config.graph.mode]) {
+      switch (this.config.graph.mode) {
+        case 'multiBarChart':
+          this.config.graph.setting[this.config.graph.mode] = new VisualizationMultiBarChart();
+          break;
+        case 'stackedAreaChart':
+          this.config.graph.setting[this.config.graph.mode] = new VisualizationStackedAreaChart();
+          break;
+        case 'lineChart':
+          this.config.graph.setting[this.config.graph.mode] = new VisualizationLineChart();
+          break;
+        case 'scatterChart':
+          this.config.graph.setting[this.config.graph.mode] = new VisualizationScatterChart();
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   ngAfterViewInit(): void {}
+
+  ngOnDestroy(): void {
+    this.destroyVisualizations();
+  }
 }

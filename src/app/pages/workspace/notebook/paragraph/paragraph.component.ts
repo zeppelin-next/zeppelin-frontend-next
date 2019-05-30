@@ -7,7 +7,9 @@ import {
   Output,
   EventEmitter,
   OnChanges,
-  ViewChild
+  ViewChild,
+  ViewChildren,
+  QueryList
 } from '@angular/core';
 import {
   MessageReceiveDataTypeMap,
@@ -17,7 +19,9 @@ import {
   ParagraphEditorSetting,
   ParagraphConfigResult,
   ParagraphItem,
-  InterpreterBindingItem
+  InterpreterBindingItem,
+  GraphConfig,
+  ParagraphIResultsMsgItem
 } from 'zeppelin-sdk';
 import {
   HeliumService,
@@ -32,6 +36,7 @@ import DiffMatchPatch from 'diff-match-patch';
 import { SpellResult } from 'zeppelin-spell/spell-result';
 import { NotebookParagraphCodeEditorComponent } from './code-editor/code-editor.component';
 import { NzModalService } from 'ng-zorro-antd';
+import { NotebookParagraphResultComponent } from './result/result.component';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph',
@@ -42,6 +47,9 @@ import { NzModalService } from 'ng-zorro-antd';
 export class NotebookParagraphComponent extends MessageListenersManager implements OnInit, OnChanges {
   @ViewChild(NotebookParagraphCodeEditorComponent)
   notebookParagraphCodeEditorComponent: NotebookParagraphCodeEditorComponent;
+  @ViewChildren(NotebookParagraphResultComponent) notebookParagraphResultComponents: QueryList<
+    NotebookParagraphResultComponent
+  >;
   @Input() paragraph: ParagraphItem;
   @Input() note: Note['note'];
   @Input() revisionView: boolean;
@@ -94,12 +102,16 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
         if (newPara.results && newPara.results.msg) {
           for (const i in newPara.results.msg) {
             if (newPara.results.msg[i]) {
-              const newResult = newPara.results.msg ? newPara.results.msg[i] : {};
-              const oldResult = oldPara.results && oldPara.results.msg ? oldPara.results.msg[i] : {};
-              const newConfig = newPara.config.results ? newPara.config.results[i] : {};
-              const oldConfig = oldPara.config.results ? oldPara.config.results[i] : {};
+              const newResult = newPara.results.msg ? newPara.results.msg[i] : new ParagraphIResultsMsgItem();
+              const oldResult =
+                oldPara.results && oldPara.results.msg ? oldPara.results.msg[i] : new ParagraphIResultsMsgItem();
+              const newConfig = newPara.config.results ? newPara.config.results[i] : { graph: new GraphConfig() };
+              const oldConfig = oldPara.config.results ? oldPara.config.results[i] : { graph: new GraphConfig() };
               if (!isEqual(newResult, oldResult) || !isEqual(newConfig, oldConfig)) {
-                // TODO updateResult
+                const resultComponent = this.notebookParagraphResultComponents.toArray()[i];
+                if (resultComponent) {
+                  resultComponent.updateResult(newConfig, newResult);
+                }
               }
             }
           }
@@ -357,6 +369,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     this.isParagraphRunning = this.noteStatusService.isParagraphRunning(newPara);
     this.paragraph.config = newPara.config;
     this.initializeDefault(this.paragraph.config);
+    this.setResults();
     this.cdr.markForCheck();
   }
 
@@ -401,6 +414,16 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     }
     this.messageService.insertParagraph(newIndex);
     this.cdr.markForCheck();
+  }
+
+  setResults() {
+    if (this.paragraph.results) {
+      this.results = this.paragraph.results.msg;
+      this.configs = this.paragraph.config.results;
+    }
+    if (!this.paragraph.config) {
+      this.paragraph.config = {};
+    }
   }
 
   setTitle(title: string) {
@@ -507,13 +530,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   }
 
   ngOnInit() {
-    if (this.paragraph.results) {
-      this.results = this.paragraph.results.msg;
-      this.configs = this.paragraph.config.results;
-    }
-    if (!this.paragraph.config) {
-      this.paragraph.config = {};
-    }
+    this.setResults();
     this.originalText = this.paragraph.text;
     this.isEntireNoteRunning = this.noteStatusService.isEntireNoteRunning(this.note);
     this.isParagraphRunning = this.noteStatusService.isParagraphRunning(this.paragraph);

@@ -5,11 +5,13 @@ import {
   ViewChild,
   ElementRef,
   Inject,
-  AfterViewInit
+  AfterViewInit,
+  ChangeDetectorRef
 } from '@angular/core';
-import * as G2 from '@antv/g2';
-import { GraphConfig } from 'zeppelin-sdk';
+import { VisualizationPivotSettingComponent } from '../common/pivot-setting/pivot-setting.component';
 import { setChartXAxis } from '../common/util/set-x-axis';
+import { VisualizationXAxisSettingComponent } from '../common/x-axis-setting/x-axis-setting.component';
+import { G2VisualizationComponentBase } from '../g2-visualization-component-base';
 import { Visualization } from '../visualization';
 import { VISUALIZATION } from '../visualization-component-portal';
 
@@ -19,38 +21,36 @@ import { VISUALIZATION } from '../visualization-component-portal';
   styleUrls: ['./area-chart-visualization.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AreaChartVisualizationComponent implements OnInit, AfterViewInit {
-  @ViewChild('graphEle') graphEle: ElementRef<HTMLDivElement>;
-  transformed;
-  chart: G2.Chart;
+export class AreaChartVisualizationComponent extends G2VisualizationComponentBase implements OnInit, AfterViewInit {
+  @ViewChild('container') container: ElementRef<HTMLDivElement>;
+  @ViewChild(VisualizationXAxisSettingComponent) xAxisSettingComponent: VisualizationXAxisSettingComponent;
+  @ViewChild(VisualizationPivotSettingComponent) pivotSettingComponent: VisualizationPivotSettingComponent;
   style: 'stream' | 'expand' | 'stack' = 'stack';
-  config: GraphConfig;
 
-  constructor(@Inject(VISUALIZATION) public visualization: Visualization) {}
+  constructor(@Inject(VISUALIZATION) public visualization: Visualization, private cdr: ChangeDetectorRef) {
+    super(visualization);
+  }
 
   viewChange() {
     this.config.setting.stackedAreaChart.style = this.style;
     this.visualization.configChange$.next(this.config);
   }
 
-  ngOnInit() {
-    this.transformed = this.visualization.transformed;
+  ngOnInit() {}
+
+  refreshSetting() {
+    this.style = this.config.setting.stackedAreaChart.style;
+    this.pivotSettingComponent.init();
+    this.xAxisSettingComponent.init();
+    this.cdr.markForCheck();
   }
 
   ngAfterViewInit(): void {
-    this.chart = new G2.Chart({
-      forceFit: true,
-      container: this.graphEle.nativeElement
-    });
+    this.render();
+  }
 
-    this.config = this.visualization.getConfig();
-    this.style = this.config.setting.stackedAreaChart.style;
-    let key = '';
-    if (this.config.keys && this.config.keys[0]) {
-      key = this.config.keys[0].name;
-    }
-
-    this.chart.source(this.transformed);
+  renderBefore() {
+    const key = this.getKey();
     this.chart.scale(key, {
       type: 'cat'
     });
@@ -77,7 +77,5 @@ export class AreaChartVisualizationComponent implements OnInit, AfterViewInit {
     }
 
     setChartXAxis(this.visualization, 'stackedAreaChart', this.chart, key);
-
-    this.chart.render();
   }
 }

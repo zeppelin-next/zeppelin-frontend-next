@@ -58,9 +58,7 @@ export class VisualizationPivotSettingComponent implements OnInit {
     return false;
   }
 
-  constructor(private cdr: ChangeDetectorRef) {}
-
-  ngOnInit() {
+  init() {
     this.tableData = this.visualization.getTransformation().getTableData() as TableData;
     this.config = this.visualization.getConfig();
     this.columns = this.tableData.columns.map((name, index) => ({
@@ -68,5 +66,12 @@ export class VisualizationPivotSettingComponent implements OnInit {
       index,
       aggr: 'sum'
     }));
+    this.cdr.markForCheck();
+  }
+
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  ngOnInit() {
+    this.init();
   }
 }

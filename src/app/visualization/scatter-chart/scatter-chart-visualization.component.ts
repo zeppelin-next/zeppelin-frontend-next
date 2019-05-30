@@ -5,9 +5,11 @@ import {
   AfterViewInit,
   ViewChild,
   ElementRef,
-  Inject
+  Inject,
+  ChangeDetectorRef
 } from '@angular/core';
-import * as G2 from '@antv/g2';
+import { VisualizationScatterSettingComponent } from '../common/scatter-setting/scatter-setting.component';
+import { G2VisualizationComponentBase } from '../g2-visualization-component-base';
 import { Visualization } from '../visualization';
 import { VISUALIZATION } from '../visualization-component-portal';
 import { get } from 'lodash';
@@ -18,31 +20,24 @@ import { get } from 'lodash';
   styleUrls: ['./scatter-chart-visualization.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ScatterChartVisualizationComponent implements OnInit, AfterViewInit {
-  @ViewChild('graphEle') graphEle: ElementRef<HTMLDivElement>;
-  transformed;
-  chart: G2.Chart;
-  constructor(@Inject(VISUALIZATION) public visualization: Visualization) {}
+export class ScatterChartVisualizationComponent extends G2VisualizationComponentBase implements OnInit, AfterViewInit {
+  @ViewChild('container') container: ElementRef<HTMLDivElement>;
+  @ViewChild(VisualizationScatterSettingComponent) scatterSettingComponent: VisualizationScatterSettingComponent;
 
-  ngOnInit() {
-    this.transformed = this.visualization.transformed;
+  constructor(@Inject(VISUALIZATION) public visualization: Visualization, private cdr: ChangeDetectorRef) {
+    super(visualization);
   }
 
-  ngAfterViewInit() {
-    this.chart = new G2.Chart({
-      forceFit: true,
-      container: this.graphEle.nativeElement
-    });
-    const config = this.visualization.getConfig();
-    let key = '';
-    const size = get(config.setting.scatterChart.size, 'name');
-    if (config.keys && config.keys[0]) {
-      key = config.keys[0].name;
-    }
-    this.chart.source(this.transformed);
+  refreshSetting() {
+    this.scatterSettingComponent.init();
+    this.cdr.markForCheck();
+  }
+
+  renderBefore() {
+    const key = this.getKey();
+    const size = get(this.config.setting, 'scatterChart.size.name');
     this.chart.scale(key, {
-      type: 'cat',
-      tickCount: 24
+      type: 'cat'
     });
     this.chart.tooltip({
       crosshairs: {
@@ -62,7 +57,11 @@ export class ScatterChartVisualizationComponent implements OnInit, AfterViewInit
     if (size) {
       geom.size('__value__');
     }
+  }
 
-    this.chart.render();
+  ngOnInit() {}
+
+  ngAfterViewInit() {
+    this.render();
   }
 }

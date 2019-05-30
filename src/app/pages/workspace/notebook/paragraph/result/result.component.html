@@ -1,7 +1,19 @@
+<div class="visualization-selector" *ngIf="result.type === datasetType.TABLE">
+  <nz-radio-group [(ngModel)]="config?.graph.mode" (ngModelChange)="switchMode($event)" nzButtonStyle="solid">
+    <label *ngFor="let item of visualizations"
+           nz-radio-button
+           [nz-tooltip]="item.name"
+           [nzValue]="item.id">
+      <i nz-icon [nzType]="item.icon"></i>
+    </label>
+  </nz-radio-group>
+</div>
 <div #graphEle>
   <ng-template cdkPortalOutlet></ng-template>
-  <div *ngIf="innerHTML" class="inner-html" [innerHTML]="innerHTML"></div>
-  <div *ngIf="plainText" class="text-plain"><pre>{{plainText}}</pre></div>
+  <ng-container [ngSwitch]="result?.type">
+    <div *ngSwitchCase="datasetType.HTML" class="inner-html" [innerHTML]="innerHTML"></div>
+    <div *ngSwitchCase="datasetType.TEXT" class="text-plain"><pre>{{plainText}}</pre></div>
+  </ng-container>
   <div *ngIf="angularComponent">
     <ng-container *ngComponentOutlet="angularComponent.component;ngModuleFactory: angularComponent.moduleFactory;"></ng-container>
   </div>

@@ -3,6 +3,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef } 
 import { GraphConfig } from 'zeppelin-sdk';
 import { TableData } from '../../dataset/table-data';
 import { Visualization } from '../../visualization';
+import { get } from 'lodash';
 
 @Component({
   selector: 'zeppelin-visualization-scatter-setting',
@@ -48,6 +49,9 @@ export class VisualizationScatterSettingComponent implements OnInit {
   }
 
   updateConfig() {
+    if (!this.config.setting.scatterChart) {
+      this.config.setting.scatterChart = {};
+    }
     const scatterSetting = this.config.setting.scatterChart;
     scatterSetting.xAxis = this.field.xAxis[0];
     scatterSetting.yAxis = this.field.yAxis[0];
@@ -58,7 +62,7 @@ export class VisualizationScatterSettingComponent implements OnInit {
 
   constructor(private cdr: ChangeDetectorRef) {}
 
-  ngOnInit() {
+  init() {
     this.tableData = this.visualization.getTransformation().getTableData() as TableData;
     this.config = this.visualization.getConfig();
     this.columns = this.tableData.columns.map((name, index) => ({
@@ -67,12 +71,19 @@ export class VisualizationScatterSettingComponent implements OnInit {
       aggr: 'sum'
     }));
 
-    const { xAxis, yAxis, group, size } = this.config.setting.scatterChart;
-
+    const xAxis = get(this.config.setting, 'scatterChart.xAxis', this.columns[0]);
+    const yAxis = get(this.config.setting, 'scatterChart.yAxis', this.columns[1]);
+    const group = get(this.config.setting, 'scatterChart.group');
+    const size = get(this.config.setting, 'scatterChart.size');
     const arrayWrapper = value => (value ? [value] : []);
     this.field.xAxis = arrayWrapper(xAxis);
     this.field.yAxis = arrayWrapper(yAxis);
     this.field.group = arrayWrapper(group);
     this.field.size = arrayWrapper(size);
+    this.cdr.markForCheck();
+  }
+
+  ngOnInit() {
+    this.init();
   }
 }

@@ -18,6 +18,7 @@ import {
   NzPopconfirmModule,
   NzPopoverModule,
   NzProgressModule,
+  NzRadioModule,
   NzSelectModule,
   NzSwitchModule,
   NzToolTipModule
@@ -75,7 +76,8 @@ import { NotebookParagraphControlComponent } from './paragraph/control/control.c
     NzProgressModule,
     NzSwitchModule,
     NzSelectModule,
-    NzGridModule
+    NzGridModule,
+    NzRadioModule
   ]
 })
 export class NotebookModule {}

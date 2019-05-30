@@ -1,10 +1,13 @@
+import { ComponentRef } from '@angular/core';
 import { Subject } from 'rxjs';
 import { GraphConfig } from 'zeppelin-sdk';
 import { Setting, Transformation } from './transformation';
 
-export abstract class Visualization {
+// tslint:disable-next-line
+export abstract class Visualization<T = any> {
   // tslint:disable-next-line
   transformed: any;
+  componentRef: ComponentRef<T>;
   configChange$ = new Subject<GraphConfig>();
   private active = false;
   private dirty = false;
@@ -46,7 +49,7 @@ export abstract class Visualization {
     }
   }
 
-  setConfig(config) {
+  setConfig(config: GraphConfig) {
     this.config = config;
     if (this.isActive()) {
       this.refresh();

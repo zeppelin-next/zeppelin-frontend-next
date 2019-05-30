@@ -1,14 +1,11 @@
 import { ViewContainerRef } from '@angular/core';
 import { GraphConfig } from 'zeppelin-sdk';
-import { PivotTransformation } from '../pivot-transformation';
-import { Setting, Transformation } from '../transformation';
-import { Visualization } from '../visualization';
+import { G2VisualizationBase } from '../g2-visualization-base';
 import { VisualizationComponentPortal } from '../visualization-component-portal';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
 import { ScatterChartVisualizationComponent } from './scatter-chart-visualization.component';
 
-export class ScatterChartVisualization extends Visualization {
-  pivot = new PivotTransformation(this.getConfig());
+export class ScatterChartVisualization extends G2VisualizationBase {
   componentPortal = new VisualizationComponentPortal<ScatterChartVisualization, ScatterChartVisualizationComponent>(
     this,
     ScatterChartVisualizationComponent,
@@ -18,22 +15,5 @@ export class ScatterChartVisualization extends Visualization {
 
   constructor(config: GraphConfig, private portalOutlet: CdkPortalOutlet, private viewContainerRef: ViewContainerRef) {
     super(config);
-  }
-
-  destroy(): void {}
-
-  getSetting(): Setting {
-    return undefined;
-  }
-
-  getTransformation(): Transformation {
-    return this.pivot;
-  }
-
-  refresh(): void {}
-
-  render(data): void {
-    this.transformed = data;
-    this.componentPortal.attachComponentPortal();
   }
 }

@@ -1,8 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { GraphConfig, XAxisSetting } from 'zeppelin-sdk';
+import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
+import { GraphConfig, XAxisSetting, XLabelStatus } from 'zeppelin-sdk';
 import { Visualization } from '../../visualization';
-
-type XLabelStatus = 'default' | 'rotate' | 'hide';
+import { get } from 'lodash';
 
 @Component({
   selector: 'zeppelin-visualization-x-axis-setting',
@@ -19,7 +18,7 @@ export class VisualizationXAxisSettingComponent implements OnInit {
   xLabelStatus: XLabelStatus = 'default';
   degree = '-45';
   previousDegree: string;
-  constructor() {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   onStatusChange() {
     this.setting.xLabelStatus = this.xLabelStatus;
@@ -47,11 +46,16 @@ export class VisualizationXAxisSettingComponent implements OnInit {
     this.visualization.configChange$.next(this.config);
   }
 
-  ngOnInit() {
+  init() {
     this.config = this.visualization.getConfig();
     this.setting = this.config.setting[this.mode];
     this.xLabelStatus = this.setting.xLabelStatus;
     this.degree = this.setting.rotate.degree;
     this.previousDegree = this.degree;
+    this.cdr.markForCheck();
+  }
+
+  ngOnInit() {
+    this.init();
   }
 }

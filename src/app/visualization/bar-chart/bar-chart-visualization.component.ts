@@ -5,13 +5,17 @@ import {
   ViewChild,
   ElementRef,
   Inject,
-  AfterViewInit
+  AfterViewInit,
+  ChangeDetectorRef
 } from '@angular/core';
-import * as G2 from '@antv/g2';
-import { GraphConfig } from 'zeppelin-sdk';
+import { VisualizationMultiBarChart } from 'zeppelin-sdk';
+import { VisualizationPivotSettingComponent } from '../common/pivot-setting/pivot-setting.component';
 import { setChartXAxis } from '../common/util/set-x-axis';
+import { VisualizationXAxisSettingComponent } from '../common/x-axis-setting/x-axis-setting.component';
+import { G2VisualizationComponentBase } from '../g2-visualization-component-base';
 import { Visualization } from '../visualization';
 import { VISUALIZATION } from '../visualization-component-portal';
+import { get } from 'lodash';
 
 @Component({
   selector: 'zeppelin-bar-chart-visualization',
@@ -19,42 +23,44 @@ import { VISUALIZATION } from '../visualization-component-portal';
   styleUrls: ['./bar-chart-visualization.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BarChartVisualizationComponent implements OnInit, AfterViewInit {
-  @ViewChild('graphEle') graphEle: ElementRef<HTMLDivElement>;
-  transformed;
-  chart: G2.Chart;
+export class BarChartVisualizationComponent extends G2VisualizationComponentBase implements OnInit, AfterViewInit {
+  @ViewChild('container') container: ElementRef<HTMLDivElement>;
+  @ViewChild(VisualizationXAxisSettingComponent) xAxisSettingComponent: VisualizationXAxisSettingComponent;
+  @ViewChild(VisualizationPivotSettingComponent) pivotSettingComponent: VisualizationPivotSettingComponent;
   stacked = false;
-  config: GraphConfig;
 
   viewChange() {
+    if (!this.config.setting.multiBarChart) {
+      this.config.setting.multiBarChart = new VisualizationMultiBarChart();
+    }
     this.config.setting.multiBarChart.stacked = this.stacked;
     this.visualization.configChange$.next(this.config);
   }
 
-  constructor(@Inject(VISUALIZATION) public visualization: Visualization) {}
-
-  ngOnInit() {
-    this.transformed = this.visualization.transformed;
+  constructor(@Inject(VISUALIZATION) public visualization: Visualization, private cdr: ChangeDetectorRef) {
+    super(visualization);
   }
 
-  ngAfterViewInit() {
-    this.chart = new G2.Chart({
-      forceFit: true,
-      container: this.graphEle.nativeElement
-    });
-    this.config = this.visualization.getConfig();
-    this.stacked = this.config.setting.multiBarChart.stacked;
-    let key = '';
-    if (this.config.keys && this.config.keys[0]) {
-      key = this.config.keys[0].name;
-    }
+  ngOnInit() {}
 
-    this.chart.source(this.transformed);
+  ngAfterViewInit() {
+    this.render();
+  }
+
+  refreshSetting() {
+    this.stacked = get(this.config.setting, 'multiBarChart.stacked', false);
+    this.pivotSettingComponent.init();
+    this.xAxisSettingComponent.init();
+    this.cdr.markForCheck();
+  }
+
+  renderBefore(chart) {
+    const key = this.getKey();
     this.chart.scale(key, {
       type: 'cat'
     });
 
-    if (this.config.setting.multiBarChart.stacked) {
+    if (get(this.config.setting, 'multiBarChart.stacked', false)) {
       this.chart
         .intervalStack()
         .position(`${key}*__value__`)
@@ -74,7 +80,5 @@ export class BarChartVisualizationComponent implements OnInit, AfterViewInit {
         ]);
     }
     setChartXAxis(this.visualization, 'multiBarChart', this.chart, key);
-
-    this.chart.render();
   }
 }

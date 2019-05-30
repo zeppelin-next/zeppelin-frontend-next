@@ -5,11 +5,15 @@ import {
   ViewChild,
   ElementRef,
   Inject,
-  AfterViewInit
+  AfterViewInit,
+  ChangeDetectorRef
 } from '@angular/core';
 import * as G2 from '@antv/g2';
 import { GraphConfig } from 'zeppelin-sdk';
+import { VisualizationPivotSettingComponent } from '../common/pivot-setting/pivot-setting.component';
 import { setChartXAxis } from '../common/util/set-x-axis';
+import { VisualizationXAxisSettingComponent } from '../common/x-axis-setting/x-axis-setting.component';
+import { G2VisualizationComponentBase } from '../g2-visualization-component-base';
 import { Visualization } from '../visualization';
 import { VISUALIZATION } from '../visualization-component-portal';
 
@@ -19,16 +23,14 @@ import { VISUALIZATION } from '../visualization-component-portal';
   styleUrls: ['./line-chart-visualization.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LineChartVisualizationComponent implements OnInit, AfterViewInit {
-  @ViewChild('graphEle') graphEle: ElementRef<HTMLDivElement>;
-  @ViewChild('sliderEle') sliderEle: ElementRef<HTMLDivElement>;
-  config: GraphConfig;
+export class LineChartVisualizationComponent extends G2VisualizationComponentBase implements OnInit, AfterViewInit {
+  @ViewChild('container') container: ElementRef<HTMLDivElement>;
+  @ViewChild(VisualizationXAxisSettingComponent) xAxisSettingComponent: VisualizationXAxisSettingComponent;
+  @ViewChild(VisualizationPivotSettingComponent) pivotSettingComponent: VisualizationPivotSettingComponent;
   forceY = false;
   lineWithFocus = false;
   isDateFormat = false;
   dateFormat = '';
-  transformed;
-  chart: G2.Chart;
 
   settingChange(): void {
     const setting = this.config.setting.lineChart;
@@ -36,43 +38,33 @@ export class LineChartVisualizationComponent implements OnInit, AfterViewInit {
     setting.forceY = this.forceY;
     setting.isDateFormat = this.isDateFormat;
     setting.dateFormat = this.dateFormat;
-    console.log(setting);
     this.visualization.configChange$.next(this.config);
   }
 
-  constructor(@Inject(VISUALIZATION) public visualization: Visualization) {}
-
-  ngOnInit() {
-    this.transformed = this.visualization.transformed;
+  constructor(@Inject(VISUALIZATION) public visualization: Visualization, private cdr: ChangeDetectorRef) {
+    super(visualization);
   }
 
-  ngAfterViewInit() {
-    this.chart = new G2.Chart({
-      forceFit: true,
-      container: this.graphEle.nativeElement
-    });
-    this.config = this.visualization.getConfig();
+  ngOnInit() {}
+
+  refreshSetting() {
     const setting = this.config.setting.lineChart;
     this.forceY = setting.forceY || false;
     this.lineWithFocus = setting.lineWithFocus || false;
     this.isDateFormat = setting.isDateFormat || false;
     this.dateFormat = setting.dateFormat || '';
+    this.pivotSettingComponent.init();
+    this.xAxisSettingComponent.init();
+    this.cdr.markForCheck();
+  }
 
-    let key = '';
-    if (this.config.keys && this.config.keys[0]) {
-      key = this.config.keys[0].name;
-    }
-
-    this.chart.source(this.transformed);
-
+  renderBefore() {
+    const key = this.getKey();
+    const setting = this.config.setting.lineChart;
     this.chart
       .line()
       .position(`${key}*__value__`)
       .color('__key__');
-    this.chart.legend({
-      position: 'top-right'
-      // tslint:disable-next-line
-    } as any);
     setChartXAxis(this.visualization, 'lineChart', this.chart, key);
 
     if (setting.isDateFormat) {
@@ -91,12 +83,20 @@ export class LineChartVisualizationComponent implements OnInit, AfterViewInit {
         }
       });
     }
+  }
 
-    this.chart.render();
-
+  renderAfter() {
+    const setting = this.config.setting.lineChart;
     if (setting.lineWithFocus) {
       // tslint:disable-next-line
       (this.chart as any).interact('brush');
+    } else {
+      // tslint:disable-next-line:no-any
+      (this.chart as any).clearInteraction();
     }
+  }
+
+  ngAfterViewInit() {
+    this.render();
   }
 }

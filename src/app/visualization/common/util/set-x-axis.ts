@@ -10,7 +10,13 @@ export function setChartXAxis(
 ) {
   const config = visualization.getConfig();
   const setting = config.setting[mode];
-
+  chart.axis(key, {
+    label: {
+      textStyle: {
+        rotate: 0
+      }
+    }
+  });
   switch (setting.xLabelStatus) {
     case 'hide':
       chart.axis(key, false);
