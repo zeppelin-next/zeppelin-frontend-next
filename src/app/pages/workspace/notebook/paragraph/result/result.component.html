@@ -1,5 +1,5 @@
-<div class="setting-bar">
-  <div class="visualization-selector" *ngIf="result.type === datasetType.TABLE">
+<div class="setting-bar" *ngIf="result.type === datasetType.TABLE">
+  <div class="visualization-selector">
     <nz-radio-group [(ngModel)]="config?.graph.mode" (ngModelChange)="switchMode($event)" nzButtonStyle="solid">
       <label *ngFor="let item of visualizations"
              nz-radio-button
