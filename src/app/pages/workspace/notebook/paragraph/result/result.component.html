@@ -1,12 +1,33 @@
-<div class="visualization-selector" *ngIf="result.type === datasetType.TABLE">
-  <nz-radio-group [(ngModel)]="config?.graph.mode" (ngModelChange)="switchMode($event)" nzButtonStyle="solid">
-    <label *ngFor="let item of visualizations"
-           nz-radio-button
-           [nz-tooltip]="item.name"
-           [nzValue]="item.id">
-      <i nz-icon [nzType]="item.icon"></i>
-    </label>
-  </nz-radio-group>
+<div class="setting-bar">
+  <div class="visualization-selector" *ngIf="result.type === datasetType.TABLE">
+    <nz-radio-group [(ngModel)]="config?.graph.mode" (ngModelChange)="switchMode($event)" nzButtonStyle="solid">
+      <label *ngFor="let item of visualizations"
+             nz-radio-button
+             [nz-tooltip]="item.name"
+             [nzValue]="item.id">
+        <i nz-icon [nzType]="item.icon"></i>
+      </label>
+    </nz-radio-group>
+  </div>
+
+  <nz-dropdown-button class="export-dropdown" (nzClick)="exportFile('csv')">
+    <i nz-icon nzType="download" nz-tooltip="Download Data as CSV"></i>
+    <ul nz-menu>
+      <li nz-menu-item (click)="exportFile('csv')">CSV</li>
+      <li nz-menu-item (click)="exportFile('tsv')">TSV</li>
+    </ul>
+  </nz-dropdown-button>
+
+  <a class="setting-trigger" tabindex="-1" (click)="switchSetting()">
+    Setting
+    <i
+      nz-icon
+      nzType="caret-down"
+      [nzRotate]="config.graph.optionOpen ? 180 : 0"
+      class="setting-icon"
+      nz-dropdown
+    ></i>
+  </a>
 </div>
 <div #graphEle>
   <ng-template cdkPortalOutlet></ng-template>

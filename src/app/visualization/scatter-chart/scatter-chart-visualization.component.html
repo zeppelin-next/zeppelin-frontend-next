@@ -1,5 +1,7 @@
-<zeppelin-visualization-scatter-setting
-  [visualization]="visualization">
-</zeppelin-visualization-scatter-setting>
+<div [hidden]="!config?.optionOpen">
+  <zeppelin-visualization-scatter-setting
+    [visualization]="visualization">
+  </zeppelin-visualization-scatter-setting>
+</div>
 <div #container>
 </div>

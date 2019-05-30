@@ -14,6 +14,7 @@ import {
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
+import { WorkSheet, utils, writeFile, WritingOptions } from 'xlsx';
 import {
   DatasetType,
   GraphConfig,
@@ -116,9 +117,27 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
     this.renderDefaultDisplay();
   }
 
+  exportFile(type: 'csv' | 'tsv'): void {
+    if (this.tableData && this.tableData.rows) {
+      const wb = utils.book_new();
+      let ws: WorkSheet;
+      ws = utils.json_to_sheet(this.tableData.rows);
+      utils.book_append_sheet(wb, ws, 'Sheet1');
+      writeFile(wb, `export.${type}`, {
+        bookType: 'csv',
+        FS: type === 'tsv' ? '\t' : ','
+      } as WritingOptions);
+    }
+  }
+
   switchMode(mode: VisualizationMode) {
     this.config.graph.mode = mode;
     this.renderGraph();
+    this.configChange.emit(this.config);
+  }
+
+  switchSetting() {
+    this.config.graph.optionOpen = !this.config.graph.optionOpen;
     this.configChange.emit(this.config);
   }
 

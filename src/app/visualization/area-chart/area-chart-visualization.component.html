@@ -1,10 +1,12 @@
-<zeppelin-visualization-pivot-setting
-  [visualization]="visualization">
-</zeppelin-visualization-pivot-setting>
-<zeppelin-visualization-x-axis-setting
-  [visualization]="visualization"
-  mode="stackedAreaChart">
-</zeppelin-visualization-x-axis-setting>
+<div [hidden]="!config?.optionOpen">
+  <zeppelin-visualization-pivot-setting
+    [visualization]="visualization">
+  </zeppelin-visualization-pivot-setting>
+  <zeppelin-visualization-x-axis-setting
+    [visualization]="visualization"
+    mode="stackedAreaChart">
+  </zeppelin-visualization-x-axis-setting>
+</div>
 <div nz-form nzLayout="inline" class="area-chart-setting">
   <nz-form-item>
     <nz-form-label>View</nz-form-label>

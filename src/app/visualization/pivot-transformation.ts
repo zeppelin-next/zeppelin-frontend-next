@@ -124,10 +124,11 @@ export class PivotTransformation extends Transformation {
 
     const groupsData = [];
     Object.keys(dv.rows).forEach(groupKey => {
+      const groupName = groupKey.replace(/^_/, '');
       dv.rows[groupKey].forEach(row => {
         groupsData.push({
           ...row,
-          __key__: `${row['__key__']}.${groupKey}`
+          __key__: groupName ? `${row['__key__']}.${groupName}` : row['__key__']
         });
       });
     });

@@ -8,6 +8,7 @@ import {
   AfterViewInit,
   ChangeDetectorRef
 } from '@angular/core';
+import { collapseMotion } from 'ng-zorro-antd';
 import { VisualizationPivotSettingComponent } from '../common/pivot-setting/pivot-setting.component';
 import { setChartXAxis } from '../common/util/set-x-axis';
 import { VisualizationXAxisSettingComponent } from '../common/x-axis-setting/x-axis-setting.component';

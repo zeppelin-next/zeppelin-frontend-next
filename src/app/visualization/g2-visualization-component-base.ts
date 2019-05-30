@@ -19,10 +19,6 @@ export abstract class G2VisualizationComponentBase implements OnDestroy {
     this.initChart();
     this.chart.source(this.visualization.transformed);
     this.renderBefore(this.chart);
-    // this.chart.legend({
-    //   position: 'top-right'
-    //   // tslint:disable-next-line
-    // } as any);
     this.chart.render();
     this.renderAfter();
   }
@@ -44,8 +40,19 @@ export abstract class G2VisualizationComponentBase implements OnDestroy {
       if (this.container && this.container.nativeElement) {
         this.chart = new G2.Chart({
           forceFit: true,
-          container: this.container.nativeElement
+          container: this.container.nativeElement,
+          height: this.config.height || 400,
+          padding: {
+            top: 80,
+            left: 50,
+            right: 50,
+            bottom: 50
+          }
         });
+        this.chart.legend({
+          position: 'top-right'
+          // tslint:disable-next-line
+        } as any);
       } else {
         throw new Error(`Can't find the container, Please make sure on correct assignment.`);
       }

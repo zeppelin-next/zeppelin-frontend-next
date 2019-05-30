@@ -2,8 +2,21 @@
 
 .themeMixin({
   display: block;
-
-  .visualization-selector {
+  .setting-bar {
+    display: flex;
     margin: 10px 0;
+
+    .export-dropdown {
+      margin: 0 20px;
+    }
+
+    .setting-trigger {
+      line-height: 32px;
+      i {
+        font-size: 12px;
+      }
+    }
+
   }
+
 });
