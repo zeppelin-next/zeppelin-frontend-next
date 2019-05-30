@@ -7,7 +7,8 @@
                             [value]="paragraph.title"
                             [min]="true"
                             (valueUpdate)="setTitle($event)"></zeppelin-elastic-input>
-    <zeppelin-notebook-paragraph-control [status]="paragraph.status"
+    <zeppelin-notebook-paragraph-control #paragraphControl="paragraphControl"
+                                         [status]="paragraph.status"
                                          [progress]="progress"
                                          [first]="first"
                                          [last]="last"
@@ -41,6 +42,7 @@
                                          (cancelParagraph)="cancelParagraph()"></zeppelin-notebook-paragraph-control>
     <zeppelin-notebook-paragraph-code-editor *ngIf="!paragraph.config.editorHide && !viewOnly"
                                              [text]="paragraph.text"
+                                             [paragraphControl]="paragraphControl"
                                              [dirty]="dirtyText !== originalText && dirtyText !== undefined"
                                              [collaborativeMode]="collaborativeMode"
                                              [focus]="paragraph.focus"

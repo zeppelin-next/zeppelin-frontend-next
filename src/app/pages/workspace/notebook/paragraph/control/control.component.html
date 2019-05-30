@@ -52,89 +52,12 @@
           </select>
         </span>
       </li>
-      <li nz-menu-item class="list-item" [nzDisabled]="isEntireNoteRunning" *ngIf="!first" (click)="trigger(moveUp)">
-        <span><i nz-icon nzType="up" nzTheme="outline"></i> Move up</span>
-        <span class="short-cut">
-          Ctrl+{{ isMac ? 'Option' : 'Alt'}}+K
-        </span>
-      </li>
-      <li nz-menu-item class="list-item" [nzDisabled]="isEntireNoteRunning" *ngIf="!last" (click)="trigger(moveDown)">
-        <span><i nz-icon nzType="down" nzTheme="outline"></i> Move down</span>
-        <span class="short-cut">
-          Ctrl+{{ isMac ? 'Option' : 'Alt'}}+J
-        </span>
-      </li>
-      <li nz-menu-item class="list-item" [nzDisabled]="isEntireNoteRunning" (click)="trigger(insertNew)">
-        <span><i nz-icon nzType="plus" nzTheme="outline"></i> Insert new</span>
-        <span class="short-cut">
-          Ctrl+{{ isMac ? 'Option' : 'Alt'}}+B
-        </span>
-      </li>
-      <li nz-menu-item
-          class="list-item"
-          [nzDisabled]="isEntireNoteRunning"
-          *ngIf="!first"
-          (click)="trigger(runAllAbove)">
-        <span><i nz-icon nzType="up-square" nzTheme="outline"></i> Run all above</span>
-        <span class="short-cut">
-          Ctrl+Shift+Enter
-        </span>
-      </li>
-      <li nz-menu-item
-          class="list-item"
-          [nzDisabled]="isEntireNoteRunning"
-          *ngIf="!last"
-          (click)="trigger(runAllBelowAndCurrent)">
-        <span><i nz-icon nzType="down-square" nzTheme="outline"></i> Run all below</span>
-        <span class="short-cut">
-          Ctrl+Shift+Enter
-        </span>
-      </li>
-      <li nz-menu-item class="list-item" [nzDisabled]="isEntireNoteRunning" (click)="trigger(cloneParagraph)">
-        <span><i nz-icon nzType="copy" nzTheme="outline"></i> Clone paragraph</span>
-        <span class="short-cut">
-          Ctrl+Shift+C
-        </span>
-      </li>
-      <li nz-menu-item class="list-item" (click)="toggleTitle()">
-        <span><i nz-icon nzType="font-colors" nzTheme="outline"></i>
-          {{title ? 'Hide' : 'Show'}} title</span>
-        <span class="short-cut">
-          Ctrl+{{ isMac ? 'Option' : 'Alt'}}+T
-        </span>
-      </li>
-      <li nz-menu-item class="list-item" (click)="toggleLineNumbers()">
-        <span><i nz-icon nzType="ordered-list" nzTheme="outline"></i>
-          {{lineNumbers ? 'Hide' : 'Show'}} line numbers</span>
-        <span class="short-cut">
-          Ctrl+{{ isMac ? 'Option' : 'Alt'}}+M
-        </span>
-      </li>
-      <li nz-menu-item class="list-item" [nzDisabled]="isEntireNoteRunning" (click)="toggleEnabled()">
-        <span><i nz-icon nzType="api" nzTheme="outline"></i>
-          {{enabled ? "Disable" : "Enable"}} run</span>
-        <span class="short-cut">
-          Ctrl+ {{ isMac ? 'Option' : 'Alt'}}+R
-        </span>
-      </li>
-      <li nz-menu-item class="list-item" (click)="goToSingleParagraph()">
-        <span><i nz-icon nzType="export" nzTheme="outline"></i> Link this paragraph</span>
-        <span class="short-cut">
-          Ctrl+{{ isMac ? 'Option' : 'Alt'}}+W
-        </span>
-      </li>
-      <li nz-menu-item class="list-item" [nzDisabled]="isEntireNoteRunning" (click)="clearParagraphOutput()">
-        <span><i nz-icon nzType="fire" nzTheme="outline"></i> Clear output</span>
-        <span class="short-cut">
-          Ctrl+{{ isMac ? 'Option' : 'Alt'}}+L
-        </span>
-      </li>
-      <li nz-menu-item class="list-item" [nzDisabled]="isEntireNoteRunning" *ngIf="paragraphLength > 1" (click)="removeParagraph()">
-        <span><i nz-icon nzType="delete" nzTheme="outline"></i> Remove</span>
-        <span class="short-cut">
-          Ctrl+{{ isMac ? 'Option' : 'Alt'}}+D
-        </span>
-      </li>
+      <ng-container *ngFor="let menu of listOfMenu">
+        <li nz-menu-item class="list-item" [nzDisabled]="menu.disabled" *ngIf="menu.show" (click)="menu.trigger()">
+          <span><i nz-icon [nzType]="menu.icon" nzTheme="outline"></i> {{menu.label}}</span>
+          <span class="short-cut">{{menu.shortCut}}</span>
+        </li>
+      </ng-container>
     </ul>
   </nz-dropdown>
 </ng-container>

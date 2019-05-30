@@ -13,8 +13,9 @@ import {
 } from '@angular/core';
 import { InterpreterBindingItem } from 'zeppelin-sdk';
 import { MessageService } from 'zeppelin-services';
-import ICodeEditor = monaco.editor.ICodeEditor;
 import IDisposable = monaco.IDisposable;
+import { NotebookParagraphControlComponent } from '../control/control.component';
+import IStandaloneCodeEditor = monaco.editor.IStandaloneCodeEditor;
 
 @Component({
   selector: 'zeppelin-notebook-paragraph-code-editor',
@@ -27,6 +28,7 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
   //  1. cursor position
   @Input() readOnly = false;
   @Input() language = 'text';
+  @Input() paragraphControl: NotebookParagraphControlComponent;
   @Input() lineNumbers = false;
   @Input() focus = false;
   @Input() collaborativeMode = false;
@@ -37,7 +39,7 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
   @Input() pid: string;
   @Output() textChanged = new EventEmitter<string>();
   @Output() editorBlur = new EventEmitter<void>();
-  private editor: ICodeEditor;
+  private editor: IStandaloneCodeEditor;
   private monacoDisposables: IDisposable[] = [];
   height = 0;
   interpreterName: string;
@@ -86,8 +88,24 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
     }
   }
 
-  initializedEditor(editor: ICodeEditor) {
+  initializedEditor(editor: IStandaloneCodeEditor) {
     this.editor = editor;
+    this.paragraphControl.updateListOfMenu(monaco);
+    if (this.paragraphControl) {
+      this.paragraphControl.listOfMenu.forEach((item, index) => {
+        this.editor.addAction({
+          id: item.icon,
+          label: item.label,
+          keybindings: item.keyBindings,
+          precondition: null,
+          keybindingContext: null,
+          contextMenuGroupId: 'navigation',
+          contextMenuOrder: index,
+          run: () => item.trigger()
+        });
+      });
+    }
+
     this.updateEditorOptions();
     this.setParagraphMode();
     this.initEditorListener();

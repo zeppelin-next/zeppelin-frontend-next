@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+/// <reference path="../../../../../../../node_modules/monaco-editor/monaco.d.ts" />
+import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { copyTextToClipboard } from 'zeppelin-core';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { ActivatedRoute } from '@angular/router';
@@ -6,11 +7,12 @@ import { MessageService } from 'zeppelin-services';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph-control',
+  exportAs: 'paragraphControl',
   templateUrl: './control.component.html',
   styleUrls: ['./control.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotebookParagraphControlComponent implements OnInit {
+export class NotebookParagraphControlComponent implements OnInit, OnChanges {
   @Input() status: string;
   @Input() progress = 0;
   @Input() revisionView = false;
@@ -47,6 +49,128 @@ export class NotebookParagraphControlComponent implements OnInit {
   fontSizeOption = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
   dropdownVisible = false;
   isMac = navigator.appVersion.indexOf('Mac') !== -1;
+  listOfMenu: Array<{
+    label: string;
+    show: boolean;
+    disabled: boolean;
+    icon: string;
+    trigger: () => void;
+    shortCut: string;
+    keyBindings: number[];
+  }> = [];
+
+  updateListOfMenu(monaco?) {
+    this.listOfMenu = [
+      {
+        label: 'Move up',
+        show: !this.first,
+        disabled: this.isEntireNoteRunning,
+        icon: 'up',
+        trigger: () => this.trigger(this.moveUp),
+        shortCut: `Ctrl+${this.isMac ? 'Option' : 'Alt'}+K`,
+        keyBindings: monaco ? [monaco.KeyMod.WinCtrl | monaco.KeyMod.Alt | monaco.KeyCode.KEY_K] : []
+      },
+      {
+        label: 'Move down',
+        show: !this.last,
+        disabled: this.isEntireNoteRunning,
+        icon: 'down',
+        trigger: () => this.trigger(this.moveDown),
+        shortCut: `Ctrl+${this.isMac ? 'Option' : 'Alt'}+J`,
+        keyBindings: monaco ? [monaco.KeyMod.WinCtrl | monaco.KeyMod.Alt | monaco.KeyCode.KEY_J] : []
+      },
+      {
+        label: 'Insert new',
+        show: true,
+        disabled: this.isEntireNoteRunning,
+        icon: 'plus',
+        trigger: () => this.trigger(this.insertNew),
+        shortCut: `Ctrl+${this.isMac ? 'Option' : 'Alt'}+B`,
+        keyBindings: monaco ? [monaco.KeyMod.WinCtrl | monaco.KeyMod.Alt | monaco.KeyCode.KEY_B] : []
+      },
+      {
+        label: 'Run all above',
+        show: !this.first,
+        disabled: this.isEntireNoteRunning,
+        icon: 'up-square',
+        trigger: () => this.trigger(this.runAllAbove),
+        shortCut: `Ctrl+Shift+Enter`,
+        keyBindings: monaco ? [monaco.KeyMod.WinCtrl | monaco.KeyMod.Shift | monaco.KeyCode.Enter] : []
+      },
+      {
+        label: 'Run all below',
+        show: !this.last,
+        disabled: this.isEntireNoteRunning,
+        icon: 'down-square',
+        trigger: () => this.trigger(this.runAllBelowAndCurrent),
+        shortCut: `Ctrl+Shift+Enter`,
+        keyBindings: monaco ? [monaco.KeyMod.WinCtrl | monaco.KeyMod.Shift | monaco.KeyCode.Enter] : []
+      },
+      {
+        label: 'Clone paragraph',
+        show: true,
+        disabled: this.isEntireNoteRunning,
+        icon: 'copy',
+        trigger: () => this.trigger(this.cloneParagraph),
+        shortCut: `Ctrl+Shift+C`,
+        keyBindings: monaco ? [monaco.KeyMod.WinCtrl | monaco.KeyMod.Shift | monaco.KeyCode.KEY_C] : []
+      },
+      {
+        label: this.title ? 'Hide Title' : 'Show Title',
+        show: true,
+        disabled: false,
+        icon: 'font-colors',
+        trigger: () => this.toggleTitle(),
+        shortCut: `Ctrl+${this.isMac ? 'Option' : 'Alt'}+T`,
+        keyBindings: monaco ? [monaco.KeyMod.WinCtrl | monaco.KeyMod.Alt | monaco.KeyCode.KEY_T] : []
+      },
+      {
+        label: this.lineNumbers ? 'Hide line numbers' : 'Show line numbers',
+        show: true,
+        disabled: false,
+        icon: 'ordered-list',
+        trigger: () => this.toggleLineNumbers(),
+        shortCut: `Ctrl+${this.isMac ? 'Option' : 'Alt'}+M`,
+        keyBindings: monaco ? [monaco.KeyMod.WinCtrl | monaco.KeyMod.Alt | monaco.KeyCode.KEY_M] : []
+      },
+      {
+        label: this.enabled ? 'Disable run' : 'Enable run',
+        show: true,
+        disabled: this.isEntireNoteRunning,
+        icon: 'api',
+        trigger: () => this.toggleEnabled(),
+        shortCut: `Ctrl+${this.isMac ? 'Option' : 'Alt'}+R`,
+        keyBindings: monaco ? [monaco.KeyMod.WinCtrl | monaco.KeyMod.Alt | monaco.KeyCode.KEY_R] : []
+      },
+      {
+        label: 'Link this paragraph',
+        show: true,
+        disabled: false,
+        icon: 'export',
+        trigger: () => this.goToSingleParagraph(),
+        shortCut: `Ctrl+${this.isMac ? 'Option' : 'Alt'}+W`,
+        keyBindings: monaco ? [monaco.KeyMod.WinCtrl | monaco.KeyMod.Alt | monaco.KeyCode.KEY_W] : []
+      },
+      {
+        label: 'Clear output',
+        show: true,
+        disabled: this.isEntireNoteRunning,
+        icon: 'fire',
+        trigger: () => this.clearParagraphOutput(),
+        shortCut: `Ctrl+${this.isMac ? 'Option' : 'Alt'}+L`,
+        keyBindings: monaco ? [monaco.KeyMod.WinCtrl | monaco.KeyMod.Alt | monaco.KeyCode.KEY_L] : []
+      },
+      {
+        label: 'Remove',
+        show: this.paragraphLength > 1,
+        disabled: this.isEntireNoteRunning,
+        icon: 'delete',
+        trigger: () => this.removeParagraph(),
+        shortCut: `Ctrl+${this.isMac ? 'Option' : 'Alt'}+D`,
+        keyBindings: monaco ? [monaco.KeyMod.WinCtrl | monaco.KeyMod.Alt | monaco.KeyCode.KEY_D] : []
+      }
+    ];
+  }
 
   toggleEditor() {
     this.editorHide = !this.editorHide;
@@ -74,8 +198,10 @@ export class NotebookParagraphControlComponent implements OnInit {
   }
 
   toggleEnabled() {
-    this.enabled = !this.enabled;
-    this.enabledChange.emit(this.enabled);
+    if (!this.isEntireNoteRunning) {
+      this.enabled = !this.enabled;
+      this.enabledChange.emit(this.enabled);
+    }
   }
 
   goToSingleParagraph() {
@@ -103,7 +229,9 @@ export class NotebookParagraphControlComponent implements OnInit {
   }
 
   clearParagraphOutput() {
-    this.messageService.paragraphClearOutput(this.pid);
+    if (!this.isEntireNoteRunning) {
+      this.messageService.paragraphClearOutput(this.pid);
+    }
   }
 
   removeParagraph() {
@@ -140,5 +268,11 @@ export class NotebookParagraphControlComponent implements OnInit {
     private nzModalService: NzModalService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.updateListOfMenu();
+  }
+
+  ngOnChanges(): void {
+    this.updateListOfMenu();
+  }
 }
