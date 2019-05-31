@@ -8,7 +8,10 @@
                                 [noteRevisions]="noteRevisions"
                                 [currentRevision]="currentRevision"></zeppelin-notebook-action-bar>
   <div class="extension-area" [ngSwitch]="activatedExtension" *ngIf="activatedExtension!=='hide'">
-    <zeppelin-notebook-interpreter-binding *ngSwitchCase="'interpreter'"></zeppelin-notebook-interpreter-binding>
+    <zeppelin-notebook-interpreter-binding *ngSwitchCase="'interpreter'"
+                                           [noteId]="note.id"
+                                           [(activatedExtension)]="activatedExtension"
+                                           [interpreterBindings]="interpreterBindings"></zeppelin-notebook-interpreter-binding>
     <zeppelin-notebook-permissions *ngSwitchCase="'permissions'"></zeppelin-notebook-permissions>
     <zeppelin-notebook-revisions-comparator *ngSwitchCase="'revisions'"></zeppelin-notebook-revisions-comparator>
   </div>

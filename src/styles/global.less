@@ -39,11 +39,8 @@
 
 .drag-tag {
   box-sizing: border-box;
-  padding: 0;
   color: rgba(0, 0, 0, 0.65);
-  font-size: 14px;
   font-variant: tabular-nums;
-  line-height: 1.5;
   list-style: none;
   font-feature-settings: 'tnum';
   display: inline-block;
@@ -62,7 +59,42 @@
   &.cdk-drag-preview {
     box-shadow: 0 0 6px -2px rgba(0, 0, 0, 0.2);
   }
+
   &.cdk-drag-placeholder {
     border-style: dashed;
+  }
+}
+
+.interpreter-box {
+  margin-bottom: 12px;
+  line-height: 32px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .refresh {
+    font-size: 18px;
+    line-height: 0;
+    margin-right: 12px;
+  }
+
+  &.cdk-drag-placeholder {
+    opacity: 0;
+  }
+
+  .interpreter-name {
+    display: inline-block;
+
+    .main-name {
+      display: inline-block;
+      margin-right: 6px;
+    }
+
+    .child-name {
+      font-size: 12px;
+      opacity: 0.7;
+      display: inline-block;
+    }
   }
 }

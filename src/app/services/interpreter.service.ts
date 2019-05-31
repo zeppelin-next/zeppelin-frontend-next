@@ -9,6 +9,7 @@ import {
 } from 'zeppelin-interfaces';
 import { BaseRest } from './base-rest';
 import { BaseUrlService } from './base-url.service';
+import { InterpreterItem } from 'zeppelin-sdk';
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +54,10 @@ export class InterpreterService extends BaseRest {
       properties,
       dependencies
     });
+  }
+
+  restartInterpreter(interpreterId: string, noteId: string) {
+    return this.http.put<InterpreterItem>(this.restUrl`/interpreter/setting/restart/${interpreterId}`, { noteId });
   }
 
   removeInterpreterSetting(settingId: string) {

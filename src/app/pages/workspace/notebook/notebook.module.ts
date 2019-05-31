@@ -37,6 +37,7 @@ import { VisualizationModule } from 'src/app/visualization/visualization.module'
 import { NotebookParagraphProgressComponent } from './paragraph/progress/progress.component';
 import { NotebookParagraphFooterComponent } from './paragraph/footer/footer.component';
 import { NotebookParagraphControlComponent } from './paragraph/control/control.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { NotebookParagraphControlComponent } from './paragraph/control/control.c
     NzSwitchModule,
     NzSelectModule,
     NzGridModule,
-    NzRadioModule
+    NzRadioModule,
+    DragDropModule
   ]
 })
 export class NotebookModule {}
