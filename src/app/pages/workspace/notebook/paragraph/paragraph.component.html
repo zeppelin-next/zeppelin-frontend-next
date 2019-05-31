@@ -57,7 +57,7 @@
     <zeppelin-notebook-paragraph-progress *ngIf="paragraph.status === 'RUNNING'"
                                           [progress]="progress"></zeppelin-notebook-paragraph-progress>
     <ng-container *ngIf="!paragraph.config.tableHide">
-      <zeppelin-notebook-paragraph-result *ngFor="let result of results; index as i"
+      <zeppelin-notebook-paragraph-result *ngFor="let result of results; index as i; trackBy: trackByIndexFn"
                                           [config]="configs[i]"
                                           (configChange)="onConfigChange($event, i)"
                                           [result]="result">

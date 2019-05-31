@@ -138,6 +138,7 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
 
   switchSetting() {
     this.config.graph.optionOpen = !this.config.graph.optionOpen;
+    this.renderGraph();
     this.configChange.emit(this.config);
   }
 

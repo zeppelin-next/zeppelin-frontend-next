@@ -18,6 +18,7 @@ export abstract class G2VisualizationComponentBase implements OnDestroy {
     this.refreshSetting();
     this.initChart();
     this.chart.source(this.visualization.transformed);
+    console.log(this.visualization.transformed);
     this.renderBefore(this.chart);
     this.chart.render();
     this.renderAfter();

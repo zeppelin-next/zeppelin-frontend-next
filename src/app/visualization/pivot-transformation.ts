@@ -13,8 +13,30 @@ export class PivotTransformation extends Transformation {
     return undefined;
   }
 
+  removeUnknown(array: { name: string }[], tableData: TableData): void {
+    for (let i = 0; i < array.length; i++) {
+      // remove non existing column
+      let found = false;
+      for (let j = 0; j < tableData.columns.length; j++) {
+        const a = array[i];
+        const b = tableData.columns[j];
+        if (a.name === b) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        array.splice(i, 1);
+        i--;
+      }
+    }
+  }
+
   setDefaultConfig(tableData: TableData) {
     const config = this.getConfig();
+    this.removeUnknown(config.keys, tableData);
+    this.removeUnknown(config.values, tableData);
+    this.removeUnknown(config.groups, tableData);
     if (config.keys.length === 0 && config.groups.length === 0 && config.values.length === 0) {
       if (config.keys.length === 0 && tableData.columns[0]) {
         config.keys = [
@@ -90,11 +112,17 @@ export class PivotTransformation extends Transformation {
         groupBy: [...keys, ...groups]
       });
 
+      // dv.transform({
+      //   type: 'fill-rows',
+      //   groupBy: groups,
+      //   orderBy: keys,
+      //   fillBy: 'order'
+      // });
+
       dv.transform({
         type: 'fill-rows',
-        groupBy: groups,
-        orderBy: keys,
-        fillBy: 'order'
+        groupBy: [...keys, ...groups],
+        fillBy: 'group'
       });
 
       config.values

@@ -8,8 +8,6 @@ import {
   AfterViewInit,
   ChangeDetectorRef
 } from '@angular/core';
-import * as G2 from '@antv/g2';
-import { GraphConfig } from 'zeppelin-sdk';
 import { VisualizationPivotSettingComponent } from '../common/pivot-setting/pivot-setting.component';
 import { setChartXAxis } from '../common/util/set-x-axis';
 import { VisualizationXAxisSettingComponent } from '../common/x-axis-setting/x-axis-setting.component';

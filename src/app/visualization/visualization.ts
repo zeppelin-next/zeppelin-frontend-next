@@ -17,24 +17,9 @@ export abstract class Visualization<T = any> {
   abstract render(tableData): void;
   abstract refresh(): void;
   abstract destroy(): void;
-  abstract getSetting(): Setting;
 
   configChanged() {
     return this.configChange$.asObservable();
-  }
-
-  activate() {
-    if (!this.active || this.dirty) {
-      this.refresh();
-      this.dirty = false;
-    } else {
-      this.active = true;
-    }
-  }
-
-  deactivate() {
-    this.active = false;
-    this.configChange$.complete();
   }
 
   isActive() {
@@ -60,9 +45,5 @@ export abstract class Visualization<T = any> {
 
   getConfig() {
     return this.config;
-  }
-
-  renderSetting(target): void {
-    // TODO
   }
 }

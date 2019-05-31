@@ -518,6 +518,10 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     this.cdr.markForCheck();
   }
 
+  trackByIndexFn(index: number) {
+    return index;
+  }
+
   constructor(
     private heliumService: HeliumService,
     private noteStatusService: NoteStatusService,
