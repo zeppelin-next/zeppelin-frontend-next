@@ -34,6 +34,9 @@ export class PivotTransformation extends Transformation {
 
   setDefaultConfig(tableData: TableData) {
     const config = this.getConfig();
+    config.keys = config.keys || [];
+    config.groups = config.groups || [];
+    config.values = config.values || [];
     this.removeUnknown(config.keys, tableData);
     this.removeUnknown(config.values, tableData);
     this.removeUnknown(config.groups, tableData);
