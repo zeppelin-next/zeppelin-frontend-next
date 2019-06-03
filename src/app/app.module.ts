@@ -2,7 +2,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import { NZ_I18N, en_US, NzNotificationService } from 'ng-zorro-antd';
+import { NZ_I18N, en_US, NzNotificationService, NzModalService } from 'ng-zorro-antd';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
@@ -45,7 +45,7 @@ registerLocaleData(en);
     {
       provide: MESSAGE_INTERCEPTOR,
       useClass: AppMessageInterceptor,
-      deps: [Router, NzNotificationService]
+      deps: [Router, NzNotificationService, TicketService, NzModalService]
     },
     {
       provide: TRASH_FOLDER_ID_TOKEN,

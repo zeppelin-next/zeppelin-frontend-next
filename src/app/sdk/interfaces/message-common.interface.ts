@@ -111,3 +111,7 @@ export interface ConfigurationsInfo {
 export interface ErrorInfo {
   info?: string;
 }
+
+export interface AuthInfo {
+  info?: string;
+}

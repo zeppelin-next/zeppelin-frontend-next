@@ -1,4 +1,4 @@
-import { ConfigurationsInfo, ErrorInfo } from './message-common.interface';
+import { ConfigurationsInfo, ErrorInfo, AuthInfo } from './message-common.interface';
 import {
   CheckpointNote,
   CloneNote,
@@ -85,6 +85,7 @@ export interface MessageReceiveDataTypeMap {
   [OP.EDITOR_SETTING]: EditorSettingReceived;
   [OP.PROGRESS]: Progress;
   [OP.PARAGRAPH_MOVED]: ParagraphMoved;
+  [OP.AUTH_INFO]: AuthInfo;
 }
 
 export interface MessageSendDataTypeMap {

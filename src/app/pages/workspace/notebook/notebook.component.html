@@ -12,7 +12,10 @@
                                            [noteId]="note.id"
                                            [(activatedExtension)]="activatedExtension"
                                            [interpreterBindings]="interpreterBindings"></zeppelin-notebook-interpreter-binding>
-    <zeppelin-notebook-permissions *ngSwitchCase="'permissions'"></zeppelin-notebook-permissions>
+    <zeppelin-notebook-permissions *ngSwitchCase="'permissions'"
+                                   [noteId]="note.id"
+                                   [(activatedExtension)]="activatedExtension"
+                                   [permissions]="permissions"></zeppelin-notebook-permissions>
     <zeppelin-notebook-revisions-comparator *ngSwitchCase="'revisions'"></zeppelin-notebook-revisions-comparator>
   </div>
   <div class="paragraph-area">

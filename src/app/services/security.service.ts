@@ -19,4 +19,8 @@ export class SecurityService extends BaseRest {
   getPermissions(id: string) {
     return this.http.get<Permissions>(this.restUrl`/notebook/${id}/permissions`);
   }
+
+  setPermissions(id: string, permissions: Permissions) {
+    return this.http.put<Permissions>(this.restUrl`/notebook/${id}/permissions`, permissions);
+  }
 }

@@ -52,6 +52,7 @@ export class NotebookInterpreterBindingComponent {
   }
 
   closeSetting() {
+    this.activatedExtension = 'hide';
     this.activatedExtensionChange.emit('hide');
   }
 
