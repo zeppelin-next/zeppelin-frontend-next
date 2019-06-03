@@ -26,6 +26,7 @@ import { MessageListener, MessageListenersManager } from 'zeppelin-core';
 export class NotebookActionBarComponent extends MessageListenersManager implements OnInit {
   @Input() note: Note['note'];
   @Input() isOwner = true;
+  @Input() looknfeel: string;
   @Input() noteRevisions: RevisionListItem[] = [];
   @Input() currentRevision: string;
   @Input() collaborativeMode = false;
@@ -217,25 +218,13 @@ export class NotebookActionBarComponent extends MessageListenersManager implemen
   }
 
   togglePermissions() {
-    const principal = this.ticketService.ticket.principal;
-    const isAnonymous = principal === 'anonymous';
-    if (!!principal && isAnonymous) {
-      this.blockAnonUsers();
-    } else {
-      this.toggleExtension('permissions');
-    }
-    // TODO
-  }
-
-  blockAnonUsers() {
-    // TODO
+    this.toggleExtension('permissions');
   }
 
   setLookAndFeel(lf: 'report' | 'default' | 'simple') {
     this.note.config.looknfeel = lf;
-    if (this.activatedRoute.snapshot.params.revisionId) {
-      // TODO
-    } else {
+    if (!this.activatedRoute.snapshot.params.revisionId) {
+      this.messageService.updateNote(this.note.id, this.note.name, this.note.config);
     }
   }
 

@@ -134,6 +134,47 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
     }
   }
 
+  @MessageListener(OP.COLLABORATIVE_MODE_STATUS)
+  getCollaborativeModeStatus(data: MessageReceiveDataTypeMap[OP.COLLABORATIVE_MODE_STATUS]) {
+    this.collaborativeMode = Boolean(data.status);
+    this.collaborativeModeUsers = data.users;
+    this.cdr.markForCheck();
+  }
+
+  @MessageListener(OP.PATCH_PARAGRAPH)
+  patchParagraph() {
+    this.collaborativeMode = true;
+    this.cdr.markForCheck();
+  }
+
+  @MessageListener(OP.NOTE_UPDATED)
+  noteUpdated(data: MessageReceiveDataTypeMap[OP.NOTE_UPDATED]) {
+    if (data.name !== this.note.name) {
+      this.note.name = data.name;
+    }
+    this.note.config = data.config;
+    this.note.info = data.info;
+    this.initializeLookAndFeel();
+    this.cdr.markForCheck();
+  }
+
+  @MessageListener(OP.LIST_REVISION_HISTORY)
+  listRevisionHistory(data: MessageReceiveDataTypeMap[OP.LIST_REVISION_HISTORY]) {
+    this.noteRevisions = data.revisionList;
+    if (this.noteRevisions) {
+      if (this.noteRevisions.length === 0 || this.noteRevisions[0].id !== 'Head') {
+        this.noteRevisions.splice(0, 0, { id: 'Head', message: 'Head' });
+      }
+      const { revisionId } = this.activatedRoute.snapshot.params;
+      if (revisionId) {
+        this.currentRevision = this.noteRevisions.find(r => r.id === revisionId).message;
+      } else {
+        this.currentRevision = 'Head';
+      }
+    }
+    this.cdr.markForCheck();
+  }
+
   saveParagraph(id: string) {
     this.listOfNotebookParagraphComponent
       .toArray()
@@ -198,41 +239,6 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
     config.tableHide = false;
     const paragraphs = [{ ...targetParagraph, config }];
     return { ...this.note, paragraphs };
-  }
-
-  @MessageListener(OP.INTERPRETER_BINDINGS)
-  listInterpreterBindings() {
-    // TODO
-  }
-
-  @MessageListener(OP.COLLABORATIVE_MODE_STATUS)
-  getCollaborativeModeStatus(data: MessageReceiveDataTypeMap[OP.COLLABORATIVE_MODE_STATUS]) {
-    this.collaborativeMode = Boolean(data.status);
-    this.collaborativeModeUsers = data.users;
-    this.cdr.markForCheck();
-  }
-
-  @MessageListener(OP.PATCH_PARAGRAPH)
-  patchParagraph() {
-    this.collaborativeMode = true;
-    this.cdr.markForCheck();
-  }
-
-  @MessageListener(OP.LIST_REVISION_HISTORY)
-  listRevisionHistory(data: MessageReceiveDataTypeMap[OP.LIST_REVISION_HISTORY]) {
-    this.noteRevisions = data.revisionList;
-    if (this.noteRevisions) {
-      if (this.noteRevisions.length === 0 || this.noteRevisions[0].id !== 'Head') {
-        this.noteRevisions.splice(0, 0, { id: 'Head', message: 'Head' });
-      }
-      const { revisionId } = this.activatedRoute.snapshot.params;
-      if (revisionId) {
-        this.currentRevision = this.noteRevisions.find(r => r.id === revisionId).message;
-      } else {
-        this.currentRevision = 'Head';
-      }
-    }
-    this.cdr.markForCheck();
   }
 
   setAllParagraphTableHide(tableHide: boolean) {

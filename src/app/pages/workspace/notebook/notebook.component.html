@@ -1,5 +1,6 @@
-<ng-container *ngIf="note">
+<div class="notebook-container" *ngIf="note" [class.simple]="note.config.looknfeel !== 'default'">
   <zeppelin-notebook-action-bar [note]="note"
+                                [looknfeel]="note.config.looknfeel"
                                 [revisionView]="revisionView"
                                 [isOwner]="isOwner"
                                 [(activatedExtension)]="activatedExtension"
@@ -23,10 +24,11 @@
   <div class="paragraph-area">
     <div class="paragraph-inner" nz-row [nzGutter]="8">
       <zeppelin-notebook-paragraph nz-col
-                                   [nzSpan]="p.config.colWidth * 2"
                                    *ngFor="let p of note.paragraphs;let first = first; let last = last;"
+                                   [nzSpan]="p.config.colWidth * 2"
                                    [paragraph]="p"
                                    [note]="note"
+                                   [looknfeel]="note.config.looknfeel"
                                    [interpreterBindings]="interpreterBindings"
                                    [collaborativeMode]="collaborativeMode"
                                    [viewOnly]="viewOnly"
@@ -37,4 +39,4 @@
                                    (saveNoteTimer)="startSaveTimer()"></zeppelin-notebook-paragraph>
     </div>
   </div>
-</ng-container>
+</div>

@@ -21,6 +21,7 @@ import {
   NoteRunningStatus,
   NotesInfo,
   NoteUpdate,
+  NoteUpdated,
   ParagraphAdded,
   ParagraphMoved,
   RemoveFolder,
@@ -86,6 +87,7 @@ export interface MessageReceiveDataTypeMap {
   [OP.PROGRESS]: Progress;
   [OP.PARAGRAPH_MOVED]: ParagraphMoved;
   [OP.AUTH_INFO]: AuthInfo;
+  [OP.NOTE_UPDATED]: NoteUpdated;
 }
 
 export interface MessageSendDataTypeMap {

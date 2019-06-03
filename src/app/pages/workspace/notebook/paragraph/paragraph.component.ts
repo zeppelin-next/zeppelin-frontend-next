@@ -52,6 +52,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   >;
   @Input() paragraph: ParagraphItem;
   @Input() note: Note['note'];
+  @Input() looknfeel: string;
   @Input() revisionView: boolean;
   @Input() viewOnly: boolean;
   @Input() last: boolean;

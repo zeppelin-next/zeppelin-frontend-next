@@ -28,6 +28,12 @@ export interface SendNote {
   noteParams: NoteParams;
 }
 
+export interface NoteUpdated {
+  config: NoteConfig;
+  info: NoteInfo;
+  name: string;
+}
+
 export interface Note {
   note?: {
     paragraphs: ParagraphItem[];

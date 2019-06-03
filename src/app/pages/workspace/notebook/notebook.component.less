@@ -1,12 +1,18 @@
 @import "theme-mixin";
 
-:host {
-  display: block;
-  position: relative;
-  padding-top: 50px;
-}
 
 .themeMixin({
+  .notebook-container {
+    background: @layout-body-background;
+    display: block;
+    position: relative;
+    padding-top: 50px;
+    min-height: calc(~"100vh - 50px");
+
+    &.simple {
+      background: @component-background;
+    }
+  }
   .extension-area {
     padding: 24px;
     background: @component-background;
