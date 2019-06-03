@@ -19,7 +19,7 @@
               (click)="toggleAllEditor()"
               *ngIf="!viewOnly"
               [disabled]="revisionView">
-        <i nz-icon [nzType]="editorToggled ? 'fullscreen' : 'fullscreen-exit'" nzTheme="outline"></i>
+        <i nz-icon [nzType]="editorHide ? 'fullscreen' : 'fullscreen-exit'" nzTheme="outline"></i>
       </button>
       <button nz-button
               nz-tooltip
@@ -27,7 +27,7 @@
               (click)="toggleAllTable()"
               *ngIf="!viewOnly"
               [disabled]="revisionView">
-        <i nz-icon [nzType]="tableToggled ? 'book' : 'read'" nzTheme="outline"></i>
+        <i nz-icon [nzType]="tableHide ? 'book' : 'read'" nzTheme="outline"></i>
       </button>
       <button nz-button
               nz-popconfirm
@@ -81,27 +81,22 @@
               *ngIf="!viewOnly"
               [disabled]="revisionView"
               [(nzVisible)]="commitVisible"
+              [nzPlacement]="'right'"
               [nzContent]="commitTpl"
               nzTrigger="click">
         <i nz-icon nzType="to-top" nzTheme="outline"></i>
       </button>
       <ng-template #commitTpl>
-        <form nz-form [nzLayout]="'inline'">
-          <nz-form-item>
-            <nz-form-control>
-              <input nzSize="small" autofocus nz-input #inputElement placeholder="commit message">
-            </nz-form-control>
-            <nz-form-item>
-              <nz-form-control>
-                <button nz-button
-                        nzSize="small"
-                        nzType="primary"
-                        (click)="checkpointNote(inputElement.value,$event)">commit
-                </button>
-              </nz-form-control>
-            </nz-form-item>
-          </nz-form-item>
-        </form>
+        <nz-input-group nzSearch nzSize="small" [nzAddOnAfter]="suffixButton">
+          <input nzSize="small" autofocus nz-input #inputElement placeholder="commit message">
+        </nz-input-group>
+        <ng-template #suffixButton>
+          <button nz-button
+                  nzSize="small"
+                  nzType="primary"
+                  (click)="checkpointNote(inputElement.value,$event)">commit
+          </button>
+        </ng-template>
       </ng-template>
       <button nz-button
               nz-tooltip

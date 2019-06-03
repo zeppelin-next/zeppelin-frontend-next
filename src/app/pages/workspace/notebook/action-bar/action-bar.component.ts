@@ -33,12 +33,14 @@ export class NotebookActionBarComponent extends MessageListenersManager implemen
   @Input() revisionView = false;
   @Input() activatedExtension: 'interpreter' | 'permissions' | 'revisions' | 'hide' = 'hide';
   @Output() activatedExtensionChange = new EventEmitter<'interpreter' | 'permissions' | 'revisions' | 'hide'>();
+  @Output() editorHideChange = new EventEmitter<boolean>();
+  @Output() tableHideChange = new EventEmitter<boolean>();
   lfOption: Array<'report' | 'default' | 'simple'> = ['default', 'simple', 'report'];
   isNoteParagraphRunning = false;
   principal = this.ticketService.ticket.principal;
-  editorToggled = false;
+  editorHide = false;
   commitVisible = false;
-  tableToggled = false;
+  tableHide = false;
   isRevisionSupported = JSON.parse(this.ticketService.configuration.isRevisionSupported);
   cronOption = [
     { name: 'None', value: undefined },
@@ -177,13 +179,13 @@ export class NotebookActionBarComponent extends MessageListenersManager implemen
   }
 
   toggleAllEditor() {
-    // TODO
-    this.editorToggled = !this.editorToggled;
+    this.editorHide = !this.editorHide;
+    this.editorHideChange.emit(this.editorHide);
   }
 
   toggleAllTable() {
-    // TODO
-    this.tableToggled = !this.tableToggled;
+    this.tableHide = !this.tableHide;
+    this.tableHideChange.emit(this.tableHide);
   }
 
   searchCode() {

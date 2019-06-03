@@ -518,6 +518,16 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     this.cdr.markForCheck();
   }
 
+  setEditorHide(editorHide: boolean) {
+    this.paragraph.config.editorHide = editorHide;
+    this.cdr.markForCheck();
+  }
+
+  setTableHide(tableHide: boolean) {
+    this.paragraph.config.tableHide = tableHide;
+    this.cdr.markForCheck();
+  }
+
   trackByIndexFn(index: number) {
     return index;
   }

@@ -235,6 +235,14 @@ export class NotebookComponent extends MessageListenersManager implements OnInit
     this.cdr.markForCheck();
   }
 
+  setAllParagraphTableHide(tableHide: boolean) {
+    this.listOfNotebookParagraphComponent.forEach(p => p.setTableHide(tableHide));
+  }
+
+  setAllParagraphEditorHide(editorHide: boolean) {
+    this.listOfNotebookParagraphComponent.forEach(p => p.setEditorHide(editorHide));
+  }
+
   constructor(
     private activatedRoute: ActivatedRoute,
     public messageService: MessageService,

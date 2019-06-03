@@ -6,7 +6,9 @@
                                 [collaborativeMode]="collaborativeMode"
                                 [collaborativeModeUsers]="collaborativeModeUsers"
                                 [noteRevisions]="noteRevisions"
-                                [currentRevision]="currentRevision"></zeppelin-notebook-action-bar>
+                                [currentRevision]="currentRevision"
+                                (tableHideChange)="setAllParagraphTableHide($event)"
+                                (editorHideChange)="setAllParagraphEditorHide($event)"></zeppelin-notebook-action-bar>
   <div class="extension-area" [ngSwitch]="activatedExtension" *ngIf="activatedExtension!=='hide'">
     <zeppelin-notebook-interpreter-binding *ngSwitchCase="'interpreter'"
                                            [noteId]="note.id"
