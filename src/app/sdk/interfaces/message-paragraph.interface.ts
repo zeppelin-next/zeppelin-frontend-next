@@ -1,16 +1,37 @@
 import { EditorCompletionKey, EditorLanguage, EditorMode } from './message-common.interface';
 
+export enum DynamicFormsType {
+  TextBox = 'TextBox',
+  Password = 'Password',
+  Select = 'Select',
+  CheckBox = 'CheckBox'
+}
+
+export interface DynamicFormsItem {
+  defaultValue: string | string[];
+  hidden: boolean;
+  name: string;
+  type: DynamicFormsType;
+  argument?: string;
+  options?: Array<{ value: string; displayName?: string }>;
+}
+
+export interface DynamicForms {
+  [key: string]: DynamicFormsItem;
+}
+
+export interface DynamicFormParams {
+  [key: string]: string | string[];
+}
+
 export interface ParagraphEditorSetting {
   language?: EditorLanguage;
   editOnDblClick?: boolean;
   isOutputHidden?: boolean;
   completionKey?: EditorCompletionKey;
   completionSupport?: boolean;
-  // TODO
-  // tslint:disable-next-line no-any
-  params?: any;
-  // tslint:disable-next-line no-any
-  forms?: any;
+  params?: DynamicFormParams;
+  forms?: DynamicForms;
 }
 
 // TODO

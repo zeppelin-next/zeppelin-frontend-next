@@ -23,7 +23,7 @@ import {
   NzSwitchModule,
   NzToolTipModule
 } from 'ng-zorro-antd';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotebookInterpreterBindingComponent } from './interpreter-binding/interpreter-binding.component';
 import { NotebookPermissionsComponent } from './permissions/permissions.component';
 import { NotebookRevisionsComparatorComponent } from './revisions-comparator/revisions-comparator.component';
@@ -38,6 +38,7 @@ import { NotebookParagraphProgressComponent } from './paragraph/progress/progres
 import { NotebookParagraphFooterComponent } from './paragraph/footer/footer.component';
 import { NotebookParagraphControlComponent } from './paragraph/control/control.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { NotebookParagraphDynamicFormsComponent } from './paragraph/dynamic-forms/dynamic-forms.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     NotebookParagraphResultComponent,
     NotebookParagraphProgressComponent,
     NotebookParagraphFooterComponent,
-    NotebookParagraphControlComponent
+    NotebookParagraphControlComponent,
+    NotebookParagraphDynamicFormsComponent
   ],
   imports: [
     CommonModule,
@@ -71,6 +73,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     NzPopoverModule,
     NzInputModule,
     FormsModule,
+    ReactiveFormsModule,
     NzDividerModule,
     NzCheckboxModule,
     NzMonacoEditorModule,
