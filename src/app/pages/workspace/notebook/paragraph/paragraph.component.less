@@ -12,6 +12,13 @@
     padding: 32px 12px 12px 12px;
     position: relative;
 
+    zeppelin-notebook-paragraph-code-editor + zeppelin-notebook-paragraph-dynamic-forms {
+      margin-top: 24px;
+    }
+    zeppelin-notebook-paragraph-progress + zeppelin-notebook-paragraph-dynamic-forms {
+      margin-top: 24px;
+    }
+
     &.simple {
       box-shadow: none;
       border-color: transparent;
@@ -34,6 +41,7 @@
       &:hover {
         box-shadow: none;
         border-color: transparent;
+
         zeppelin-notebook-paragraph-control, zeppelin-notebook-paragraph-footer {
           visibility: hidden;
         }
