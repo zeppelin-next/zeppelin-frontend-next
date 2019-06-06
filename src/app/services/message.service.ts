@@ -172,7 +172,8 @@ export class MessageService extends Message implements OnDestroy {
     super.angularObjectUpdate(noteId, paragraphId, name, value, interpreterGroupId);
   }
 
-  angularObjectClientBind(noteId: string, name: string, value: string, paragraphId: string): void {
+  // tslint:disable-next-line:no-any
+  angularObjectClientBind(noteId: string, name: string, value: any, paragraphId: string): void {
     super.angularObjectClientBind(noteId, name, value, paragraphId);
   }
 

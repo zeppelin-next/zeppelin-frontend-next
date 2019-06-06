@@ -159,6 +159,25 @@ export interface AngularObjectUpdated {
   interpreterGroupId: string;
 }
 
+export interface AngularObjectRemove {
+  noteId: string;
+  paragraphId: string;
+  name: string;
+}
+
+export interface AngularObjectUpdate {
+  noteId: string;
+  paragraphId: string;
+  interpreterGroupId: string;
+  angularObject: {
+    name: string;
+    // tslint:disable-next-line:no-any
+    object: any;
+    noteId: string;
+    paragraphId: string;
+  };
+}
+
 export interface AngularObjectClientBind {
   noteId: string;
   name: string;

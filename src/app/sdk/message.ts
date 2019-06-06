@@ -274,7 +274,8 @@ export class Message {
     });
   }
 
-  angularObjectClientBind(noteId: string, name: string, value: string, paragraphId: string): void {
+  // tslint:disable-next-line:no-any
+  angularObjectClientBind(noteId: string, name: string, value: any, paragraphId: string): void {
     this.send<OP.ANGULAR_OBJECT_CLIENT_BIND>(OP.ANGULAR_OBJECT_CLIENT_BIND, {
       noteId: noteId,
       name: name,

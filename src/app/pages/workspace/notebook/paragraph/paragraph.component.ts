@@ -9,8 +9,11 @@ import {
   OnChanges,
   ViewChild,
   ViewChildren,
-  QueryList
+  QueryList,
+  OnDestroy
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import {
   MessageReceiveDataTypeMap,
   Note,
@@ -21,7 +24,9 @@ import {
   ParagraphItem,
   InterpreterBindingItem,
   GraphConfig,
-  ParagraphIResultsMsgItem
+  ParagraphIResultsMsgItem,
+  AngularObjectUpdate,
+  AngularObjectRemove
 } from 'zeppelin-sdk';
 import {
   HeliumService,
@@ -34,6 +39,7 @@ import { MessageListener, MessageListenersManager } from 'zeppelin-core';
 import { isEmpty, isEqual } from 'lodash';
 import DiffMatchPatch from 'diff-match-patch';
 import { SpellResult } from 'zeppelin-spell/spell-result';
+import { NgZService } from '../../../../services/ng-z.service';
 import { NotebookParagraphCodeEditorComponent } from './code-editor/code-editor.component';
 import { NzModalService } from 'ng-zorro-antd';
 import { NotebookParagraphResultComponent } from './result/result.component';
@@ -44,7 +50,7 @@ import { NotebookParagraphResultComponent } from './result/result.component';
   styleUrls: ['./paragraph.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotebookParagraphComponent extends MessageListenersManager implements OnInit, OnChanges {
+export class NotebookParagraphComponent extends MessageListenersManager implements OnInit, OnChanges, OnDestroy {
   @ViewChild(NotebookParagraphCodeEditorComponent)
   notebookParagraphCodeEditorComponent: NotebookParagraphCodeEditorComponent;
   @ViewChildren(NotebookParagraphResultComponent) notebookParagraphResultComponents: QueryList<
@@ -61,6 +67,8 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   @Input() interpreterBindings: InterpreterBindingItem[] = [];
   @Output() saveNoteTimer = new EventEmitter();
   @Output() triggerSaveParagraph = new EventEmitter<string>();
+
+  private destroy$ = new Subject();
   dirtyText: string;
   originalText: string;
   isEntireNoteRunning = false;
@@ -134,6 +142,21 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
       this.paragraph.text = this.diffMatchPatch.patch_apply(patch, this.paragraph.text)[0];
       this.originalText = this.paragraph.text;
       this.cdr.markForCheck();
+    }
+  }
+
+  @MessageListener(OP.ANGULAR_OBJECT_UPDATE)
+  angularObjectUpdate(data: AngularObjectUpdate) {
+    if (data.paragraphId === this.paragraph.id) {
+      const { name, object } = data.angularObject;
+      this.ngZService.setContextValue(name, object, data.paragraphId, false);
+    }
+  }
+
+  @MessageListener(OP.ANGULAR_OBJECT_REMOVE)
+  angularObjectRemove(data: AngularObjectRemove) {
+    if (data.paragraphId === this.paragraph.id) {
+      this.ngZService.unsetContextValue(data.name, data.paragraphId, false);
     }
   }
 
@@ -539,7 +562,8 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     public messageService: MessageService,
     private nzModalService: NzModalService,
     private noteVarShareService: NoteVarShareService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private ngZService: NgZService
   ) {
     super(messageService);
   }
@@ -551,7 +575,32 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     this.isParagraphRunning = this.noteStatusService.isParagraphRunning(this.paragraph);
     this.noteVarShareService.set(this.paragraph.id + '_paragraphScope', this);
     this.initializeDefault(this.paragraph.config);
+    this.ngZService
+      .runParagraphAction()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(id => {
+        if (id === this.paragraph.id) {
+          this.runParagraph();
+        }
+      });
+    this.ngZService
+      .contextChanged()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(change => {
+        if (change.paragraphId === this.paragraph.id && change.emit) {
+          if (change.set) {
+            this.messageService.angularObjectClientBind(this.note.id, change.key, change.value, change.paragraphId);
+          } else {
+            this.messageService.angularObjectClientUnbind(this.note.id, change.key, change.paragraphId);
+          }
+        }
+      });
   }
 
   ngOnChanges(): void {}
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+    this.ngZService.removeParagraph(this.paragraph.id);
+  }
 }

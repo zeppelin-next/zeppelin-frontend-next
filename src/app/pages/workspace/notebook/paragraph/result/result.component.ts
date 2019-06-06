@@ -10,10 +10,12 @@ import {
   ChangeDetectorRef,
   Output,
   EventEmitter,
-  OnDestroy
+  OnDestroy,
+  Injector
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { WorkSheet, utils, writeFile, WritingOptions } from 'xlsx';
 import {
   DatasetType,
@@ -26,6 +28,8 @@ import {
   VisualizationScatterChart,
   VisualizationStackedAreaChart
 } from 'zeppelin-sdk';
+import { MessageService } from 'zeppelin-services';
+import { NgZService } from '../../../../../services/ng-z.service';
 import { AreaChartVisualization } from '../../../../../visualization/area-chart/area-chart-visualization';
 import { BarChartVisualization } from '../../../../../visualization/bar-chart/bar-chart-visualization';
 import { TableData } from '../../../../../visualization/dataset/table-data';
@@ -46,11 +50,13 @@ import { DynamicTemplate, RuntimeCompilerService } from '../../../../../services
 export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() result: ParagraphIResultsMsgItem;
   @Input() config: ParagraphConfigResult;
+  @Input() id: string;
   @Output() configChange = new EventEmitter<ParagraphConfigResult>();
   @ViewChild('graphEle') graphEle: ElementRef<HTMLDivElement>;
   @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
-  datasetType = DatasetType;
 
+  private destroy$ = new Subject();
+  datasetType = DatasetType;
   angularComponent: DynamicTemplate;
   innerHTML: string | SafeHtml = '';
   plainText = '';
@@ -110,11 +116,21 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
     private viewContainerRef: ViewContainerRef,
     private cdr: ChangeDetectorRef,
     private runtimeCompilerService: RuntimeCompilerService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private injector: Injector,
+    private ngZService: NgZService
   ) {}
 
   ngOnInit() {
     this.renderDefaultDisplay();
+    this.ngZService
+      .contextChanged()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(change => {
+        if (change.paragraphId === this.id) {
+          this.cdr.markForCheck();
+        }
+      });
   }
 
   exportFile(type: 'csv' | 'tsv'): void {
@@ -171,8 +187,9 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
   }
 
   renderAngular(): void {
-    this.runtimeCompilerService.createAndCompileTemplate(this, this.result.data).then(data => {
+    this.runtimeCompilerService.createAndCompileTemplate(this.id, this.result.data).then(data => {
       this.angularComponent = data;
+      // this.angularComponent.moduleFactory
       this.cdr.markForCheck();
     });
   }
@@ -257,5 +274,7 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
 
   ngOnDestroy(): void {
     this.destroyVisualizations();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

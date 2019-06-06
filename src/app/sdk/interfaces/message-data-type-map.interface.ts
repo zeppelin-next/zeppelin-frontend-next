@@ -38,6 +38,8 @@ import {
 import {
   AngularObjectClientBind,
   AngularObjectClientUnbind,
+  AngularObjectRemove,
+  AngularObjectUpdate,
   AngularObjectUpdated,
   CancelParagraph,
   CommitParagraph,
@@ -88,6 +90,8 @@ export interface MessageReceiveDataTypeMap {
   [OP.PARAGRAPH_MOVED]: ParagraphMoved;
   [OP.AUTH_INFO]: AuthInfo;
   [OP.NOTE_UPDATED]: NoteUpdated;
+  [OP.ANGULAR_OBJECT_UPDATE]: AngularObjectUpdate;
+  [OP.ANGULAR_OBJECT_REMOVE]: AngularObjectRemove;
 }
 
 export interface MessageSendDataTypeMap {
