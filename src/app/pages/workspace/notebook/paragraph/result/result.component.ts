@@ -52,8 +52,8 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
   @Input() config: ParagraphConfigResult;
   @Input() id: string;
   @Output() configChange = new EventEmitter<ParagraphConfigResult>();
-  @ViewChild('graphEle') graphEle: ElementRef<HTMLDivElement>;
-  @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
+  @ViewChild('graphEle', { static: false }) graphEle: ElementRef<HTMLDivElement>;
+  @ViewChild(CdkPortalOutlet, { static: false }) portalOutlet: CdkPortalOutlet;
 
   private destroy$ = new Subject();
   datasetType = DatasetType;

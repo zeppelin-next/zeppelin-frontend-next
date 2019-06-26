@@ -4,11 +4,11 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: './pages/workspace/workspace.module#WorkspaceModule'
+    loadChildren: () => import('./pages/workspace/workspace.module').then(m => m.WorkspaceModule)
   },
   {
     path: 'login',
-    loadChildren: './pages/login/login.module#LoginModule'
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule)
   }
 ];
 

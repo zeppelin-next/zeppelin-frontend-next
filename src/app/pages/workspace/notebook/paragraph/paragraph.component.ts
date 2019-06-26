@@ -51,7 +51,7 @@ import { NotebookParagraphResultComponent } from './result/result.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotebookParagraphComponent extends MessageListenersManager implements OnInit, OnChanges, OnDestroy {
-  @ViewChild(NotebookParagraphCodeEditorComponent)
+  @ViewChild(NotebookParagraphCodeEditorComponent, { static: false })
   notebookParagraphCodeEditorComponent: NotebookParagraphCodeEditorComponent;
   @ViewChildren(NotebookParagraphResultComponent) notebookParagraphResultComponents: QueryList<
     NotebookParagraphResultComponent

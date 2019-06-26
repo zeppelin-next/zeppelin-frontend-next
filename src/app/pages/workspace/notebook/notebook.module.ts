@@ -29,7 +29,7 @@ import { NotebookPermissionsComponent } from './permissions/permissions.componen
 import { NotebookRevisionsComparatorComponent } from './revisions-comparator/revisions-comparator.component';
 import { NotebookParagraphComponent } from './paragraph/paragraph.component';
 import { NotebookAddParagraphComponent } from './add-paragraph/add-paragraph.component';
-import { NzMonacoEditorModule } from '@ng-zorro/ng-plus/monaco-editor';
+import { NzMonacoEditorModule } from '@ng-zorro/ng-plus/editor';
 import { NotebookParagraphCodeEditorComponent } from './paragraph/code-editor/code-editor.component';
 import { NotebookParagraphResultComponent } from './paragraph/result/result.component';
 import { PortalModule } from '@angular/cdk/portal';

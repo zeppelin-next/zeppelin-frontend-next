@@ -15,7 +15,6 @@ import {
 } from 'zeppelin-sdk';
 import { TicketService } from './ticket.service';
 import { BaseUrlService } from './base-url.service';
-import { map, tap } from 'rxjs/operators';
 import { MESSAGE_INTERCEPTOR, MessageInterceptor } from 'zeppelin-interfaces';
 
 @Injectable({

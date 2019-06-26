@@ -14,8 +14,8 @@
   <nz-input-group [nzPrefixIcon]="'search'" nzSize="small">
     <input type="text" nz-input placeholder="Filter" nzSize="small" [(ngModel)]="searchValue"/>
   </nz-input-group>
-  <nz-tree [nzData]="nodes" [nzSearchValue]="searchValue">
-    <ng-template #nzTreeTemplate let-node>
+  <nz-tree [nzData]="nodes" [nzSearchValue]="searchValue" [nzTreeTemplate]="treeTpl"></nz-tree>
+  <ng-template #treeTpl let-node>
       <span class="node"
             [ngSwitch]="node.origin.nodeType"
             [class.not-matched]="searchValue && !node.isMatched"
@@ -122,6 +122,6 @@
           </span>
         </span>
       </span>
-    </ng-template>
-  </nz-tree>
+  </ng-template>
+
 </div>

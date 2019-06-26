@@ -22,9 +22,9 @@ export class ElasticInputComponent implements OnChanges {
   @Input() readonly = false;
   @Input() min = false;
   @Output() valueUpdate = new EventEmitter<string>();
-  @ViewChild('inputElement', { read: ElementRef }) inputElement: ElementRef;
-  @ViewChild('pElement', { read: ElementRef }) pElement: ElementRef;
-  @ViewChild('elasticElement', { read: ElementRef }) elasticElement: ElementRef;
+  @ViewChild('inputElement', { read: ElementRef, static: false }) inputElement: ElementRef;
+  @ViewChild('pElement', { read: ElementRef, static: false }) pElement: ElementRef;
+  @ViewChild('elasticElement', { read: ElementRef, static: true }) elasticElement: ElementRef;
   showEditor = false;
   editValue: string;
 

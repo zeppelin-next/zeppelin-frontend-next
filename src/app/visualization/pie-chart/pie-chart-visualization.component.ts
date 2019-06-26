@@ -19,8 +19,9 @@ import { VISUALIZATION } from '../visualization-component-portal';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PieChartVisualizationComponent extends G2VisualizationComponentBase implements OnInit, AfterViewInit {
-  @ViewChild('container') container: ElementRef<HTMLDivElement>;
-  @ViewChild(VisualizationPivotSettingComponent) pivotSettingComponent: VisualizationPivotSettingComponent;
+  @ViewChild('container', { static: false }) container: ElementRef<HTMLDivElement>;
+  @ViewChild(VisualizationPivotSettingComponent, { static: false })
+  pivotSettingComponent: VisualizationPivotSettingComponent;
 
   constructor(@Inject(VISUALIZATION) public visualization: Visualization) {
     super(visualization);

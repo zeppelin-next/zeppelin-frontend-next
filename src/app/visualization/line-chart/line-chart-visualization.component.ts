@@ -22,9 +22,11 @@ import { VISUALIZATION } from '../visualization-component-portal';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LineChartVisualizationComponent extends G2VisualizationComponentBase implements OnInit, AfterViewInit {
-  @ViewChild('container') container: ElementRef<HTMLDivElement>;
-  @ViewChild(VisualizationXAxisSettingComponent) xAxisSettingComponent: VisualizationXAxisSettingComponent;
-  @ViewChild(VisualizationPivotSettingComponent) pivotSettingComponent: VisualizationPivotSettingComponent;
+  @ViewChild('container', { static: false }) container: ElementRef<HTMLDivElement>;
+  @ViewChild(VisualizationXAxisSettingComponent, { static: false })
+  xAxisSettingComponent: VisualizationXAxisSettingComponent;
+  @ViewChild(VisualizationPivotSettingComponent, { static: false })
+  pivotSettingComponent: VisualizationPivotSettingComponent;
   forceY = false;
   lineWithFocus = false;
   isDateFormat = false;

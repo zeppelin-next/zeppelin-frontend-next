@@ -11,19 +11,19 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: './home/home.module#HomeModule'
+        loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
       },
       {
         path: 'notebook',
-        loadChildren: './notebook/notebook.module#NotebookModule'
+        loadChildren: () => import('./notebook/notebook.module').then(m => m.NotebookModule)
       },
       {
         path: 'jobmanager',
-        loadChildren: './job-manager/job-manager.module#JobManagerModule'
+        loadChildren: () => import('./job-manager/job-manager.module').then(m => m.JobManagerModule)
       },
       {
         path: 'interpreter',
-        loadChildren: './interpreter/interpreter.module#InterpreterModule'
+        loadChildren: () => import('./interpreter/interpreter.module').then(m => m.InterpreterModule)
       }
     ]
   }

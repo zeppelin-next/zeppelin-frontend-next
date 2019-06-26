@@ -47,7 +47,7 @@ export class TableVisualizationComponent implements OnInit {
   colOptions = new Map<string, FilterOption>();
   types: ColType[] = ['string', 'number', 'date'];
   aggregations: AggregationType[] = ['count', 'sum', 'min', 'max', 'avg'];
-  @ViewChild(NzTableComponent) nzTable: NzTableComponent;
+  @ViewChild(NzTableComponent, { static: false }) nzTable: NzTableComponent;
 
   exportFile(type: 'csv' | 'xlsx', all = true) {
     const wb = utils.book_new();

@@ -21,8 +21,9 @@ import { get } from 'lodash';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ScatterChartVisualizationComponent extends G2VisualizationComponentBase implements OnInit, AfterViewInit {
-  @ViewChild('container') container: ElementRef<HTMLDivElement>;
-  @ViewChild(VisualizationScatterSettingComponent) scatterSettingComponent: VisualizationScatterSettingComponent;
+  @ViewChild('container', { static: false }) container: ElementRef<HTMLDivElement>;
+  @ViewChild(VisualizationScatterSettingComponent, { static: false })
+  scatterSettingComponent: VisualizationScatterSettingComponent;
 
   constructor(@Inject(VISUALIZATION) public visualization: Visualization, private cdr: ChangeDetectorRef) {
     super(visualization);
