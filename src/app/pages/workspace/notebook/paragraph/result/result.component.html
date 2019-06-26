@@ -32,7 +32,7 @@
 <div #graphEle>
   <ng-template cdkPortalOutlet></ng-template>
   <ng-container [ngSwitch]="result?.type">
-    <div *ngSwitchCase="datasetType.HTML" class="inner-html" [innerHTML]="innerHTML"></div>
+    <div *ngSwitchCase="datasetType.HTML" zeppelinMathJax class="inner-html" [innerHTML]="innerHTML"></div>
     <div *ngSwitchCase="datasetType.TEXT" class="text-plain"><pre>{{plainText}}</pre></div>
   </ng-container>
   <div *ngIf="angularComponent">

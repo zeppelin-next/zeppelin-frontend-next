@@ -58,6 +58,11 @@
               },
               {
                 "glob": "**/*",
+                "input": "./node_modules/mathjax",
+                "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
                 "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
                 "output": "/assets/"
               }
@@ -65,7 +70,8 @@
             "styles": [
               "src/styles/theme/dark/antd-dark.less",
               "src/styles/theme/light/antd-light.less",
-              "src/styles.less"
+              "src/styles.less",
+              "./node_modules/highlight.js/styles/github.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -74,7 +80,9 @@
                 "src/styles/theme/light"
               ]
             },
-            "scripts": []
+            "scripts": [
+              "node_modules/mathjax/MathJax.js"
+            ]
           },
           "configurations": {
             "production": {

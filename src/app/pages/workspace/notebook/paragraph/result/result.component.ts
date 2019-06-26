@@ -14,6 +14,7 @@ import {
   Injector
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import * as hljs from 'highlight.js';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { WorkSheet, utils, writeFile, WritingOptions } from 'xlsx';
@@ -28,7 +29,6 @@ import {
   VisualizationScatterChart,
   VisualizationStackedAreaChart
 } from 'zeppelin-sdk';
-import { MessageService } from 'zeppelin-services';
 import { NgZService } from '../../../../../services/ng-z.service';
 import { AreaChartVisualization } from '../../../../../visualization/area-chart/area-chart-visualization';
 import { BarChartVisualization } from '../../../../../visualization/bar-chart/bar-chart-visualization';
@@ -183,7 +183,13 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
   }
 
   renderHTML(): void {
-    this.innerHTML = this.sanitizer.bypassSecurityTrustHtml(this.result.data);
+    const div = document.createElement('div');
+    div.innerHTML = this.result.data;
+    const codeEle: HTMLElement = div.querySelector('pre code');
+    if (codeEle) {
+      hljs.highlightBlock(codeEle);
+    }
+    this.innerHTML = div.innerHTML;
   }
 
   renderAngular(): void {
