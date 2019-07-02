@@ -207,14 +207,14 @@
       <button nz-button nzNoAnimation (click)="togglePermissions()">
         <i nz-icon nzType="lock" [nzTheme]="activatedExtension === 'permissions' ? 'fill' : 'outline'"></i>
       </button>
-      <nz-dropdown>
-        <button nz-button nzNoAnimation nzSize="small" nz-dropdown>[{{note.config.looknfeel}}]
-          <i nz-icon type="down"></i>
-        </button>
+      <button [nzDropdownMenu]="menu" nz-button nzNoAnimation nzSize="small" nz-dropdown>{{note.config.looknfeel}}
+        <i nz-icon type="down"></i>
+      </button>
+      <nz-dropdown-menu #menu="nzDropdownMenu">
         <ul nz-menu>
           <li nz-menu-item *ngFor="let lf of lfOption" (click)="setLookAndFeel(lf)">{{lf}}</li>
         </ul>
-      </nz-dropdown>
+      </nz-dropdown-menu>
     </nz-button-group>
   </div>
 </div>

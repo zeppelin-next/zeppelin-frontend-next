@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --proxy-config proxy.conf.js",
+    "start": "ng serve --prod --proxy-config proxy.conf.js",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
@@ -12,6 +12,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~8.0.1",
+    "@angular/cdk": "~8.0.1",
     "@angular/common": "~8.0.1",
     "@angular/compiler": "~8.0.1",
     "@angular/core": "~8.0.1",
@@ -19,10 +20,6 @@
     "@angular/platform-browser": "~8.0.1",
     "@angular/platform-browser-dynamic": "~8.0.1",
     "@angular/router": "~8.0.1",
-    "rxjs": "~6.4.0",
-    "tslib": "^1.9.0",
-    "zone.js": "~0.9.1",
-    "@angular/cdk": "~8.0.1",
     "@antv/data-set": "^0.10.2",
     "@antv/g2": "^3.5.4",
     "@commitlint/cli": "^7.5.2",
@@ -41,9 +38,12 @@
     "lodash": "^4.17.11",
     "mathjax": "^2.7.5",
     "monaco-editor": "^0.17.0",
-    "ng-zorro-antd": "8.0.0-rc.0",
+    "ng-zorro-antd": "^8.0.1",
     "prettier": "^1.17.0",
-    "xlsx": "^0.14.3"
+    "rxjs": "~6.4.0",
+    "tslib": "^1.9.0",
+    "xlsx": "^0.14.3",
+    "zone.js": "~0.9.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.800.3",

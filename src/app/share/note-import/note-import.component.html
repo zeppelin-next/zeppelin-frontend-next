@@ -23,9 +23,8 @@
     <form nz-form nzLayout="vertical">
       <nz-form-item>
         <nz-form-label>URL</nz-form-label>
-        <nz-form-control #control="nzFormControl">
+        <nz-form-control nzErrorTip="URL is Required" #control="nzFormControl">
           <input nz-input [(ngModel)]="importUrl" placeholder="Note URL" name="importUrl" required/>
-          <nz-form-explain *ngIf="control.status === 'error'">URL is Required</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
