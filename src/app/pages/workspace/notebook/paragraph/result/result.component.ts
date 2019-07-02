@@ -122,7 +122,6 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
   ) {}
 
   ngOnInit() {
-    this.renderDefaultDisplay();
     this.ngZService
       .contextChanged()
       .pipe(takeUntil(this.destroy$))
@@ -276,7 +275,9 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
     }
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    this.renderDefaultDisplay();
+  }
 
   ngOnDestroy(): void {
     this.destroyVisualizations();

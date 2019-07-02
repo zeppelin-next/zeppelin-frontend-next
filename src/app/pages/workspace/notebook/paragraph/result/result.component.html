@@ -29,7 +29,7 @@
     ></i>
   </a>
 </div>
-<div #graphEle>
+<div #graphEle zeppelinRectResize>
   <ng-template cdkPortalOutlet></ng-template>
   <ng-container [ngSwitch]="result?.type">
     <div *ngSwitchCase="datasetType.HTML" zeppelinMathJax class="inner-html" [innerHTML]="innerHTML"></div>
