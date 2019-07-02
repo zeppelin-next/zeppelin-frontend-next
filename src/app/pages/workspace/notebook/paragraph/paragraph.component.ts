@@ -246,6 +246,14 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     // TODO: save cursor
   }
 
+  doubleClickParagraph() {
+    if (this.paragraph.config.editorSetting.editOnDblClick && this.revisionView !== true) {
+      this.paragraph.config.editorHide = false;
+      this.paragraph.config.tableHide = true;
+      // TODO: focus editor
+    }
+  }
+
   runAllBelowAndCurrent() {
     const index = this.note.paragraphs.findIndex(p => p.id === this.paragraph.id);
     const toRunParagraphs = this.note.paragraphs.filter((p, i) => i >= index);

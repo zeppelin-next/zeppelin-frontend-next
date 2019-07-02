@@ -21,10 +21,10 @@
   <a (click)="toggleOutput()">
     <i nz-icon [nzType]="tableHide ? 'book' : 'read'" nzTheme="outline"></i>
   </a>
-  <nz-dropdown [nzTrigger]="'click'" [nzClickHide]="false" [(nzVisible)]="dropdownVisible">
-    <a nz-dropdown>
-      <i nz-icon nzType="setting" nzTheme="outline"></i>
-    </a>
+  <a nz-dropdown [nzDropdownMenu]="menu" [nzTrigger]="'click'" [nzClickHide]="false" [(nzVisible)]="dropdownVisible">
+    <i nz-icon nzType="setting" nzTheme="outline"></i>
+  </a>
+  <nz-dropdown-menu #menu="nzDropdownMenu">
     <ul nz-menu class="setting-menu">
       <li nz-menu-item class="paragraph-id">
         <a (click)="copyClipboard(pid)">{{ pid }}</a>
@@ -54,10 +54,11 @@
       </li>
       <ng-container *ngFor="let menu of listOfMenu">
         <li nz-menu-item class="list-item" [nzDisabled]="menu.disabled" *ngIf="menu.show" (click)="menu.trigger()">
-          <span><i nz-icon [nzType]="menu.icon" nzTheme="outline"></i> {{menu.label}}</span>
+          <span><i nz-icon [nzType]="menu.icon" nzTheme="outline"></i>
+            {{menu.label}}</span>
           <span class="short-cut">{{menu.shortCut}}</span>
         </li>
       </ng-container>
     </ul>
-  </nz-dropdown>
+  </nz-dropdown-menu>
 </ng-container>

@@ -1,4 +1,4 @@
-<div class="paragraph-container" *ngIf="paragraph">
+<div class="paragraph-container" *ngIf="paragraph" (dblclick)="doubleClickParagraph()">
   <zeppelin-notebook-add-paragraph *ngIf="!revisionView && looknfeel !== 'report'"
                                    [disabled]="isEntireNoteRunning"
                                    (addParagraph)="insertParagraph('above')"></zeppelin-notebook-add-paragraph>
