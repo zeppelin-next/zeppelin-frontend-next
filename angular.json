@@ -59,7 +59,7 @@
               {
                 "glob": "**/*",
                 "input": "./node_modules/mathjax",
-                "output": "/assets/"
+                "output": "/"
               },
               {
                 "glob": "**/*",
