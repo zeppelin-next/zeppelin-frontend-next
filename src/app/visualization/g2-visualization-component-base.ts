@@ -11,6 +11,7 @@ export abstract class G2VisualizationComponentBase implements OnDestroy {
   constructor(public visualization: Visualization) {}
 
   abstract renderBefore(chart: G2.Chart): void;
+
   abstract refreshSetting(): void;
 
   render() {
@@ -61,7 +62,9 @@ export abstract class G2VisualizationComponentBase implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.chart.destroy();
-    this.chart = null;
+    if (this.chart) {
+      this.chart.destroy();
+      this.chart = null;
+    }
   }
 }

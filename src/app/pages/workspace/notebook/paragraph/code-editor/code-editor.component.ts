@@ -1,4 +1,3 @@
-/// <reference path="../../../../../../../node_modules/monaco-editor/monaco.d.ts" />
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -149,6 +148,7 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
   setParagraphMode(changed = false) {
     if (this.editor && !changed) {
       if (this.language) {
+        // TODO: config convertMap
         const convertMap = {
           sh: 'shell'
         };
