@@ -19,7 +19,6 @@ export abstract class G2VisualizationComponentBase implements OnDestroy {
     this.refreshSetting();
     this.initChart();
     this.chart.source(this.visualization.transformed);
-    console.log(this.visualization.transformed);
     this.renderBefore(this.chart);
     this.chart.render();
     this.renderAfter();
@@ -33,6 +32,14 @@ export abstract class G2VisualizationComponentBase implements OnDestroy {
       key = this.config.keys[0].name;
     }
     return key;
+  }
+
+  refresh(): void {
+    this.config = this.visualization.getConfig();
+    this.chart.changeHeight(this.config.height || 400);
+    setTimeout(() => {
+      this.chart.forceFit();
+    });
   }
 
   initChart() {

@@ -23,13 +23,14 @@
     <i
       nz-icon
       nzType="caret-down"
-      [nzRotate]="config.graph.optionOpen ? 180 : 0"
+      [nzRotate]="config?.graph.optionOpen ? 180 : 0"
       class="setting-icon"
       nz-dropdown
     ></i>
   </a>
 </div>
-<div #graphEle zeppelinRectResize>
+<div #graphEle zeppelinRectResize (resize)="onResize($event)" [currentCol]="currentCol">
+  <zeppelin-rect-resize-handle></zeppelin-rect-resize-handle>
   <ng-template cdkPortalOutlet></ng-template>
   <ng-container [ngSwitch]="result?.type">
     <div *ngSwitchCase="datasetType.HTML" zeppelinMathJax class="inner-html" [innerHTML]="innerHTML"></div>

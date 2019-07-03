@@ -9,8 +9,6 @@ export abstract class Visualization<T = any> {
   transformed: any;
   componentRef: ComponentRef<T>;
   configChange$ = new Subject<GraphConfig>();
-  private active = false;
-  private dirty = false;
   constructor(private config: GraphConfig) {}
 
   abstract getTransformation(): Transformation;
@@ -22,25 +20,9 @@ export abstract class Visualization<T = any> {
     return this.configChange$.asObservable();
   }
 
-  isActive() {
-    return this.active;
-  }
-
-  resize() {
-    if (this.isActive()) {
-      this.refresh();
-    } else {
-      this.dirty = true;
-    }
-  }
-
   setConfig(config: GraphConfig) {
     this.config = config;
-    if (this.isActive()) {
-      this.refresh();
-    } else {
-      this.dirty = true;
-    }
+    this.refresh();
   }
 
   getConfig() {

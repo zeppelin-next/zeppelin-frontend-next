@@ -38,6 +38,7 @@ import {
 import { MessageListener, MessageListenersManager } from 'zeppelin-core';
 import { isEmpty, isEqual } from 'lodash';
 import DiffMatchPatch from 'diff-match-patch';
+import { ResizeResult } from 'zeppelin-share/rect-resize/rect-resize.directive';
 import { SpellResult } from 'zeppelin-spell/spell-result';
 import { NgZService } from '../../../../services/ng-z.service';
 import { NotebookParagraphCodeEditorComponent } from './code-editor/code-editor.component';
@@ -549,7 +550,15 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     if (needCommit) {
       this.commitParagraph();
     }
-    this.notebookParagraphCodeEditorComponent.layout();
+    if (this.notebookParagraphCodeEditorComponent) {
+      this.notebookParagraphCodeEditorComponent.layout();
+    }
+  }
+
+  onSizeChange(resize: ResizeResult) {
+    this.paragraph.config.colWidth = resize.col;
+    this.changeColWidth(true);
+    this.cdr.markForCheck();
   }
 
   onConfigChange(configResult: ParagraphConfigResult, index: number) {

@@ -1,23 +1,24 @@
+import { CdkPortalOutlet } from '@angular/cdk/portal';
 import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  Input,
-  ViewChild,
-  ElementRef,
   AfterViewInit,
-  ViewContainerRef,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Output,
+  Component,
+  ElementRef,
   EventEmitter,
+  Injector,
+  Input,
   OnDestroy,
-  Injector
+  OnInit,
+  Output,
+  ViewChild,
+  ViewContainerRef
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as hljs from 'highlight.js';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { WorkSheet, utils, writeFile, WritingOptions } from 'xlsx';
+import { utils, WorkSheet, writeFile, WritingOptions } from 'xlsx';
 import {
   DatasetType,
   GraphConfig,
@@ -29,7 +30,9 @@ import {
   VisualizationScatterChart,
   VisualizationStackedAreaChart
 } from 'zeppelin-sdk';
+import { ResizeResult } from 'zeppelin-share/rect-resize/rect-resize.directive';
 import { NgZService } from '../../../../../services/ng-z.service';
+import { DynamicTemplate, RuntimeCompilerService } from '../../../../../services/runtime-compiler.service';
 import { AreaChartVisualization } from '../../../../../visualization/area-chart/area-chart-visualization';
 import { BarChartVisualization } from '../../../../../visualization/bar-chart/bar-chart-visualization';
 import { TableData } from '../../../../../visualization/dataset/table-data';
@@ -38,8 +41,6 @@ import { PieChartVisualization } from '../../../../../visualization/pie-chart/pi
 import { ScatterChartVisualization } from '../../../../../visualization/scatter-chart/scatter-chart-visualization';
 import { TableVisualization } from '../../../../../visualization/table/table-visualization';
 import { Visualization } from '../../../../../visualization/visualization';
-import { CdkPortalOutlet } from '@angular/cdk/portal';
-import { DynamicTemplate, RuntimeCompilerService } from '../../../../../services/runtime-compiler.service';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph-result',
@@ -51,7 +52,9 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
   @Input() result: ParagraphIResultsMsgItem;
   @Input() config: ParagraphConfigResult;
   @Input() id: string;
+  @Input() currentCol = 12;
   @Output() configChange = new EventEmitter<ParagraphConfigResult>();
+  @Output() sizeChange = new EventEmitter<ResizeResult>();
   @ViewChild('graphEle', { static: false }) graphEle: ElementRef<HTMLDivElement>;
   @ViewChild(CdkPortalOutlet, { static: false }) portalOutlet: CdkPortalOutlet;
 
@@ -203,6 +206,14 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
     this.plainText = this.result.data;
   }
 
+  setGraphConfig() {
+    const visualizationItem = this.visualizations.find(v => v.id === this.config.graph.mode);
+    if (!visualizationItem || !visualizationItem.instance) {
+      return;
+    }
+    visualizationItem.instance.setConfig(this.config.graph);
+  }
+
   renderGraph() {
     this.setDefaultConfig();
     let instance: Visualization;
@@ -273,6 +284,14 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
           break;
       }
     }
+  }
+
+  onResize($event: ResizeResult) {
+    if (this.result.type === DatasetType.TABLE) {
+      this.config.graph.height = $event.height;
+      this.setGraphConfig();
+    }
+    this.sizeChange.emit($event);
   }
 
   ngAfterViewInit(): void {

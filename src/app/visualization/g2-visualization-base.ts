@@ -30,7 +30,11 @@ export abstract class G2VisualizationBase extends Visualization<G2VisualizationC
     return this.pivot;
   }
 
-  refresh(): void {}
+  refresh(): void {
+    if (this.componentRef) {
+      this.componentRef.instance.refresh();
+    }
+  }
 
   render(data): void {
     this.transformed = data;

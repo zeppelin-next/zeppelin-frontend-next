@@ -65,15 +65,32 @@ export class LineChartVisualizationComponent extends G2VisualizationComponentBas
       .line()
       .position(`${key}*__value__`)
       .color('__key__');
+    this.chart.scale({
+      [key]: {
+        tickCount: 24
+      }
+    });
     setChartXAxis(this.visualization, 'lineChart', this.chart, key);
 
     if (setting.isDateFormat) {
-      this.chart.scale({
-        [key]: {
-          type: 'time',
-          mask: setting.dateFormat || 'YYYY-MM-DD'
+      if (this.visualization.transformed && this.visualization.transformed.rows) {
+        const invalid = this.visualization.transformed.rows.some(r => {
+          const isInvalidDate = Number.isNaN(new Date(r[key]).valueOf());
+          if (isInvalidDate) {
+            console.warn(`${r[key]} is [Invalid Date]`);
+          }
+          return isInvalidDate;
+        });
+        if (invalid) {
+          return;
         }
-      });
+        this.chart.scale({
+          [key]: {
+            type: 'time',
+            mask: setting.dateFormat || 'YYYY-MM-DD'
+          }
+        });
+      }
     }
 
     if (setting.forceY) {

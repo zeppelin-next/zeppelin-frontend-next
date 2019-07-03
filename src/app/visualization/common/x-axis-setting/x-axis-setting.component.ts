@@ -49,8 +49,11 @@ export class VisualizationXAxisSettingComponent implements OnInit {
   init() {
     this.config = this.visualization.getConfig();
     this.setting = this.config.setting[this.mode];
-    this.xLabelStatus = this.setting.xLabelStatus;
-    this.degree = this.setting.rotate.degree;
+    if (!this.setting.rotate) {
+      this.setting.rotate = { degree: '-45' };
+    }
+    this.xLabelStatus = get(this.setting, ['xLabelStatus'], 'default');
+    this.degree = get(this.setting, ['rotate', 'degree'], '-45');
     this.previousDegree = this.degree;
     this.cdr.markForCheck();
   }
