@@ -4,6 +4,7 @@ import { copyTextToClipboard } from 'zeppelin-core';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'zeppelin-services';
+import { RuntimeInfos } from 'zeppelin-sdk';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph-control',
@@ -24,6 +25,7 @@ export class NotebookParagraphControlComponent implements OnInit, OnChanges {
   @Input() fontSize: number;
   @Input() runOnSelectionChange = true;
   @Input() isEntireNoteRunning = true;
+  @Input() runtimeInfos: RuntimeInfos;
   @Input() colWidthOption = [];
   @Input() first = false;
   @Input() last = false;

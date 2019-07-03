@@ -1,3 +1,12 @@
+<div class="job-link" *ngIf="runtimeInfos && runtimeInfos.jobUrl">
+  <a [attr.href]="runtimeInfos.jobUrl.values[0].jobUrl"
+     target="_blank"
+     nz-tooltip
+     [nzTitle]="runtimeInfos.jobUrl.tooltip">
+    <i nz-icon nzType="build" nzTheme="fill"></i>
+    {{runtimeInfos.jobUrl.label}}
+  </a>
+</div>
 <div class="status">{{status}}</div>
 <div class="progress" *ngIf="status === 'RUNNING'">{{progress}}%</div>
 <ng-container *ngIf="!revisionView">

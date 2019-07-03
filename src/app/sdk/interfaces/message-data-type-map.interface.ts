@@ -55,7 +55,8 @@ import {
   PatchParagraphSend,
   Progress,
   RunAllParagraphs,
-  RunParagraph
+  RunParagraph,
+  ParasInfo
 } from './message-paragraph.interface';
 
 import { ListNoteJobs, ListUpdateNoteJobs } from './message-job.interface';
@@ -92,6 +93,7 @@ export interface MessageReceiveDataTypeMap {
   [OP.NOTE_UPDATED]: NoteUpdated;
   [OP.ANGULAR_OBJECT_UPDATE]: AngularObjectUpdate;
   [OP.ANGULAR_OBJECT_REMOVE]: AngularObjectRemove;
+  [OP.PARAS_INFO]: ParasInfo;
 }
 
 export interface MessageSendDataTypeMap {

@@ -94,6 +94,14 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     this.cdr.markForCheck();
   }
 
+  @MessageListener(OP.PARAS_INFO)
+  updateParaInfos(data: MessageReceiveDataTypeMap[OP.PARAS_INFO]) {
+    if (this.paragraph.id === data.id) {
+      this.paragraph.runtimeInfos = data.infos;
+      this.cdr.markForCheck();
+    }
+  }
+
   @MessageListener(OP.EDITOR_SETTING)
   getEditorSetting(data: MessageReceiveDataTypeMap[OP.EDITOR_SETTING]) {
     if (this.paragraph.id === data.paragraphId) {

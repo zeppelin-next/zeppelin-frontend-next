@@ -83,6 +83,28 @@ export class ParagraphIResultsMsgItem {
   data = '';
 }
 
+export interface ParasInfo {
+  id: string;
+  infos: RuntimeInfos;
+}
+
+export interface RuntimeInfos {
+  jobUrl: RuntimeInfosJobUrl;
+}
+
+interface RuntimeInfosJobUrl {
+  propertyName: string;
+  label: string;
+  tooltip: string;
+  group: string;
+  values: RuntimeInfosValuesItem[];
+  interpreterSettingId: string;
+}
+
+interface RuntimeInfosValuesItem {
+  jobUrl: string;
+}
+
 export interface ParagraphItem {
   text: string;
   user: string;
@@ -100,7 +122,7 @@ export interface ParagraphItem {
   dateFinished?: string;
   errorMessage?: string;
   // tslint:disable-next-line no-any TODO
-  runtimeInfos?: any;
+  runtimeInfos?: RuntimeInfos;
   status: string;
   title?: string;
   focus?: boolean;
@@ -236,6 +258,7 @@ export type VisualizationMode =
   | 'scatterChart'
   | 'pieChart'
   | string;
+
 export class GraphConfig {
   mode: VisualizationMode = 'table';
   height = 300;
