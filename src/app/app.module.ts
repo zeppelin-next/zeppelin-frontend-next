@@ -19,6 +19,10 @@ import { RUNTIME_COMPILER_PROVIDERS } from './app-runtime-compiler.providers';
 import { NZ_MONACO_EDITOR_CONFIG } from '@ng-zorro/ng-plus';
 import { loadMonacoLanguage } from 'zeppelin-languages';
 
+export const loadMonaco = () => {
+  loadMonacoLanguage();
+};
+
 registerLocaleData(en);
 
 @NgModule({
@@ -47,9 +51,7 @@ registerLocaleData(en);
     {
       provide: NZ_MONACO_EDITOR_CONFIG,
       useValue: {
-        onLoad: () => {
-          loadMonacoLanguage();
-        }
+        onLoad: loadMonaco
       }
     },
     {
