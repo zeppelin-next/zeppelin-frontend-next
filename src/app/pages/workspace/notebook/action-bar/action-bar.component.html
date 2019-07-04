@@ -207,7 +207,7 @@
       <button nz-button nzNoAnimation (click)="togglePermissions()">
         <i nz-icon nzType="lock" [nzTheme]="activatedExtension === 'permissions' ? 'fill' : 'outline'"></i>
       </button>
-      <button [nzDropdownMenu]="menu" nz-button nzNoAnimation nzSize="small" nz-dropdown>{{note.config.looknfeel}}
+      <button [nzDropdownMenu]="menu" nz-button nzNoAnimation nzSize="small" nz-dropdown nzTrigger="click">{{note.config.looknfeel}}
         <i nz-icon type="down"></i>
       </button>
       <nz-dropdown-menu #menu="nzDropdownMenu">
