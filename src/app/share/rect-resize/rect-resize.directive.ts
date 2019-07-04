@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { auditTime, filter } from 'rxjs/operators';
 import { RectResizeService } from 'zeppelin-share/rect-resize/rect-resize.service';
+import { NzMeasureScrollbarService } from 'ng-zorro-antd';
 
 interface ResizeRect {
   width: number;
@@ -56,6 +57,7 @@ export class RectResizeDirective implements AfterViewInit {
   @Output() resize = new EventEmitter<ResizeResult>();
 
   constructor(
+    private mzMeasureScrollbarService: NzMeasureScrollbarService,
     private elementRef: ElementRef<HTMLElement>,
     private renderer: Renderer2,
     private ngZone: NgZone,
@@ -135,7 +137,7 @@ export class RectResizeDirective implements AfterViewInit {
 
       this.renderer.setStyle(this.ghostElement, 'position', 'absolute');
       this.renderer.setStyle(this.ghostElement, 'top', '0');
-      this.renderer.setStyle(this.ghostElement, 'left', '0');
+      this.renderer.setStyle(this.ghostElement, 'left', '-13px');
       this.renderer.setStyle(this.ghostElement, 'z-index', '8');
       this.renderer.setStyle(this.ghostElement, 'border', '1px dashed #d1d1d1');
     }
@@ -149,7 +151,7 @@ export class RectResizeDirective implements AfterViewInit {
     const width = Math.min(Math.max($event.clientX - elRect.left, elRect.minWidth), elRect.maxWidth);
     this.ghostHeight = Math.max($event.clientY - elRect.top, elRect.minHeight);
     this.ghostCol = Math.round(width / elRect.widthStep);
-    this.ghostWidth = this.ghostCol * elRect.widthStep;
+    this.ghostWidth = this.ghostCol * elRect.widthStep - 8;
 
     this.renderer.setStyle(this.ghostElement, 'width', `${this.ghostWidth}px`);
     this.renderer.setStyle(this.ghostElement, 'height', `${this.ghostHeight}px`);
@@ -157,7 +159,7 @@ export class RectResizeDirective implements AfterViewInit {
 
   getResizeRect(): ResizeRect {
     const elRect = this.el.getBoundingClientRect();
-    const widthStep = (window.innerWidth - 48) / 12;
+    const widthStep = (window.innerWidth - this.mzMeasureScrollbarService.scrollBarWidth) / 12;
     return {
       widthStep,
       width: elRect.width,
@@ -169,5 +171,6 @@ export class RectResizeDirective implements AfterViewInit {
       minHeight: 64
     };
   }
+
   ngAfterViewInit(): void {}
 }

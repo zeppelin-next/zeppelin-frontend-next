@@ -22,7 +22,7 @@
     <zeppelin-notebook-revisions-comparator *ngSwitchCase="'revisions'"></zeppelin-notebook-revisions-comparator>
   </div>
   <div class="paragraph-area">
-    <div class="paragraph-inner" nz-row [nzGutter]="8">
+    <div class="paragraph-inner" nz-row>
       <zeppelin-notebook-paragraph nz-col
                                    *ngFor="let p of note.paragraphs;let first = first; let last = last;"
                                    [nzSpan]="p.config.colWidth * 2"

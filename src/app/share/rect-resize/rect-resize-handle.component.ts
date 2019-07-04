@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectionStrategy, HostListener, NgZone, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
 import { RectResizeDirective } from 'zeppelin-share/rect-resize/rect-resize.directive';
 import { RectResizeService } from 'zeppelin-share/rect-resize/rect-resize.service';
 

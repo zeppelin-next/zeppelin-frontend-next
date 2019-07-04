@@ -1,5 +1,14 @@
 /// <reference path="../../../../../../../node_modules/monaco-editor/monaco.d.ts" />
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  ChangeDetectorRef
+} from '@angular/core';
 import { copyTextToClipboard } from 'zeppelin-core';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { ActivatedRoute } from '@angular/router';
@@ -249,6 +258,7 @@ export class NotebookParagraphControlComponent implements OnInit, OnChanges {
           nzContent: 'Do you want to delete this paragraph?',
           nzOnOk: () => {
             this.messageService.paragraphRemove(this.pid);
+            this.cdr.markForCheck();
             // TODO moveFocusToNextParagraph
           }
         });
@@ -264,6 +274,7 @@ export class NotebookParagraphControlComponent implements OnInit, OnChanges {
   }
 
   constructor(
+    private cdr: ChangeDetectorRef,
     private nzMessageService: NzMessageService,
     private activatedRoute: ActivatedRoute,
     private messageService: MessageService,
