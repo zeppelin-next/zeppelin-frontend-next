@@ -11,6 +11,7 @@ import {
 import { collapseMotion } from 'ng-zorro-antd';
 import { VisualizationMultiBarChart } from 'zeppelin-sdk';
 import { VisualizationPivotSettingComponent } from '../common/pivot-setting/pivot-setting.component';
+import { calcTickCount } from '../common/util/calc-tick-count';
 import { setChartXAxis } from '../common/util/set-x-axis';
 import { VisualizationXAxisSettingComponent } from '../common/x-axis-setting/x-axis-setting.component';
 import { G2VisualizationComponentBase } from '../g2-visualization-component-base';
@@ -57,11 +58,18 @@ export class BarChartVisualizationComponent extends G2VisualizationComponentBase
     this.cdr.markForCheck();
   }
 
-  renderBefore(chart) {
+  setScale() {
     const key = this.getKey();
+    const tickCount = calcTickCount(this.container.nativeElement);
     this.chart.scale(key, {
+      tickCount,
       type: 'cat'
     });
+  }
+
+  renderBefore(chart) {
+    const key = this.getKey();
+    this.setScale();
 
     if (get(this.config.setting, 'multiBarChart.stacked', false)) {
       this.chart

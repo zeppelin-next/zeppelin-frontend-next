@@ -9,6 +9,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { VisualizationScatterSettingComponent } from '../common/scatter-setting/scatter-setting.component';
+import { calcTickCount } from '../common/util/calc-tick-count';
 import { G2VisualizationComponentBase } from '../g2-visualization-component-base';
 import { Visualization } from '../visualization';
 import { VISUALIZATION } from '../visualization-component-portal';
@@ -34,12 +35,19 @@ export class ScatterChartVisualizationComponent extends G2VisualizationComponent
     this.cdr.markForCheck();
   }
 
+  setScale() {
+    const key = this.getKey();
+    const tickCount = calcTickCount(this.container.nativeElement);
+    this.chart.scale(key, {
+      tickCount,
+      type: 'cat'
+    });
+  }
+
   renderBefore() {
     const key = this.getKey();
     const size = get(this.config.setting, 'scatterChart.size.name');
-    this.chart.scale(key, {
-      type: 'cat'
-    });
+    this.setScale();
     this.chart.tooltip({
       crosshairs: {
         type: 'cross'

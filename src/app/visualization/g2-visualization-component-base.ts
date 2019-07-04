@@ -1,6 +1,7 @@
 import { ElementRef, OnDestroy } from '@angular/core';
 import * as G2 from '@antv/g2';
 import { GraphConfig } from 'zeppelin-sdk';
+import { calcTickCount } from './common/util/calc-tick-count';
 import { Visualization } from './visualization';
 
 export abstract class G2VisualizationComponentBase implements OnDestroy {
@@ -13,6 +14,7 @@ export abstract class G2VisualizationComponentBase implements OnDestroy {
   abstract renderBefore(chart: G2.Chart): void;
 
   abstract refreshSetting(): void;
+  abstract setScale(): void;
 
   render() {
     this.config = this.visualization.getConfig();
@@ -38,6 +40,7 @@ export abstract class G2VisualizationComponentBase implements OnDestroy {
     this.config = this.visualization.getConfig();
     this.chart.changeHeight(this.config.height || 400);
     setTimeout(() => {
+      this.setScale();
       this.chart.forceFit();
     });
   }

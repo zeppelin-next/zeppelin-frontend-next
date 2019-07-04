@@ -33,6 +33,10 @@ export class PieChartVisualizationComponent extends G2VisualizationComponentBase
     this.pivotSettingComponent.init();
   }
 
+  setScale() {
+    // Noop
+  }
+
   renderBefore() {
     this.chart.tooltip({
       showTitle: false

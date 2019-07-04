@@ -67,7 +67,6 @@ export class PivotTransformation extends Transformation {
   transform(tableData: TableData): any {
     const config = this.getConfig();
     this.setDefaultConfig(tableData);
-    console.log(config);
     const ds = new DataSet();
     let dv = ds.createView().source(tableData.rows);
 

@@ -9,6 +9,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { VisualizationPivotSettingComponent } from '../common/pivot-setting/pivot-setting.component';
+import { calcTickCount } from '../common/util/calc-tick-count';
 import { setChartXAxis } from '../common/util/set-x-axis';
 import { VisualizationXAxisSettingComponent } from '../common/x-axis-setting/x-axis-setting.component';
 import { G2VisualizationComponentBase } from '../g2-visualization-component-base';
@@ -58,18 +59,23 @@ export class LineChartVisualizationComponent extends G2VisualizationComponentBas
     this.cdr.markForCheck();
   }
 
+  setScale() {
+    const key = this.getKey();
+    const tickCount = calcTickCount(this.container.nativeElement);
+    this.chart.scale(key, {
+      tickCount,
+      type: 'cat'
+    });
+  }
+
   renderBefore() {
     const key = this.getKey();
     const setting = this.config.setting.lineChart;
+    this.setScale();
     this.chart
       .line()
       .position(`${key}*__value__`)
       .color('__key__');
-    this.chart.scale({
-      [key]: {
-        tickCount: 24
-      }
-    });
     setChartXAxis(this.visualization, 'lineChart', this.chart, key);
 
     if (setting.isDateFormat) {
