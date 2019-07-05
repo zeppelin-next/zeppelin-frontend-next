@@ -10,10 +10,15 @@
 }
 
 .export-dropdown {
-  margin-bottom: 10px;
+  margin-bottom: 16px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 
 .themeMixin({
+  display: block;
+  position: relative;
   ::ng-deep .filter-icon svg {
     transition: transform 300ms;
   }

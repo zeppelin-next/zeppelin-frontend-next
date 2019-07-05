@@ -546,18 +546,24 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     this.messageService.moveParagraph(this.paragraph.id, newIndex);
   }
 
-  changeColWidth(needCommit: boolean) {
+  changeColWidth(needCommit: boolean, updateResult = true) {
     if (needCommit) {
       this.commitParagraph();
     }
     if (this.notebookParagraphCodeEditorComponent) {
       this.notebookParagraphCodeEditorComponent.layout();
     }
+
+    if (updateResult) {
+      this.notebookParagraphResultComponents.forEach(comp => {
+        comp.setGraphConfig();
+      });
+    }
   }
 
   onSizeChange(resize: ResizeResult) {
     this.paragraph.config.colWidth = resize.col;
-    this.changeColWidth(true);
+    this.changeColWidth(true, false);
     this.cdr.markForCheck();
   }
 
