@@ -235,6 +235,17 @@ export interface Completion {
   cursor: number;
 }
 
+export interface CompletionItem {
+  meta: string;
+  value: string;
+  name: string;
+}
+
+export interface CompletionReceived {
+  completions: CompletionItem[];
+  id: string;
+}
+
 export interface PatchParagraphReceived {
   id: string;
   noteId: string;
