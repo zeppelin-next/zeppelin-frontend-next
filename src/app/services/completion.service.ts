@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { MessageListener, MessageListenersManager } from 'zeppelin-core';
-import { CompletionItem, OP, CompletionReceived } from 'zeppelin-sdk';
-import { MessageService } from './message.service';
+import { OP, CompletionReceived } from 'zeppelin-sdk';
 import { Subject } from 'rxjs';
-import { filter, take, map, tap } from 'rxjs/operators';
+import { filter, take, map } from 'rxjs/operators';
+
+import { MessageService } from './message.service';
 
 export interface CompletionEvent {
   pid?: string;
@@ -51,17 +52,17 @@ export class CompletionService extends MessageListenersManager {
     this.completionLanguages.forEach(l => {
       monaco.languages.registerCompletionItemProvider(l, {
         provideCompletionItems(model: monaco.editor.ITextModel, position: monaco.Position) {
-          const pid = that.getIdForModel(model);
+          const id = that.getIdForModel(model);
 
-          if (!pid) {
+          if (!id) {
             return { suggestions: null };
           }
 
-          that.messageService.completion(pid, model.getValue(), model.getOffsetAt(position));
+          that.messageService.completion(id, model.getValue(), model.getOffsetAt(position));
 
           return that.completionItem$
             .pipe(
-              filter(d => d.id === pid),
+              filter(d => d.id === id),
               take(1),
               map(d => {
                 return {
@@ -72,8 +73,7 @@ export class CompletionService extends MessageListenersManager {
                     range: undefined
                   }))
                 };
-              }),
-              tap(d => console.log(d))
+              })
             )
             .toPromise();
         }
