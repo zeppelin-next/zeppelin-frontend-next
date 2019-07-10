@@ -10,11 +10,13 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { InterpreterBindingItem } from 'zeppelin-sdk';
+import { InterpreterBindingItem, OP, CompletionItem } from 'zeppelin-sdk';
 import { MessageService } from 'zeppelin-services';
 import IDisposable = monaco.IDisposable;
 import { NotebookParagraphControlComponent } from '../control/control.component';
 import IStandaloneCodeEditor = monaco.editor.IStandaloneCodeEditor;
+import { MessageListener, MessageListenersManager } from 'zeppelin-core';
+import { CompletionService } from 'src/app/services/completion.service';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph-code-editor',
@@ -55,21 +57,23 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
   }
 
   initEditorListener() {
+    const editor = this.editor;
+
     this.monacoDisposables.push(
-      this.editor.onDidFocusEditorText(() => {
+      editor.onDidFocusEditorText(() => {
         this.ngZone.runOutsideAngular(() => {
-          this.editor.updateOptions({ renderLineHighlight: 'all' });
+          editor.updateOptions({ renderLineHighlight: 'all' });
         });
       }),
-      this.editor.onDidBlurEditorText(() => {
+      editor.onDidBlurEditorText(() => {
         this.editorBlur.emit();
         this.ngZone.runOutsideAngular(() => {
-          this.editor.updateOptions({ renderLineHighlight: 'none' });
+          editor.updateOptions({ renderLineHighlight: 'none' });
         });
       }),
-      this.editor.onDidChangeModelContent(() => {
+      editor.onDidChangeModelContent(() => {
         this.ngZone.run(() => {
-          this.text = this.editor.getModel().getValue();
+          this.text = editor.getModel().getValue();
           this.textChanged.emit(this.text);
           this.setParagraphMode(true);
           this.autoAdjustEditorHeight();
@@ -109,8 +113,13 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
     this.setParagraphMode();
     this.initEditorListener();
     this.initEditorFocus();
+    this.initCompletionService();
     this.setEditorValue();
     this.autoAdjustEditorHeight();
+  }
+
+  initCompletionService(): void {
+    this.completionService.registerAsCompletionReceiver(this.editor.getModel(), this.paragraphControl.pid);
   }
 
   initEditorFocus() {
@@ -147,12 +156,13 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
 
   setParagraphMode(changed = false) {
     if (this.editor && !changed) {
+      const model = this.editor.getModel();
       if (this.language) {
         // TODO: config convertMap
         const convertMap = {
           sh: 'shell'
         };
-        monaco.editor.setModelLanguage(this.editor.getModel(), convertMap[this.language] || this.language);
+        monaco.editor.setModelLanguage(model, convertMap[this.language] || this.language);
       }
     } else {
       const interpreterName = this.getInterpreterName(this.text);
@@ -175,7 +185,12 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
     }
   }
 
-  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private messageService: MessageService) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone,
+    private messageService: MessageService,
+    private completionService: CompletionService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { text, interpreterBindings, language, readOnly, focus, lineNumbers, fontSize } = changes;
@@ -198,6 +213,7 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
   }
 
   ngOnDestroy(): void {
+    this.completionService.unregister(this.editor.getModel());
     this.monacoDisposables.forEach(d => d.dispose());
   }
 }

@@ -56,7 +56,8 @@ import {
   Progress,
   RunAllParagraphs,
   RunParagraph,
-  ParasInfo
+  ParasInfo,
+  CompletionReceived
 } from './message-paragraph.interface';
 
 import { ListNoteJobs, ListUpdateNoteJobs } from './message-job.interface';
@@ -67,6 +68,7 @@ import { InterpreterBindings, InterpreterSetting } from './message-interpreter.i
 export type MixMessageDataTypeMap = MessageSendDataTypeMap & MessageReceiveDataTypeMap;
 
 export interface MessageReceiveDataTypeMap {
+  [OP.COMPLETION_LIST]: CompletionReceived;
   [OP.NOTES_INFO]: NotesInfo;
   [OP.CONFIGURATIONS_INFO]: ConfigurationsInfo;
   [OP.NOTE]: Note;
