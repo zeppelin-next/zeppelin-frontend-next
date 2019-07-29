@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { auditTime, filter } from 'rxjs/operators';
 import { RectResizeService } from 'zeppelin-share/rect-resize/rect-resize.service';
-import { NzMeasureScrollbarService } from 'ng-zorro-antd';
+import { measureScrollbar } from 'ng-zorro-antd/core';
 
 interface ResizeRect {
   width: number;
@@ -57,7 +57,6 @@ export class RectResizeDirective implements AfterViewInit {
   @Output() resize = new EventEmitter<ResizeResult>();
 
   constructor(
-    private mzMeasureScrollbarService: NzMeasureScrollbarService,
     private elementRef: ElementRef<HTMLElement>,
     private renderer: Renderer2,
     private ngZone: NgZone,
@@ -159,7 +158,8 @@ export class RectResizeDirective implements AfterViewInit {
 
   getResizeRect(): ResizeRect {
     const elRect = this.el.getBoundingClientRect();
-    const widthStep = (window.innerWidth - this.mzMeasureScrollbarService.scrollBarWidth) / 12;
+    const scrollbarWidth = measureScrollbar('vertical');
+    const widthStep = (window.innerWidth - scrollbarWidth) / 12;
     return {
       widthStep,
       width: elRect.width,
