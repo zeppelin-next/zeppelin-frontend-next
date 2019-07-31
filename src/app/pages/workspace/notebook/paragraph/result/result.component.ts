@@ -14,11 +14,12 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml, SafeUrl } from '@angular/platform-browser';
 import * as hljs from 'highlight.js';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { utils, WorkSheet, writeFile, WritingOptions } from 'xlsx';
+import * as Convert from 'ansi-to-html';
 import {
   DatasetType,
   GraphConfig,
@@ -62,7 +63,8 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
   datasetType = DatasetType;
   angularComponent: DynamicTemplate;
   innerHTML: string | SafeHtml = '';
-  plainText = '';
+  plainText: string | SafeHtml = '';
+  imgData: string | SafeUrl = '';
   tableData = new TableData();
   visualizations = [
     {
@@ -177,6 +179,9 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
       case DatasetType.HTML:
         this.renderHTML();
         break;
+      case DatasetType.IMG:
+        this.renderImg();
+        break;
       case DatasetType.ANGULAR:
         this.renderAngular();
         break;
@@ -191,7 +196,7 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
     if (codeEle) {
       hljs.highlightBlock(codeEle);
     }
-    this.innerHTML = div.innerHTML;
+    this.innerHTML = this.sanitizer.bypassSecurityTrustHtml(div.innerHTML);
   }
 
   renderAngular(): void {
@@ -203,7 +208,13 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
   }
 
   renderText(): void {
-    this.plainText = this.result.data;
+    // tslint:disable-next-line:no-any
+    const convert: any = new Convert();
+    this.plainText = this.sanitizer.bypassSecurityTrustHtml(convert.toHtml(this.result.data));
+  }
+
+  renderImg(): void {
+    this.imgData = this.sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${this.result.data}`);
   }
 
   setGraphConfig() {

@@ -75,7 +75,8 @@ export enum DatasetType {
   TABLE = 'TABLE',
   HTML = 'HTML',
   TEXT = 'TEXT',
-  ANGULAR = 'ANGULAR'
+  ANGULAR = 'ANGULAR',
+  IMG = 'IMG'
 }
 
 export class ParagraphIResultsMsgItem {

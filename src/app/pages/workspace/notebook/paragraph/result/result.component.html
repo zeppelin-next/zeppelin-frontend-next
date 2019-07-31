@@ -34,7 +34,8 @@
   <ng-template cdkPortalOutlet></ng-template>
   <ng-container [ngSwitch]="result?.type">
     <div *ngSwitchCase="datasetType.HTML" zeppelinMathJax class="inner-html" [innerHTML]="innerHTML"></div>
-    <div *ngSwitchCase="datasetType.TEXT" class="text-plain"><pre>{{plainText}}</pre></div>
+    <div *ngSwitchCase="datasetType.TEXT" class="text-plain"><pre [innerHTML]="plainText"></pre></div>
+    <div *ngSwitchCase="datasetType.IMG" class="img"><img [src]="imgData" alt="img"></div>
   </ng-container>
   <div *ngIf="angularComponent">
     <ng-container *ngComponentOutlet="angularComponent.component;ngModuleFactory: angularComponent.moduleFactory;injector: injector"></ng-container>
