@@ -37,6 +37,7 @@ import { FolderRenameComponent } from './folder-rename/folder-rename.component';
 import { PageHeaderComponent } from './page-header/page-header.component';
 import { SpinComponent } from './spin/spin.component';
 import { MathJaxDirective } from './math-jax/math-jax.directive';
+import { RunScriptsDirective } from './run-scripts/run-scripts.directive';
 
 const MODAL_LIST = [
   AboutZeppelinComponent,
@@ -49,9 +50,9 @@ const EXPORT_LIST = [HeaderComponent, NodeListComponent, PageHeaderComponent, Sp
 const PIPES = [HumanizeBytesPipe];
 
 @NgModule({
-  declarations: [...MODAL_LIST, ...EXPORT_LIST, ...PIPES, MathJaxDirective],
+  declarations: [...MODAL_LIST, ...EXPORT_LIST, ...PIPES, MathJaxDirective, RunScriptsDirective],
   entryComponents: [...MODAL_LIST],
-  exports: [...EXPORT_LIST, ...PIPES, RectResizeModule, MathJaxDirective],
+  exports: [...EXPORT_LIST, ...PIPES, RectResizeModule, MathJaxDirective, RunScriptsDirective],
   imports: [
     FormsModule,
     CommonModule,

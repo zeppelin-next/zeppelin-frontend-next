@@ -33,7 +33,12 @@
   <zeppelin-rect-resize-handle></zeppelin-rect-resize-handle>
   <ng-template cdkPortalOutlet></ng-template>
   <ng-container [ngSwitch]="result?.type">
-    <div *ngSwitchCase="datasetType.HTML" zeppelinMathJax class="inner-html" [innerHTML]="innerHTML"></div>
+    <div *ngSwitchCase="datasetType.HTML"
+         class="inner-html"
+         zeppelinMathJax
+         zeppelinRunScripts
+         [scriptsContent]="innerHTML"
+         [innerHTML]="innerHTML"></div>
     <div *ngSwitchCase="datasetType.TEXT" class="text-plain"><pre [innerHTML]="plainText"></pre></div>
     <div *ngSwitchCase="datasetType.IMG" class="img"><img [src]="imgData" alt="img"></div>
   </ng-container>
