@@ -123,7 +123,7 @@ export class Message {
     const [op, data] = args;
     const message: WebSocketMessage<K> = {
       op,
-      data: data as MessageSendDataTypeMap[K],
+      data: data as MixMessageDataTypeMap[K],
       ...this.ticket
     };
     console.log('Send:', message);
