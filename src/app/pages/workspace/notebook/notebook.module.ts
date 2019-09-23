@@ -39,6 +39,7 @@ import { NotebookParagraphFooterComponent } from './paragraph/footer/footer.comp
 import { NotebookParagraphControlComponent } from './paragraph/control/control.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NotebookParagraphDynamicFormsComponent } from './paragraph/dynamic-forms/dynamic-forms.component';
+import { NzResizableModule } from 'ng-zorro-antd/resizable';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { NotebookParagraphDynamicFormsComponent } from './paragraph/dynamic-form
     NzSelectModule,
     NzGridModule,
     NzRadioModule,
-    DragDropModule
+    DragDropModule,
+    NzResizableModule
   ]
 })
 export class NotebookModule {}

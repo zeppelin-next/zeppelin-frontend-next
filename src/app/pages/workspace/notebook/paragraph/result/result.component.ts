@@ -42,6 +42,7 @@ import { PieChartVisualization } from '../../../../../visualization/pie-chart/pi
 import { ScatterChartVisualization } from '../../../../../visualization/scatter-chart/scatter-chart-visualization';
 import { TableVisualization } from '../../../../../visualization/table/table-visualization';
 import { Visualization } from '../../../../../visualization/visualization';
+import { NzResizeEvent } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph-result',
@@ -297,12 +298,13 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
     }
   }
 
-  onResize($event: ResizeResult) {
+  onResize($event: NzResizeEvent) {
+    const { width, height, col } = $event;
     if (this.result.type === DatasetType.TABLE) {
-      this.config.graph.height = $event.height;
+      this.config.graph.height = height;
       this.setGraphConfig();
     }
-    this.sizeChange.emit($event);
+    this.sizeChange.emit({ width, height, col });
   }
 
   ngAfterViewInit(): void {
