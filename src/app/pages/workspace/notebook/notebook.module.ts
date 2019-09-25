@@ -40,6 +40,7 @@ import { NotebookParagraphControlComponent } from './paragraph/control/control.c
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NotebookParagraphDynamicFormsComponent } from './paragraph/dynamic-forms/dynamic-forms.component';
 import { NzResizableModule } from 'ng-zorro-antd/resizable';
+import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { NzResizableModule } from 'ng-zorro-antd/resizable';
     NzGridModule,
     NzRadioModule,
     DragDropModule,
-    NzResizableModule
+    NzResizableModule,
+    NzCodeEditorModule
   ]
 })
 export class NotebookModule {}
