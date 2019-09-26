@@ -10,14 +10,13 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { InterpreterBindingItem, OP, CompletionItem } from 'zeppelin-sdk';
+import { InterpreterBindingItem } from 'zeppelin-sdk';
 import { MessageService } from 'zeppelin-services';
 import { NotebookParagraphControlComponent } from '../control/control.component';
-import { MessageListener, MessageListenersManager } from 'zeppelin-core';
 import { CompletionService } from 'src/app/services/completion.service';
 import { editor as MonacoEditor, IDisposable } from 'monaco-editor';
-import ICodeEditor = MonacoEditor.ICodeEditor;
 import IStandaloneCodeEditor = MonacoEditor.IStandaloneCodeEditor;
+import IEditor = monaco.editor.IEditor;
 
 @Component({
   selector: 'zeppelin-notebook-paragraph-code-editor',
@@ -92,7 +91,7 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
     }
   }
 
-  initializedEditor(editor: ICodeEditor) {
+  initializedEditor(editor: IEditor) {
     this.editor = editor as IStandaloneCodeEditor;
     this.paragraphControl.updateListOfMenu(monaco);
     if (this.paragraphControl) {

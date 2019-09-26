@@ -23,7 +23,7 @@ If you are using a custom port instead of default(http://localhost:8080) or othe
 *.env*
 
 ```
-SERVER_PROXY=http://localhost:8080 # Default
+SERVER_PROXY=http://localhost:8080
 ```
 
 ### Development server

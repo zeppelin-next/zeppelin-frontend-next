@@ -32,7 +32,7 @@
     "diff-match-patch": "^1.0.4",
     "highlight.js": "^9.15.8",
     "lodash": "^4.17.11",
-    "mathjax": "^2.7.5",
+    "mathjax": "2.7.5",
     "monaco-editor": "^0.17.0",
     "ng-zorro-antd": "^8.3.0",
     "rxjs": "~6.5.3",

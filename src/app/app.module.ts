@@ -16,8 +16,8 @@ import { Router, RouterModule } from '@angular/router';
 import { AppMessageInterceptor } from './app-message.interceptor';
 import { DebuggerComponent } from './sdk/debugger.component';
 import { RUNTIME_COMPILER_PROVIDERS } from './app-runtime-compiler.providers';
-import { NZ_MONACO_EDITOR_CONFIG } from '@ng-zorro/ng-plus';
 import { loadMonacoLanguage } from 'zeppelin-languages';
+import { NZ_CODE_EDITOR_CONFIG } from 'ng-zorro-antd/code-editor';
 
 export const loadMonaco = () => {
   loadMonacoLanguage();
@@ -49,8 +49,11 @@ registerLocaleData(en);
       deps: [TicketService]
     },
     {
-      provide: NZ_MONACO_EDITOR_CONFIG,
+      provide: NZ_CODE_EDITOR_CONFIG,
       useValue: {
+        defaultEditorOption: {
+          scrollBeyondLastLine: false
+        },
         onLoad: loadMonaco
       }
     },
@@ -66,4 +69,5 @@ registerLocaleData(en);
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}
