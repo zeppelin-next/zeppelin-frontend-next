@@ -113,7 +113,12 @@
               (click)="toggleExtension('revisions')">
         <i nz-icon nzType="swap" nzTheme="outline"></i>
       </button>
-      <nz-dropdown-button nzSize="small" nzTrigger="click">{{currentRevision}}
+      <nz-button-group nzSize="small">
+        <button nz-button nz-dropdown [nzDropdownMenu]="revisionsMenu" nzTrigger="click">
+          {{currentRevision}}
+        </button>
+      </nz-button-group>
+      <nz-dropdown-menu #revisionsMenu="nzDropdownMenu">
         <ul nz-menu>
           <li nz-menu-item *ngFor="let r of noteRevisions" (click)="visitRevision(r)">
             <strong>{{r.message}}</strong>
@@ -121,7 +126,7 @@
             <em class="font-sm opacity-05"> {{(r.time * 1000 | date: 'MMMM dd yyyy, h:mm:ss a') || 'Current'}}</em>
           </li>
         </ul>
-      </nz-dropdown-button>
+      </nz-dropdown-menu>
     </nz-button-group>
     <nz-button-group nzSize="small">
       <button nz-button nz-tooltip nzTitle="Search code" (click)="searchCode()">
@@ -155,17 +160,19 @@
         {{collaborativeModeUsers.length}}</button>
     </nz-button-group>
     <nz-button-group nzSize="small" *ngIf="note.config.isZeppelinNotebookCronEnable && !viewOnly">
-      <nz-dropdown nzTrigger="click">
-        <button nz-button
-                nz-dropdown
-                nz-tooltip
-                nzSize="small"
-                nzTitle="Run scheduler"
-                [disabled]="isTrash || revisionView"
-                [nzType]="note.config.cron ? 'primary' : (note.info.cron ? 'danger' : 'default')">
-          <i nz-icon nzType="clock-circle" nzTheme="outline"></i>
-          {{getCronOptionNameFromValue}}
-        </button>
+      <button nz-button
+              nz-dropdown
+              nz-tooltip
+              nzSize="small"
+              nzTitle="Run scheduler"
+              nzTrigger="click"
+              [nzDropdownMenu]="menu"
+              [disabled]="isTrash || revisionView"
+              [nzType]="note.config.cron ? 'primary' : (note.info.cron ? 'danger' : 'default')">
+        <i nz-icon nzType="clock-circle" nzTheme="outline"></i>
+        {{getCronOptionNameFromValue}}
+      </button>
+      <nz-dropdown-menu #menu="nzDropdownMenu">
         <div class="ant-dropdown-menu padding-sm scheduler">
           Run note with cron scheduler.
           Either choose from preset or write your own
@@ -193,7 +200,7 @@
                    (ngModelChange)="setReleaseResource($event)">After execution stop the interpreter</label>
           </div>
         </div>
-      </nz-dropdown>
+      </nz-dropdown-menu>
     </nz-button-group>
   </div>
   <div class="setting">
@@ -208,7 +215,7 @@
         <i nz-icon nzType="lock" [nzTheme]="activatedExtension === 'permissions' ? 'fill' : 'outline'"></i>
       </button>
       <button [nzDropdownMenu]="menu" nz-button nzNoAnimation nzSize="small" nz-dropdown nzTrigger="click">{{note.config.looknfeel}}
-        <i nz-icon type="down"></i>
+        <i nz-icon nzType="down"></i>
       </button>
       <nz-dropdown-menu #menu="nzDropdownMenu">
         <ul nz-menu>

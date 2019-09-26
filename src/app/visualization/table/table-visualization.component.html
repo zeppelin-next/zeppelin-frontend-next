@@ -4,7 +4,7 @@
         nzSize="small"
         [nzDropdownMenu]="menu">
   <span>Export</span>
-  <i nz-icon type="down"></i>
+  <i nz-icon nzType="down"></i>
 </button>
 <nz-dropdown-menu #menu="nzDropdownMenu">
   <ul nz-menu>
@@ -36,16 +36,21 @@
         [nzSortKey]="col"
         (nzSortChange)="onSortChange($event, col)">
       {{col}}
-      <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-        <i
-          nz-icon
-          nzType="down"
-          [nzRotate]="dropdown.nzVisible ? 180 : 0"
-          class="ant-table-filter-icon filter-icon"
-          [class.ant-table-filter-open]="dropdown.nzVisible"
-          nz-dropdown
-        ></i>
-
+      <i
+        #dropdown="nzDropdown"
+        nz-icon
+        nzType="down"
+        nzTrigger="click"
+        nzPlacement="bottomRight"
+        [nzClickHide]="false"
+        [nzDropdownMenu]="filterMenu"
+        nzTableFilter
+        [nzRotate]="dropdown.nzVisible ? 180 : 0"
+        class="ant-table-filter-icon filter-icon"
+        [class.ant-table-filter-open]="dropdown.nzVisible"
+        nz-dropdown
+      ></i>
+      <nz-dropdown-menu #filterMenu="nzDropdownMenu">
         <ul nz-menu class="th-dropdown">
           <li nz-menu-group class="search-bar">
             <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
@@ -85,7 +90,7 @@
             </ul>
           </li>
         </ul>
-      </nz-dropdown>
+      </nz-dropdown-menu>
     </th>
   </tr>
   </thead>

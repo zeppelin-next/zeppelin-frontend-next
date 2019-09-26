@@ -10,13 +10,20 @@
     </nz-radio-group>
   </div>
 
-  <nz-dropdown-button class="export-dropdown" (nzClick)="exportFile('csv')">
-    <i nz-icon nzType="download" nz-tooltip="Download Data as CSV"></i>
+  <nz-button-group class="export-dropdown">
+    <button nz-button (click)="exportFile('csv')">
+      <i nz-icon nzType="download" nz-tooltip="Download Data as CSV"></i>
+    </button>
+    <button nz-button nz-dropdown [nzDropdownMenu]="exportMenu" nzPlacement="bottomRight">
+      <i nz-icon nzType="down"></i>
+    </button>
+  </nz-button-group>
+  <nz-dropdown-menu  #exportMenu="nzDropdownMenu">
     <ul nz-menu>
       <li nz-menu-item (click)="exportFile('csv')">CSV</li>
       <li nz-menu-item (click)="exportFile('tsv')">TSV</li>
     </ul>
-  </nz-dropdown-button>
+  </nz-dropdown-menu>
 
   <a class="setting-trigger" tabindex="-1" (click)="switchSetting()">
     Setting

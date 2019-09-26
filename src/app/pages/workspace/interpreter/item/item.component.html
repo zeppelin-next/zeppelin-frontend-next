@@ -40,15 +40,15 @@
   <ng-template #extraTemplate>
     <div class="extra-wrap">
       <button nz-button nzSize="small" (click)="switchToEditMode()">
-        <i nz-icon type="edit"></i>
+        <i nz-icon nzType="edit"></i>
         Edit
       </button>
       <button nz-button nzSize="small" (click)="handleRestart()">
-        <i nz-icon type="reload"></i>
+        <i nz-icon nzType="reload"></i>
         Restart
       </button>
       <button nz-button nzSize="small" (click)="handleRemove()">
-        <i nz-icon type="delete"></i>
+        <i nz-icon nzType="delete"></i>
         Remove
       </button>
     </div>
@@ -92,11 +92,12 @@
       <i nz-icon nzType="info-circle" nzTheme="outline"></i>
     </a>
     The interpreter will be instantiated
-    <nz-dropdown [nzDisabled]="mode === 'view'">
-      <a nz-dropdown>
-        {{ interpreterRunningOption }}
-        <i class="anticon anticon-down"></i>
-      </a>
+    <a nz-dropdown [nzDropdownMenu]="interpreterMenu" [nzDisabled]="mode === 'view'">
+      {{ interpreterRunningOption }}
+      <i nz-icon nzType="down"></i>
+    </a>
+    <nz-dropdown-menu #interpreterMenu="nzDropdownMenu">
+
       <ul nz-menu>
         <li nz-menu-item>
           <a (click)="setInterpreterRunningOption('shared', 'shared')">Globally</a>
@@ -108,9 +109,22 @@
           <a (click)="setInterpreterRunningOption('shared', 'scoped')">Per User</a>
         </li>
       </ul>
-    </nz-dropdown>
+    </nz-dropdown-menu>
     in
-    <nz-dropdown [nzDisabled]="interpreterRunningOption === runningOptionMap.globallyModeName || mode === 'view'">
+    <a nz-dropdown
+       [nzDropdownMenu]="perUserMenu"
+       [nzDisabled]="interpreterRunningOption === runningOptionMap.globallyModeName || mode === 'view'">
+        <span *ngIf="interpreterRunningOption === runningOptionMap.perUserModeName; else perNote">
+          {{ optionFormGroup.get('perUser').value }}
+        </span>
+      <ng-template #perNote>
+          <span>
+            {{ optionFormGroup.get('perNote').value }}
+          </span>
+      </ng-template>
+      <i nz-icon nzType="down"></i>
+    </a>
+    <nz-dropdown-menu #perUserMenu="nzDropdownMenu">
       <a nz-dropdown>
         <span *ngIf="interpreterRunningOption === runningOptionMap.perUserModeName; else perNote">
           {{ optionFormGroup.get('perUser').value }}
@@ -120,7 +134,7 @@
             {{ optionFormGroup.get('perNote').value }}
           </span>
         </ng-template>
-        <i class="anticon anticon-down"></i>
+        <i nz-icon nzType="down"></i>
       </a>
       <ul nz-menu [ngSwitch]="interpreterRunningOption">
         <li nz-menu-item *ngSwitchCase="runningOptionMap.globallyModeName">
@@ -143,17 +157,19 @@
           </li>
         </ng-container>
       </ul>
-    </nz-dropdown>
+    </nz-dropdown-menu>
     process
     <ng-container *ngIf="interpreterRunningOption === runningOptionMap.perUserModeName &&
     ticketService.ticket.principal !== 'anonymous' &&
     optionFormGroup.get('perNote').value !== sessionOptionMap.shared">
       and <a disabled>Per Note</a> in
-      <nz-dropdown [nzDisabled]="interpreterRunningOption === runningOptionMap.globallyModeName || mode === 'view'">
-        <a nz-dropdown>
-          {{ optionFormGroup.get('perNote').value }}
-          <i class="anticon anticon-down"></i>
-        </a>
+      <a nz-dropdown
+         [nzDropdownMenu]="perNoteMenu"
+         [nzDisabled]="interpreterRunningOption === runningOptionMap.globallyModeName || mode === 'view'">
+        {{ optionFormGroup.get('perNote').value }}
+        <i nz-icon nzType="down"></i>
+      </a>
+      <nz-dropdown-menu #perNoteMenu="nzDropdownMenu">
         <ul nz-menu>
           <li nz-menu-item>
             <a (click)="setPerNoteOrUserOption('perNote', 'scoped')">scoped per note</a>
@@ -162,7 +178,7 @@
             <a (click)="setPerNoteOrUserOption('perNote', 'isolated')">isolated per note</a>
           </li>
         </ul>
-      </nz-dropdown>
+      </nz-dropdown-menu>
       process
     </ng-container>
     .

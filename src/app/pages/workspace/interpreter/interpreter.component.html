@@ -30,7 +30,7 @@
       {{repo.id}}
     </nz-tag>
     <nz-tag class="editable-tag" (click)="createRepository()">
-      <i nz-icon type="plus"></i>
+      <i nz-icon nzType="plus"></i>
     </nz-tag>
   </div>
 </zeppelin-page-header>
@@ -39,7 +39,7 @@
     *ngIf="!showCreateSetting"
     (click)="showCreateSetting = true"
     class="create-interpreter" nzHoverable>
-    <i nz-icon type="plus"></i>
+    <i nz-icon nzType="plus"></i>
     Create
   </nz-card>
   <zeppelin-interpreter-item
