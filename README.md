@@ -2,6 +2,8 @@
 
 Zeppelin notebooks front-end built with Angular.
 
+![screenshot](/screenshot.png?raw=true "Screenshot")
+
 ## Setup
 
 ### Prerequisites
