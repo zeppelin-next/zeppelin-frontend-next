@@ -40,11 +40,63 @@ Run `npm build` to build the project. The build artifacts will be stored in the 
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Road Map
+## Implementation Progress
 
-- Configuration module
-- Notebook Hotkeys
-- Helium
-  * Publish dependencies
-  * Example projects
-  * Development document
+### Pages
+
+| Name | Route | Module     | UI |
+| ---  | ----- | ---------- | -- |
+| Home | `/`   | HomeModule |  Y |
+| Login | `/login`       | LoginModule |  Y |
+| Job Manager  | `/jobmanager`  | JobManagerModule |  Y |
+| Interpreter Setting   | `/interpreter` | InterpreterModule |  Y |
+| Notebook | `/notebook/{id}` | NotebookModule |  Y |
+| Notebook Repos | `/notebookRepos` | X |  X |
+| Credential     | `/credential` | X |  X |
+| Helium | `/helium` | X |  X |
+| Configuration | `/configuration` | X |  X |
+
+### Notebook Features
+
+| Feature | Note | State |
+| ------  | ---- | ---- |
+| Files System  | Create/ Rename/ Import etc.  | Y |
+| Toolbar Actions  | The top toolbar actions   | Y |
+
+### Paragraph Features
+
+| Feature | Note | State |
+| ------  | ---- | ---- |
+| Grid layout and resizable | | Y |
+| Code Editor | | Y |
+| Actions  | The Corresponding actions of the drop-down menu in the setting button | Y |
+| Actions(hot-keys)  | Support hot-keys for the actions  | X |
+
+### Result Display
+
+| Type | State |
+| ------  | ---- |
+| Dynamic Form  | Y |
+| Text  | Y |
+| Html  |  Y |
+| Table  |  Y |
+| Network  | X |
+
+### Table Visualization
+
+| Type | State |
+| ------ | ---- |
+| Line Chart  | Y |
+| Bard Chart  |  Y |
+| Pie Chart  |  Y |
+| Area Chart  |  Y |
+| Scatter Chart  | Y |
+
+### Helium Visualization
+
+| Type | Note | State |
+| ------  | ---- | ---- |
+| Prototype | To verify the implementable prototype | Y |
+| Publish Dependencies | Just like [zeppelin-vis](https://github.com/apache/zeppelin/tree/master/zeppelin-web/src/app/visualization)  | X |
+| Example Projects |   | X |
+| Development Documents |   | X |
