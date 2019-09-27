@@ -171,11 +171,11 @@ export class NotebookActionBarComponent extends MessageListenersManager implemen
         nzTitle: `Note size exceeds importable limit (${sizeLimit})`,
         nzContent: 'Do you still want to export this note?',
         nzOnOk: () => {
-          this.saveAsService.saveAs(jsonContent, this.note.name, 'json');
+          this.saveAsService.saveAs(jsonContent, this.note.name, 'zpln');
         }
       });
     } else {
-      this.saveAsService.saveAs(jsonContent, this.note.name, 'json');
+      this.saveAsService.saveAs(jsonContent, this.note.name, 'zpln');
     }
   }
 
