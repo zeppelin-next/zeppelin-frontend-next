@@ -51,36 +51,36 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 | Job Manager  | `/jobmanager`  | JobManagerModule |  Y |
 | Interpreter Setting   | `/interpreter` | InterpreterModule |  Y |
 | Notebook | `/notebook/{id}` | NotebookModule |  Y |
-| Notebook Repos | `/notebookRepos` | X |  X |
-| Credential     | `/credential` | X |  X |
-| Helium | `/helium` | X |  X |
-| Configuration | `/configuration` | X |  X |
+| Notebook Repos | `/notebookRepos` |  |   |
+| Credential     | `/credential` |  |   |
+| Helium | `/helium` |  |  WIP  |
+| Configuration | `/configuration` |  |   |
 
 ### Notebook Features
 
-| Feature | Note | State |
+| Feature | Note | Status |
 | ------  | ---- | ---- |
 | Files System  | Create/ Rename/ Import etc.  | Y |
 | Toolbar Actions  | The top toolbar actions   | Y |
 
 ### Paragraph Features
 
-| Feature | Note | State |
+| Feature | Note | Status |
 | ------  | ---- | ---- |
 | Grid layout and resizable | | Y |
 | Code Editor | | Y |
 | Actions  | The Corresponding actions of the drop-down menu in the setting button | Y |
-| Actions(hot-keys)  | Support hot-keys for the actions  | X |
+| Actions(hot-keys)  | Support hot-keys for the actions  | WIP |
 
 ### Result Display
 
-| Type | State |
+| Type | Status |
 | ------  | ---- |
 | Dynamic Form  | Y |
 | Text  | Y |
 | Html  |  Y |
 | Table  |  Y |
-| Network  | X |
+| Network  |  |
 
 ### Table Visualization
 
@@ -94,9 +94,9 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 ### Helium Visualization
 
-| Type | Note | State |
+| Type | Note | Status |
 | ------  | ---- | ---- |
 | Prototype | To verify the implementable prototype | Y |
-| Publish Dependencies | Just like [zeppelin-vis](https://github.com/apache/zeppelin/tree/master/zeppelin-web/src/app/visualization)  | X |
-| Example Projects |   | X |
-| Development Documents |   | X |
+| Publish Dependencies | Just like [zeppelin-vis](https://github.com/apache/zeppelin/tree/master/zeppelin-web/src/app/visualization)  | WIP |
+| Example Projects |   | WIP |
+| Development Documents |   | WIP |
