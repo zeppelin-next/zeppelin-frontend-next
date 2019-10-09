@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { MessageService, TicketService } from 'zeppelin-services';
 import { catchError, mapTo, tap } from 'rxjs/operators';
+
+import { MessageService, TicketService } from '@zeppelin/services';
 
 @Injectable({
   providedIn: 'root'

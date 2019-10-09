@@ -1,8 +1,10 @@
 import { Inject, Injectable } from '@angular/core';
-import { TRASH_FOLDER_ID_TOKEN } from 'zeppelin-interfaces';
+
+import { TRASH_FOLDER_ID_TOKEN } from '@zeppelin/interfaces';
+import { NotesInfoItem } from '@zeppelin/sdk';
+
 import { ArrayOrderingService } from './array-ordering.service';
 import { INodeList } from '../interfaces/node-list';
-import { NotesInfoItem } from 'zeppelin-sdk';
 
 @Injectable({
   providedIn: 'root'

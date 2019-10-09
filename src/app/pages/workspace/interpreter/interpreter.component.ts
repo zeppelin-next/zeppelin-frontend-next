@@ -1,9 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { collapseMotion, NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { Interpreter, InterpreterPropertyTypes, InterpreterRepository } from 'zeppelin-interfaces';
-import { InterpreterService } from 'zeppelin-services';
+
+import { collapseMotion, NzMessageService, NzModalService } from 'ng-zorro-antd';
+
+import { Interpreter, InterpreterPropertyTypes, InterpreterRepository } from '@zeppelin/interfaces';
+import { InterpreterService } from '@zeppelin/services';
+
 import { InterpreterCreateRepositoryModalComponent } from './create-repository-modal/create-repository-modal.component';
 
 @Component({

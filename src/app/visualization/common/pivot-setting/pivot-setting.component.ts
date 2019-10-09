@@ -1,6 +1,8 @@
 import { CdkDragDrop, copyArrayItem, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
-import { GraphConfig } from 'zeppelin-sdk';
+
+import { GraphConfig } from '@zeppelin/sdk';
+
 import { TableData } from '../../dataset/table-data';
 import { Visualization } from '../../visualization';
 

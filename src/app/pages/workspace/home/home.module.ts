@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { NzGridModule, NzIconModule, NzToolTipModule } from 'ng-zorro-antd';
+
+import { ShareModule } from '@zeppelin/share';
+
 import { HomeComponent } from './home.component';
 import { HomeRoutingModule } from './home-routing.module';
-import { NzGridModule, NzIconModule, NzToolTipModule } from 'ng-zorro-antd';
-import { ShareModule } from 'zeppelin-share/share.module';
 
 @NgModule({
   declarations: [HomeComponent],

@@ -1,7 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Input } from '@angular/core';
-import { NoteListService } from '../../services/note-list.service';
-import { MessageService } from 'zeppelin-services';
+
 import { NzModalRef } from 'ng-zorro-antd';
+
+import { MessageService } from '@zeppelin/services/message.service';
+import { NoteListService } from '@zeppelin/services/note-list.service';
 
 @Component({
   selector: 'zeppelin-folder-rename',

@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NotebookComponent } from './notebook.component';
-import { NotebookRoutingModule } from './notebook-routing.module';
-import { NotebookActionBarComponent } from './action-bar/action-bar.component';
-import { ShareModule } from 'zeppelin-share/share.module';
-import { NotebookShareModule } from './share/share.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { PortalModule } from '@angular/cdk/portal';
+
 import {
   NzButtonModule,
   NzCheckboxModule,
@@ -23,24 +22,28 @@ import {
   NzSwitchModule,
   NzToolTipModule
 } from 'ng-zorro-antd';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NzResizableModule } from 'ng-zorro-antd/resizable';
+import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
+
+import { ShareModule } from '@zeppelin/share';
+
 import { NotebookInterpreterBindingComponent } from './interpreter-binding/interpreter-binding.component';
 import { NotebookPermissionsComponent } from './permissions/permissions.component';
 import { NotebookRevisionsComparatorComponent } from './revisions-comparator/revisions-comparator.component';
 import { NotebookParagraphComponent } from './paragraph/paragraph.component';
 import { NotebookAddParagraphComponent } from './add-paragraph/add-paragraph.component';
-import { NzMonacoEditorModule } from '@ng-zorro/ng-plus/editor';
 import { NotebookParagraphCodeEditorComponent } from './paragraph/code-editor/code-editor.component';
 import { NotebookParagraphResultComponent } from './paragraph/result/result.component';
-import { PortalModule } from '@angular/cdk/portal';
 import { VisualizationModule } from 'src/app/visualization/visualization.module';
 import { NotebookParagraphProgressComponent } from './paragraph/progress/progress.component';
 import { NotebookParagraphFooterComponent } from './paragraph/footer/footer.component';
 import { NotebookParagraphControlComponent } from './paragraph/control/control.component';
-import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NotebookParagraphDynamicFormsComponent } from './paragraph/dynamic-forms/dynamic-forms.component';
-import { NzResizableModule } from 'ng-zorro-antd/resizable';
-import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
+
+import { NotebookComponent } from './notebook.component';
+import { NotebookRoutingModule } from './notebook-routing.module';
+import { NotebookActionBarComponent } from './action-bar/action-bar.component';
+import { NotebookShareModule } from './share/share.module';
 
 @NgModule({
   declarations: [
@@ -78,7 +81,6 @@ import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
     ReactiveFormsModule,
     NzDividerModule,
     NzCheckboxModule,
-    NzMonacoEditorModule,
     NzProgressModule,
     NzSwitchModule,
     NzSelectModule,

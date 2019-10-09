@@ -1,10 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NzModalRef } from 'ng-zorro-antd';
 import { takeUntil } from 'rxjs/operators';
-import { DestroyHookComponent } from 'zeppelin-core';
-import { CreateInterpreterRepositoryForm } from 'zeppelin-interfaces';
-import { InterpreterService } from 'zeppelin-services';
+
+import { NzModalRef } from 'ng-zorro-antd';
+
+import { DestroyHookComponent } from '@zeppelin/core';
+import { CreateInterpreterRepositoryForm } from '@zeppelin/interfaces';
+import { InterpreterService } from '@zeppelin/services';
 
 @Component({
   selector: 'zeppelin-interpreter-create-repository-modal',

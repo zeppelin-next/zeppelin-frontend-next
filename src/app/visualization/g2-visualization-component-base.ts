@@ -1,7 +1,9 @@
 import { ElementRef, OnDestroy } from '@angular/core';
+
 import * as G2 from '@antv/g2';
-import { GraphConfig } from 'zeppelin-sdk';
-import { calcTickCount } from './common/util/calc-tick-count';
+
+import { GraphConfig } from '@zeppelin/sdk';
+
 import { Visualization } from './visualization';
 
 export abstract class G2VisualizationComponentBase implements OnDestroy {

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { environment } from 'zeppelin-environment';
 
 @Injectable({
   providedIn: 'root'

@@ -8,8 +8,10 @@ import {
   NgModuleFactory,
   Type
 } from '@angular/core';
-import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { FormsModule } from '@angular/forms';
+
+import { NgZorroAntdModule } from 'ng-zorro-antd';
+
 import { NgZService } from './ng-z.service';
 
 export class DynamicTemplate {

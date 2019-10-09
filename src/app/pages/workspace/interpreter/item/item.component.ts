@@ -2,9 +2,9 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef, O
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { DestroyHookComponent } from 'zeppelin-core';
-import { Interpreter } from 'zeppelin-interfaces';
-import { InterpreterService, SecurityService, TicketService } from 'zeppelin-services';
+import { DestroyHookComponent } from '@zeppelin/core';
+import { Interpreter } from '@zeppelin/interfaces';
+import { InterpreterService, SecurityService, TicketService } from '@zeppelin/services';
 import { InterpreterComponent } from '../interpreter.component';
 
 @Component({

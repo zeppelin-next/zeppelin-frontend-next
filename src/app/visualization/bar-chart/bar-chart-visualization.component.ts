@@ -8,8 +8,11 @@ import {
   AfterViewInit,
   ChangeDetectorRef
 } from '@angular/core';
-import { collapseMotion } from 'ng-zorro-antd';
-import { VisualizationMultiBarChart } from 'zeppelin-sdk';
+
+import { get } from 'lodash';
+
+import { VisualizationMultiBarChart } from '@zeppelin/sdk';
+
 import { VisualizationPivotSettingComponent } from '../common/pivot-setting/pivot-setting.component';
 import { calcTickCount } from '../common/util/calc-tick-count';
 import { setChartXAxis } from '../common/util/set-x-axis';
@@ -17,7 +20,6 @@ import { VisualizationXAxisSettingComponent } from '../common/x-axis-setting/x-a
 import { G2VisualizationComponentBase } from '../g2-visualization-component-base';
 import { Visualization } from '../visualization';
 import { VISUALIZATION } from '../visualization-component-portal';
-import { get } from 'lodash';
 
 @Component({
   selector: 'zeppelin-bar-chart-visualization',

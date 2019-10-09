@@ -14,6 +14,11 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { NzModalService } from 'ng-zorro-antd';
+import { isEmpty, isEqual } from 'lodash';
+import DiffMatchPatch from 'diff-match-patch';
+
 import {
   MessageReceiveDataTypeMap,
   Note,
@@ -27,23 +32,21 @@ import {
   ParagraphIResultsMsgItem,
   AngularObjectUpdate,
   AngularObjectRemove
-} from 'zeppelin-sdk';
+} from '@zeppelin/sdk';
 import {
   HeliumService,
   MessageService,
   NoteStatusService,
   ParagraphStatus,
-  NoteVarShareService
-} from 'zeppelin-services';
-import { MessageListener, MessageListenersManager } from 'zeppelin-core';
-import { isEmpty, isEqual } from 'lodash';
-import DiffMatchPatch from 'diff-match-patch';
-import { ResizeResult } from 'zeppelin-share/rect-resize/rect-resize.directive';
-import { SpellResult } from 'zeppelin-spell/spell-result';
-import { NgZService } from '../../../../services/ng-z.service';
+  NoteVarShareService,
+  NgZService
+} from '@zeppelin/services';
+import { MessageListener, MessageListenersManager } from '@zeppelin/core';
+import { SpellResult } from '@zeppelin/spell/spell-result';
+
 import { NotebookParagraphCodeEditorComponent } from './code-editor/code-editor.component';
-import { NzModalService } from 'ng-zorro-antd';
 import { NotebookParagraphResultComponent } from './result/result.component';
+import { NzResizeEvent } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph',
@@ -561,7 +564,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     }
   }
 
-  onSizeChange(resize: ResizeResult) {
+  onSizeChange(resize: NzResizeEvent) {
     this.paragraph.config.colWidth = resize.col;
     this.changeColWidth(true, false);
     this.cdr.markForCheck();

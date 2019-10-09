@@ -8,8 +8,11 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { JobsItem, JobStatus } from 'zeppelin-sdk';
+
 import * as distanceInWords from 'date-fns/distance_in_words';
+
+import { JobsItem, JobStatus } from '@zeppelin/sdk';
+
 @Component({
   selector: 'zeppelin-job-manager-job',
   templateUrl: './job.component.html',

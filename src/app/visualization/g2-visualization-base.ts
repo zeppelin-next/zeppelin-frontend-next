@@ -1,4 +1,5 @@
-import { GraphConfig } from 'zeppelin-sdk';
+import { GraphConfig } from '@zeppelin/sdk';
+
 import { G2VisualizationComponentBase } from './g2-visualization-component-base';
 import { PivotTransformation } from './pivot-transformation';
 import { Setting, Transformation } from './transformation';

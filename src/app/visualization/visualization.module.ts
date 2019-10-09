@@ -2,6 +2,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 import {
   NzButtonModule,
   NzCardModule,
@@ -16,6 +17,7 @@ import {
   NzTableModule,
   NzTagModule
 } from 'ng-zorro-antd';
+
 import { TableVisualizationComponent } from './table/table-visualization.component';
 import { AreaChartVisualizationComponent } from './area-chart/area-chart-visualization.component';
 import { BarChartVisualizationComponent } from './bar-chart/bar-chart-visualization.component';

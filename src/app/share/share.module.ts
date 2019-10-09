@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from 'zeppelin-share/header/header.component';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+
 import {
   NzBadgeModule,
   NzCardModule,
@@ -24,20 +26,20 @@ import {
   NzMessageModule,
   NzProgressModule
 } from 'ng-zorro-antd';
-import { RouterModule } from '@angular/router';
-import { RectResizeModule } from 'zeppelin-share/rect-resize/rect-resize.module';
-import { AboutZeppelinComponent } from './about-zeppelin/about-zeppelin.component';
-import { NodeListComponent } from './node-list/node-list.component';
-import { FormsModule } from '@angular/forms';
-import { NoteImportComponent } from './note-import/note-import.component';
-import { HumanizeBytesPipe } from 'zeppelin-share/pipes/humanize-bytes.pipe';
-import { NoteCreateComponent } from './note-create/note-create.component';
-import { NoteRenameComponent } from './note-rename/note-rename.component';
-import { FolderRenameComponent } from './folder-rename/folder-rename.component';
-import { PageHeaderComponent } from './page-header/page-header.component';
-import { SpinComponent } from './spin/spin.component';
-import { MathJaxDirective } from './math-jax/math-jax.directive';
-import { RunScriptsDirective } from './run-scripts/run-scripts.directive';
+
+import { AboutZeppelinComponent } from '@zeppelin/share/about-zeppelin/about-zeppelin.component';
+import { NoteImportComponent } from '@zeppelin/share/note-import/note-import.component';
+import { NoteCreateComponent } from '@zeppelin/share/note-create/note-create.component';
+import { NoteRenameComponent } from '@zeppelin/share/note-rename/note-rename.component';
+import { FolderRenameComponent } from '@zeppelin/share/folder-rename/folder-rename.component';
+import { HeaderComponent } from '@zeppelin/share/header/header.component';
+import { NodeListComponent } from '@zeppelin/share/node-list/node-list.component';
+import { PageHeaderComponent } from '@zeppelin/share/page-header/page-header.component';
+import { SpinComponent } from '@zeppelin/share/spin/spin.component';
+import { HumanizeBytesPipe } from '@zeppelin/share/pipes';
+import { RunScriptsDirective } from '@zeppelin/share/run-scripts/run-scripts.directive';
+import { MathJaxDirective } from '@zeppelin/share/math-jax/math-jax.directive';
+import { ResizeHandleComponent } from './resize-handle';
 
 const MODAL_LIST = [
   AboutZeppelinComponent,
@@ -46,13 +48,13 @@ const MODAL_LIST = [
   NoteRenameComponent,
   FolderRenameComponent
 ];
-const EXPORT_LIST = [HeaderComponent, NodeListComponent, PageHeaderComponent, SpinComponent];
+const EXPORT_LIST = [HeaderComponent, NodeListComponent, PageHeaderComponent, SpinComponent, ResizeHandleComponent];
 const PIPES = [HumanizeBytesPipe];
 
 @NgModule({
-  declarations: [...MODAL_LIST, ...EXPORT_LIST, ...PIPES, MathJaxDirective, RunScriptsDirective],
-  entryComponents: [...MODAL_LIST],
-  exports: [...EXPORT_LIST, ...PIPES, RectResizeModule, MathJaxDirective, RunScriptsDirective],
+  declarations: [MODAL_LIST, EXPORT_LIST, PIPES, MathJaxDirective, RunScriptsDirective],
+  entryComponents: [MODAL_LIST],
+  exports: [EXPORT_LIST, PIPES, MathJaxDirective, RunScriptsDirective],
   imports: [
     FormsModule,
     CommonModule,
@@ -78,8 +80,7 @@ const PIPES = [HumanizeBytesPipe];
     NzUploadModule,
     NzSelectModule,
     NzAlertModule,
-    NzProgressModule,
-    RectResizeModule
+    NzProgressModule
   ]
 })
 export class ShareModule {}

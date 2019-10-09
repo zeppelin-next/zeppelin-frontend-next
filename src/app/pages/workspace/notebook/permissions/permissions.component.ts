@@ -8,9 +8,11 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { Permissions } from 'zeppelin-interfaces';
-import { SecurityService, TicketService } from 'zeppelin-services';
+
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
+
+import { Permissions } from '@zeppelin/interfaces';
+import { SecurityService, TicketService } from '@zeppelin/services';
 
 @Component({
   selector: 'zeppelin-notebook-permissions',
@@ -60,9 +62,7 @@ export class NotebookPermissionsComponent implements OnInit, OnChanges {
       nzContent: 'Only authenticated user can set the permission.',
       nzOkText: 'Read Doc',
       nzOnOk: () => {
-        const url = `https://zeppelin.apache.org/docs/${
-          this.ticketService.version
-        }/security/notebook_authorization.html`;
+        const url = `https://zeppelin.apache.org/docs/${this.ticketService.version}/security/notebook_authorization.html`;
         window.open(url);
       }
     });

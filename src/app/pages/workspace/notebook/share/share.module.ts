@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ElasticInputComponent } from './elastic-input/elastic-input.component';
-import { NzInputModule } from 'ng-zorro-antd';
 import { FormsModule } from '@angular/forms';
+
+import { NzInputModule } from 'ng-zorro-antd';
+
+import { ElasticInputComponent } from './elastic-input/elastic-input.component';
 
 @NgModule({
   declarations: [ElasticInputComponent],

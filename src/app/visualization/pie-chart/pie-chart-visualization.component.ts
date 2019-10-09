@@ -7,6 +7,7 @@ import {
   ElementRef,
   Inject
 } from '@angular/core';
+
 import { VisualizationPivotSettingComponent } from '../common/pivot-setting/pivot-setting.component';
 import { G2VisualizationComponentBase } from '../g2-visualization-component-base';
 import { Visualization } from '../visualization';

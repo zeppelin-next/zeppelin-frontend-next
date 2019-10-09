@@ -1,6 +1,7 @@
 import * as G2 from '@antv/g2';
-import { Visualization } from '../../visualization';
 import { get } from 'lodash';
+
+import { Visualization } from '../../visualization';
 
 export function setChartXAxis(
   visualization: Visualization,

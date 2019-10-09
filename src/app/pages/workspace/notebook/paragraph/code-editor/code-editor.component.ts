@@ -10,13 +10,15 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { InterpreterBindingItem } from 'zeppelin-sdk';
-import { MessageService } from 'zeppelin-services';
-import { NotebookParagraphControlComponent } from '../control/control.component';
-import { CompletionService } from 'src/app/services/completion.service';
+
 import { editor as MonacoEditor, IDisposable } from 'monaco-editor';
 import IStandaloneCodeEditor = MonacoEditor.IStandaloneCodeEditor;
 import IEditor = monaco.editor.IEditor;
+
+import { InterpreterBindingItem } from '@zeppelin/sdk';
+import { MessageService, CompletionService } from '@zeppelin/services';
+
+import { NotebookParagraphControlComponent } from '../control/control.component';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph-code-editor',

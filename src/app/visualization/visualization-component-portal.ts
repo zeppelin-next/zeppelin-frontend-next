@@ -1,6 +1,7 @@
 import { InjectionToken, ViewContainerRef } from '@angular/core';
-import { Visualization } from './visualization';
 import { PortalInjector, ComponentPortal, CdkPortalOutlet, ComponentType } from '@angular/cdk/portal';
+
+import { Visualization } from './visualization';
 
 export const VISUALIZATION = new InjectionToken<Visualization>('Visualization');
 

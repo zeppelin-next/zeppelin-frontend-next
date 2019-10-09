@@ -1,9 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+
 import { NzModalService } from 'ng-zorro-antd';
-import { MessageListener, MessageListenersManager } from 'zeppelin-core';
-import { JobsItem, JobStatus, ListNoteJobs, ListUpdateNoteJobs, OP } from 'zeppelin-sdk';
-import { JobManagerService, MessageService } from 'zeppelin-services';
+
+import { MessageListener, MessageListenersManager } from '@zeppelin/core';
+import { JobsItem, JobStatus, ListNoteJobs, ListUpdateNoteJobs, OP } from '@zeppelin/sdk';
+import { JobManagerService, MessageService } from '@zeppelin/services';
 
 enum JobDateSortKeys {
   RECENTLY_UPDATED = 'Recently Update',

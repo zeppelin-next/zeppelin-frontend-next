@@ -1,12 +1,15 @@
-import { Injectable } from '@angular/core';
-import { ITicket, ITicketWrapped, IZeppelinVersion } from 'zeppelin-interfaces';
-import { BehaviorSubject, forkJoin, Subject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { map, tap } from 'rxjs/operators';
-import { BaseUrlService } from './base-url.service';
-import { ConfigurationsInfo } from 'zeppelin-sdk';
 import { Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, forkJoin, Subject } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+
 import { NzMessageService } from 'ng-zorro-antd';
+
+import { ITicket, ITicketWrapped, IZeppelinVersion } from '@zeppelin/interfaces';
+import { ConfigurationsInfo } from '@zeppelin/sdk';
+
+import { BaseUrlService } from './base-url.service';
 
 @Injectable({
   providedIn: 'root'

@@ -21,7 +21,9 @@ import {
   NzMessageModule,
   NzAlertModule
 } from 'ng-zorro-antd';
-import { ShareModule } from 'zeppelin-share/share.module';
+
+import { ShareModule } from '@zeppelin/share';
+
 import { InterpreterComponent } from './interpreter.component';
 import { InterpreterRoutingModule } from './interpreter-routing.module';
 import { InterpreterCreateRepositoryModalComponent } from './create-repository-modal/create-repository-modal.component';

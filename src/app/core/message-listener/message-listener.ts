@@ -1,7 +1,8 @@
 import { OnDestroy } from '@angular/core';
 import { Subscriber } from 'rxjs';
-import { MessageReceiveDataTypeMap, ReceiveArgumentsType } from 'zeppelin-sdk';
-import { MessageService } from 'zeppelin-services';
+
+import { MessageReceiveDataTypeMap, ReceiveArgumentsType } from '@zeppelin/sdk';
+import { MessageService } from '@zeppelin/services';
 
 export class MessageListenersManager implements OnDestroy {
   __zeppelinMessageListeners__: Function[];

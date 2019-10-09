@@ -8,14 +8,21 @@ import {
   ViewChildren
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, NoteStatusService, SecurityService, TicketService } from 'zeppelin-services';
 import { Subject } from 'rxjs';
 import { distinctUntilKeyChanged, takeUntil } from 'rxjs/operators';
-import { NoteVarShareService } from '../../../services/note-var-share.service';
-import { MessageListener, MessageListenersManager } from 'zeppelin-core';
-import { InterpreterBindingItem, MessageReceiveDataTypeMap, Note, OP, RevisionListItem } from 'zeppelin-sdk';
 import { isNil } from 'lodash';
-import { Permissions } from 'zeppelin-interfaces';
+
+import {
+  MessageService,
+  NoteStatusService,
+  SecurityService,
+  TicketService,
+  NoteVarShareService
+} from '@zeppelin/services';
+import { MessageListener, MessageListenersManager } from '@zeppelin/core';
+import { InterpreterBindingItem, MessageReceiveDataTypeMap, Note, OP, RevisionListItem } from '@zeppelin/sdk';
+import { Permissions } from '@zeppelin/interfaces';
+
 import { NotebookParagraphComponent } from './paragraph/paragraph.component';
 
 @Component({

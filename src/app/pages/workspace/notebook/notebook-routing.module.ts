@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
 import { NotebookComponent } from './notebook.component';
 
 const routes: Routes = [

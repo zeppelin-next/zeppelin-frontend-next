@@ -1,4 +1,5 @@
-import { GraphConfig } from 'zeppelin-sdk';
+import { GraphConfig } from '@zeppelin/sdk';
+
 import { DataSet } from './dataset/data-set';
 
 export interface Setting {

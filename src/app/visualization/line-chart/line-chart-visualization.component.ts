@@ -8,6 +8,7 @@ import {
   AfterViewInit,
   ChangeDetectorRef
 } from '@angular/core';
+
 import { VisualizationPivotSettingComponent } from '../common/pivot-setting/pivot-setting.component';
 import { calcTickCount } from '../common/util/calc-tick-count';
 import { setChartXAxis } from '../common/util/set-x-axis';

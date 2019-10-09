@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
-import { MessageListener, MessageListenersManager } from 'zeppelin-core';
-import { OP, CompletionReceived } from 'zeppelin-sdk';
 import { Subject } from 'rxjs';
 import { filter, take, map } from 'rxjs/operators';
 
-import { MessageService } from './message.service';
+import { MessageListener, MessageListenersManager } from '@zeppelin/core';
+import { OP, CompletionReceived } from '@zeppelin/sdk';
 
-export interface CompletionEvent {
-  pid?: string;
-}
+import { MessageService } from './message.service';
 
 @Injectable({
   providedIn: 'root'

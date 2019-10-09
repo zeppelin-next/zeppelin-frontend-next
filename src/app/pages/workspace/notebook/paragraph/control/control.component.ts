@@ -9,11 +9,13 @@ import {
   OnChanges,
   ChangeDetectorRef
 } from '@angular/core';
-import { copyTextToClipboard } from 'zeppelin-core';
+import { copyTextToClipboard } from '@zeppelin/core';
+
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
+
 import { ActivatedRoute } from '@angular/router';
-import { MessageService } from 'zeppelin-services';
-import { RuntimeInfos } from 'zeppelin-sdk';
+import { MessageService } from '@zeppelin/services';
+import { RuntimeInfos } from '@zeppelin/sdk';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph-control',

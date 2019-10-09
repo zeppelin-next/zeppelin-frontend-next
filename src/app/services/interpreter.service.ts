@@ -1,15 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
 import {
   Interpreter,
   InterpreterPropertyTypes,
   InterpreterRepository,
   InterpreterMap,
   CreateInterpreterRepositoryForm
-} from 'zeppelin-interfaces';
+} from '@zeppelin/interfaces';
+import { InterpreterItem } from '@zeppelin/sdk';
+
 import { BaseRest } from './base-rest';
 import { BaseUrlService } from './base-url.service';
-import { InterpreterItem } from 'zeppelin-sdk';
 
 @Injectable({
   providedIn: 'root'

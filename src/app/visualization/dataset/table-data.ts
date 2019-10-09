@@ -1,6 +1,8 @@
-import { DatasetType, ParagraphIResultsMsgItem } from 'zeppelin-sdk';
-import { DataSet } from './data-set';
 import { DataSet as AntvDataSet } from '@antv/data-set';
+
+import { DatasetType, ParagraphIResultsMsgItem } from '@zeppelin/sdk';
+
+import { DataSet } from './data-set';
 
 export class TableData extends DataSet {
   columns: string[] = [];

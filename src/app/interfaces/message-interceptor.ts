@@ -1,5 +1,5 @@
 import { InjectionToken } from '@angular/core';
-import { MessageReceiveDataTypeMap, WebSocketMessage } from 'zeppelin-sdk';
+import { MessageReceiveDataTypeMap, WebSocketMessage } from '@zeppelin/sdk';
 
 export interface MessageInterceptor {
   received(data: WebSocketMessage<keyof MessageReceiveDataTypeMap>): WebSocketMessage<keyof MessageReceiveDataTypeMap>;

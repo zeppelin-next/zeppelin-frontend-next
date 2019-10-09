@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { MessageService } from 'zeppelin-services';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { MessageService } from '@zeppelin/services';
 
 @Component({
   selector: 'zeppelin-workspace',

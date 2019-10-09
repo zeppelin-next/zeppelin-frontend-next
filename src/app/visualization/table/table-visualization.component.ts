@@ -1,10 +1,12 @@
 import { Component, OnInit, Inject, ChangeDetectorRef, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+
 import { NzTableComponent } from 'ng-zorro-antd';
 import { WorkSheet, utils, writeFile } from 'xlsx';
+import { orderBy, filter, sumBy, minBy, maxBy } from 'lodash';
+
 import { TableData } from '../dataset/table-data';
 import { Visualization } from '../visualization';
 import { VISUALIZATION } from '../visualization-component-portal';
-import { orderBy, filter, sumBy, minBy, maxBy } from 'lodash';
 
 type ColType = 'string' | 'date' | 'number';
 type AggregationType = 'count' | 'sum' | 'min' | 'max' | 'avg';

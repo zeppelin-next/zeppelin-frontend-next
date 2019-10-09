@@ -8,12 +8,14 @@ import {
   Inject,
   ChangeDetectorRef
 } from '@angular/core';
+
+import { get } from 'lodash';
+
 import { VisualizationScatterSettingComponent } from '../common/scatter-setting/scatter-setting.component';
 import { calcTickCount } from '../common/util/calc-tick-count';
 import { G2VisualizationComponentBase } from '../g2-visualization-component-base';
 import { Visualization } from '../visualization';
 import { VISUALIZATION } from '../visualization-component-portal';
-import { get } from 'lodash';
 
 @Component({
   selector: 'zeppelin-scatter-chart-visualization',

@@ -1,3 +1,4 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,14 +9,14 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { Note, OP, RevisionListItem } from 'zeppelin-sdk';
-import { MessageService, NoteStatusService, SaveAsService, TicketService } from 'zeppelin-services';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
-import { NoteCreateComponent } from 'zeppelin-share/note-create/note-create.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TRASH_FOLDER_ID_TOKEN } from 'zeppelin-interfaces';
-import { NoteActionService } from '../../../../services/note-action.service';
-import { MessageListener, MessageListenersManager } from 'zeppelin-core';
+
+import { MessageService, NoteStatusService, SaveAsService, TicketService, NoteActionService } from '@zeppelin/services';
+import { Note, OP, RevisionListItem } from '@zeppelin/sdk';
+import { MessageListener, MessageListenersManager } from '@zeppelin/core';
+import { TRASH_FOLDER_ID_TOKEN } from '@zeppelin/interfaces';
+
+import { NoteCreateComponent } from '@zeppelin/share/note-create/note-create.component';
 
 @Component({
   selector: 'zeppelin-notebook-action-bar',

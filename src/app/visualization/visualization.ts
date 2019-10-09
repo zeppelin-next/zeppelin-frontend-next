@@ -1,7 +1,8 @@
 import { ComponentRef } from '@angular/core';
 import { Subject } from 'rxjs';
-import { GraphConfig } from 'zeppelin-sdk';
-import { Setting, Transformation } from './transformation';
+
+import { GraphConfig } from '@zeppelin/sdk';
+import { Transformation } from './transformation';
 
 // tslint:disable-next-line
 export abstract class Visualization<T = any> {

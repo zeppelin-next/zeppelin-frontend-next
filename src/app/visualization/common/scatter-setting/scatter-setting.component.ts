@@ -1,9 +1,12 @@
-import { CdkDragDrop, copyArrayItem, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
-import { GraphConfig } from 'zeppelin-sdk';
+
+import { get } from 'lodash';
+
+import { GraphConfig } from '@zeppelin/sdk';
+
 import { TableData } from '../../dataset/table-data';
 import { Visualization } from '../../visualization';
-import { get } from 'lodash';
 
 @Component({
   selector: 'zeppelin-visualization-scatter-setting',

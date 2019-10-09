@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { TicketService } from 'zeppelin-services';
 import { Router } from '@angular/router';
+
+import { TicketService } from '@zeppelin/services';
 
 @Component({
   selector: 'zeppelin-login',

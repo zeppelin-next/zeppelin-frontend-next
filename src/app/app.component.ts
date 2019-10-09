@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { filter, map } from 'rxjs/operators';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
-import { TicketService } from 'zeppelin-services';
+
+import { TicketService } from '@zeppelin/services';
 
 @Component({
   selector: 'zeppelin-root',

@@ -1,8 +1,10 @@
 import { Component, ChangeDetectionStrategy, Input, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
-import { InterpreterBindingItem } from 'zeppelin-sdk';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+
 import { NzModalService } from 'ng-zorro-antd';
-import { InterpreterService, MessageService } from 'zeppelin-services';
+
+import { InterpreterBindingItem } from '@zeppelin/sdk';
+import { InterpreterService, MessageService } from '@zeppelin/services';
 
 @Component({
   selector: 'zeppelin-notebook-interpreter-binding',

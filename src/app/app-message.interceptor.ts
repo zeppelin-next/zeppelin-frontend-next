@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { MessageInterceptor } from 'zeppelin-interfaces';
-import { MessageReceiveDataTypeMap, OP, WebSocketMessage } from 'zeppelin-sdk';
 import { Router } from '@angular/router';
+
 import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
-import { TicketService } from 'zeppelin-services';
+
+import { MessageInterceptor } from '@zeppelin/interfaces';
+import { MessageReceiveDataTypeMap, OP, WebSocketMessage } from '@zeppelin/sdk';
+import { TicketService } from '@zeppelin/services';
 
 @Injectable()
 export class AppMessageInterceptor implements MessageInterceptor {

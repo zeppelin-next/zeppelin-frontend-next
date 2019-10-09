@@ -1,7 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
-import { GraphConfig, XAxisSetting, XLabelStatus } from 'zeppelin-sdk';
-import { Visualization } from '../../visualization';
+
 import { get } from 'lodash';
+
+import { GraphConfig, XAxisSetting, XLabelStatus } from '@zeppelin/sdk';
+
+import { Visualization } from '../../visualization';
 
 @Component({
   selector: 'zeppelin-visualization-x-axis-setting',

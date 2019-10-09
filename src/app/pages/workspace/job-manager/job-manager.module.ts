@@ -18,13 +18,14 @@ import {
   NzSkeletonModule,
   NzToolTipModule
 } from 'ng-zorro-antd';
-import { ShareModule } from 'zeppelin-share/share.module';
+import { IconDefinition } from '@ant-design/icons-angular';
+import { SearchOutline, FileOutline, FileUnknownOutline, ClockCircleOutline } from '@ant-design/icons-angular/icons';
+
+import { ShareModule } from '@zeppelin/share';
+
 import { JobManagerComponent } from './job-manager.component';
 import { JobManagerRoutingModule } from './job-manager-routing.module';
 import { JobManagerJobComponent } from './job/job.component';
-
-import { SearchOutline, FileOutline, FileUnknownOutline, ClockCircleOutline } from '@ant-design/icons-angular/icons';
-import { IconDefinition } from '@ant-design/icons-angular';
 import { JobManagerJobStatusComponent } from './job-status/job-status.component';
 
 const icons: IconDefinition[] = [SearchOutline, FileOutline, FileUnknownOutline, ClockCircleOutline];

@@ -1,7 +1,8 @@
-import { TableData } from './dataset/table-data';
-import { Setting, Transformation } from './transformation';
 import { DataSet } from '@antv/data-set';
 import { get } from 'lodash';
+
+import { TableData } from './dataset/table-data';
+import { Setting, Transformation } from './transformation';
 
 // tslint:disable-next-line:no-any
 export class PivotTransformation extends Transformation {

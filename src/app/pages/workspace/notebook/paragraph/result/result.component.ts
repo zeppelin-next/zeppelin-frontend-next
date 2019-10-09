@@ -15,11 +15,14 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { DomSanitizer, SafeHtml, SafeUrl } from '@angular/platform-browser';
-import * as hljs from 'highlight.js';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import * as hljs from 'highlight.js';
 import { utils, WorkSheet, writeFile, WritingOptions } from 'xlsx';
 import * as Convert from 'ansi-to-html';
+import { NzResizeEvent } from 'ng-zorro-antd/resizable';
+
 import {
   DatasetType,
   GraphConfig,
@@ -30,19 +33,17 @@ import {
   VisualizationMultiBarChart,
   VisualizationScatterChart,
   VisualizationStackedAreaChart
-} from 'zeppelin-sdk';
-import { ResizeResult } from 'zeppelin-share/rect-resize/rect-resize.directive';
-import { NgZService } from '../../../../../services/ng-z.service';
-import { DynamicTemplate, RuntimeCompilerService } from '../../../../../services/runtime-compiler.service';
-import { AreaChartVisualization } from '../../../../../visualization/area-chart/area-chart-visualization';
-import { BarChartVisualization } from '../../../../../visualization/bar-chart/bar-chart-visualization';
-import { TableData } from '../../../../../visualization/dataset/table-data';
-import { LineChartVisualization } from '../../../../../visualization/line-chart/line-chart-visualization';
-import { PieChartVisualization } from '../../../../../visualization/pie-chart/pie-chart-visualization';
-import { ScatterChartVisualization } from '../../../../../visualization/scatter-chart/scatter-chart-visualization';
-import { TableVisualization } from '../../../../../visualization/table/table-visualization';
-import { Visualization } from '../../../../../visualization/visualization';
-import { NzResizeEvent } from 'ng-zorro-antd/resizable';
+} from '@zeppelin/sdk';
+import { NgZService, DynamicTemplate, RuntimeCompilerService } from '@zeppelin/services';
+
+import { AreaChartVisualization } from '@zeppelin/visualization/area-chart/area-chart-visualization';
+import { BarChartVisualization } from '@zeppelin/visualization/bar-chart/bar-chart-visualization';
+import { TableData } from '@zeppelin/visualization/dataset/table-data';
+import { LineChartVisualization } from '@zeppelin/visualization/line-chart/line-chart-visualization';
+import { PieChartVisualization } from '@zeppelin/visualization/pie-chart/pie-chart-visualization';
+import { ScatterChartVisualization } from '@zeppelin/visualization/scatter-chart/scatter-chart-visualization';
+import { TableVisualization } from '@zeppelin/visualization/table/table-visualization';
+import { Visualization } from '@zeppelin/visualization/visualization';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph-result',
@@ -56,7 +57,7 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
   @Input() id: string;
   @Input() currentCol = 12;
   @Output() configChange = new EventEmitter<ParagraphConfigResult>();
-  @Output() sizeChange = new EventEmitter<ResizeResult>();
+  @Output() sizeChange = new EventEmitter<NzResizeEvent>();
   @ViewChild('graphEle', { static: false }) graphEle: ElementRef<HTMLDivElement>;
   @ViewChild(CdkPortalOutlet, { static: false }) portalOutlet: CdkPortalOutlet;
 

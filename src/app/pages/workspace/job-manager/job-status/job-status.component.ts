@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { JobStatus } from 'zeppelin-sdk';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+
+import { JobStatus } from '@zeppelin/sdk';
 
 @Component({
   selector: 'zeppelin-job-manager-job-status',

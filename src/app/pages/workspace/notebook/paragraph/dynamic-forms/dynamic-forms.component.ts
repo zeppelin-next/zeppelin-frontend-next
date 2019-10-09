@@ -10,10 +10,12 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { NzCheckBoxOptionInterface } from 'ng-zorro-antd';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { DynamicFormParams, DynamicForms, DynamicFormsItem, DynamicFormsType } from 'zeppelin-sdk';
+
+import { NzCheckBoxOptionInterface } from 'ng-zorro-antd';
+
+import { DynamicFormParams, DynamicForms, DynamicFormsItem, DynamicFormsType } from '@zeppelin/sdk';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph-dynamic-forms',
