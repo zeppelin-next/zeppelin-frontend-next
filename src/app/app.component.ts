@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { filter, map } from 'rxjs/operators';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { filter, map } from 'rxjs/operators';
 
 import { TicketService } from '@zeppelin/services';
 

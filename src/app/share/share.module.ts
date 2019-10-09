@@ -1,44 +1,44 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import {
+  NzAlertModule,
   NzBadgeModule,
+  NzButtonModule,
   NzCardModule,
   NzDividerModule,
   NzDropDownModule,
+  NzFormModule,
   NzGridModule,
   NzIconModule,
   NzInputModule,
   NzMenuModule,
-  NzNotificationModule,
+  NzMessageModule,
   NzModalModule,
+  NzNotificationModule,
+  NzPopconfirmModule,
+  NzProgressModule,
+  NzSelectModule,
+  NzTabsModule,
   NzToolTipModule,
   NzTreeModule,
-  NzPopconfirmModule,
-  NzFormModule,
-  NzTabsModule,
-  NzUploadModule,
-  NzButtonModule,
-  NzAlertModule,
-  NzSelectModule,
-  NzMessageModule,
-  NzProgressModule
+  NzUploadModule
 } from 'ng-zorro-antd';
 
 import { AboutZeppelinComponent } from '@zeppelin/share/about-zeppelin/about-zeppelin.component';
-import { NoteImportComponent } from '@zeppelin/share/note-import/note-import.component';
-import { NoteCreateComponent } from '@zeppelin/share/note-create/note-create.component';
-import { NoteRenameComponent } from '@zeppelin/share/note-rename/note-rename.component';
 import { FolderRenameComponent } from '@zeppelin/share/folder-rename/folder-rename.component';
 import { HeaderComponent } from '@zeppelin/share/header/header.component';
+import { MathJaxDirective } from '@zeppelin/share/math-jax/math-jax.directive';
 import { NodeListComponent } from '@zeppelin/share/node-list/node-list.component';
+import { NoteCreateComponent } from '@zeppelin/share/note-create/note-create.component';
+import { NoteImportComponent } from '@zeppelin/share/note-import/note-import.component';
+import { NoteRenameComponent } from '@zeppelin/share/note-rename/note-rename.component';
 import { PageHeaderComponent } from '@zeppelin/share/page-header/page-header.component';
-import { SpinComponent } from '@zeppelin/share/spin/spin.component';
 import { HumanizeBytesPipe } from '@zeppelin/share/pipes';
 import { RunScriptsDirective } from '@zeppelin/share/run-scripts/run-scripts.directive';
-import { MathJaxDirective } from '@zeppelin/share/math-jax/math-jax.directive';
+import { SpinComponent } from '@zeppelin/share/spin/spin.component';
 import { ResizeHandleComponent } from './resize-handle';
 
 const MODAL_LIST = [

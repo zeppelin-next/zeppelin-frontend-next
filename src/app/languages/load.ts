@@ -1,4 +1,4 @@
-import { language as ScalaLanguage, conf as ScalaConf } from './scala';
+import { conf as ScalaConf, language as ScalaLanguage } from './scala';
 
 export const loadMonacoLanguage = () => {
   monaco.languages.register({ id: 'scala' });

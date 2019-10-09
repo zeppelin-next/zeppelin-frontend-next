@@ -1,12 +1,12 @@
 import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
   AfterViewInit,
-  ViewChild,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
   ElementRef,
   Inject,
-  ChangeDetectorRef
+  OnInit,
+  ViewChild
 } from '@angular/core';
 
 import { get } from 'lodash';

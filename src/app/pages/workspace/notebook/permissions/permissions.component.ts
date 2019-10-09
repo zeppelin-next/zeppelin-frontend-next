@@ -24,7 +24,9 @@ export class NotebookPermissionsComponent implements OnInit, OnChanges {
   @Input() permissions: Permissions;
   @Input() noteId: string;
   @Input() activatedExtension: 'interpreter' | 'permissions' | 'revisions' | 'hide' = 'hide';
-  @Output() activatedExtensionChange = new EventEmitter<'interpreter' | 'permissions' | 'revisions' | 'hide'>();
+  @Output() readonly activatedExtensionChange = new EventEmitter<
+    'interpreter' | 'permissions' | 'revisions' | 'hide'
+  >();
   permissionsBack: Permissions;
   listOfUserAndRole = [];
 

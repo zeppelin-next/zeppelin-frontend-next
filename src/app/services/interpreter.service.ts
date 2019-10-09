@@ -2,11 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import {
+  CreateInterpreterRepositoryForm,
   Interpreter,
-  InterpreterPropertyTypes,
-  InterpreterRepository,
   InterpreterMap,
-  CreateInterpreterRepositoryForm
+  InterpreterPropertyTypes,
+  InterpreterRepository
 } from '@zeppelin/interfaces';
 import { InterpreterItem } from '@zeppelin/sdk';
 

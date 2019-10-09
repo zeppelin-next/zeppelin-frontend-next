@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
-import { NzModalRef, UploadFile } from 'ng-zorro-antd';
 import { get } from 'lodash';
+import { NzModalRef, UploadFile } from 'ng-zorro-antd';
 
-import { MessageService } from '@zeppelin/services/message.service';
-import { TicketService } from '@zeppelin/services/ticket.service';
 import { MessageListener, MessageListenersManager } from '@zeppelin/core';
 import { OP } from '@zeppelin/sdk';
+import { MessageService } from '@zeppelin/services/message.service';
+import { TicketService } from '@zeppelin/services/ticket.service';
 
 @Component({
   selector: 'zeppelin-note-import',
@@ -61,7 +61,8 @@ export class NoteImportComponent extends MessageListenersManager implements OnIn
     return false;
   };
 
-  processImportJson(result) {
+  processImportJson(data) {
+    let result = data;
     if (typeof result !== 'object') {
       try {
         result = JSON.parse(result);

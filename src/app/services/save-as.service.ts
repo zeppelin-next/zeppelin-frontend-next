@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class SaveAsService {
   saveAs(content: string, filename: string, extension: string) {
     const BOM = '\uFEFF';
-    const fileName = filename + '.' + extension;
+    const fileName = `${filename}.${extension}`;
     const binaryData = [];
     binaryData.push(BOM);
     binaryData.push(content);

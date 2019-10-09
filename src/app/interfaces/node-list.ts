@@ -1,4 +1,4 @@
-export interface INodeList {
+export interface NodeList {
   root: RootNode;
   flatList: FlatListNodeItem[];
   flatFolderMap: FlatFolderNodeMap;

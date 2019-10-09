@@ -1,8 +1,8 @@
-import { Component, OnInit, Inject, ChangeDetectorRef, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
 
+import { filter, maxBy, minBy, orderBy, sumBy } from 'lodash';
 import { NzTableComponent } from 'ng-zorro-antd';
-import { WorkSheet, utils, writeFile } from 'xlsx';
-import { orderBy, filter, sumBy, minBy, maxBy } from 'lodash';
+import { utils, writeFile, WorkSheet } from 'xlsx';
 
 import { TableData } from '../dataset/table-data';
 import { Visualization } from '../visualization';
@@ -25,8 +25,8 @@ class FilterOption {
 function typeCoercion(value: string, type: ColType): string | number | Date {
   switch (type) {
     case 'number':
-      const number = Number.parseFloat(value);
-      return Number.isNaN(number) ? value : number;
+      const num = Number.parseFloat(value);
+      return Number.isNaN(num) ? value : num;
     case 'date':
       const date = new Date(value);
       return Number.isNaN(date.valueOf()) ? value : date;

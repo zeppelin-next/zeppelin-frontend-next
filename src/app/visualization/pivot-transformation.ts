@@ -14,7 +14,7 @@ export class PivotTransformation extends Transformation {
     return undefined;
   }
 
-  removeUnknown(array: { name: string }[], tableData: TableData): void {
+  removeUnknown(array: Array<{ name: string }>, tableData: TableData): void {
     for (let i = 0; i < array.length; i++) {
       // remove non existing column
       let found = false;
@@ -159,7 +159,7 @@ export class PivotTransformation extends Transformation {
       dv.rows[groupKey].forEach(row => {
         groupsData.push({
           ...row,
-          __key__: groupName ? `${row['__key__']}.${groupName}` : row['__key__']
+          __key__: groupName ? `${row.__key__}.${groupName}` : row.__key__
         });
       });
     });

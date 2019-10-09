@@ -1,13 +1,13 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd';
 
-import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
-import { MessageService, TicketService } from '@zeppelin/services';
 import { MessageListener, MessageListenersManager } from '@zeppelin/core';
 import { MessageReceiveDataTypeMap, OP } from '@zeppelin/sdk';
+import { MessageService, TicketService } from '@zeppelin/services';
 import { AboutZeppelinComponent } from '@zeppelin/share/about-zeppelin/about-zeppelin.component';
 
 @Component({

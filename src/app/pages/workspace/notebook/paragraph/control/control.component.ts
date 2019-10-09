@@ -1,21 +1,21 @@
 /// <reference path="../../../../../../../node_modules/monaco-editor/monaco.d.ts" />
 import {
-  Component,
-  OnInit,
   ChangeDetectionStrategy,
-  Input,
-  Output,
+  ChangeDetectorRef,
+  Component,
   EventEmitter,
+  Input,
   OnChanges,
-  ChangeDetectorRef
+  OnInit,
+  Output
 } from '@angular/core';
 import { copyTextToClipboard } from '@zeppelin/core';
 
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 
 import { ActivatedRoute } from '@angular/router';
-import { MessageService } from '@zeppelin/services';
 import { RuntimeInfos } from '@zeppelin/sdk';
+import { MessageService } from '@zeppelin/services';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph-control',
@@ -43,22 +43,22 @@ export class NotebookParagraphControlComponent implements OnInit, OnChanges {
   @Input() title = false;
   @Input() lineNumbers = false;
   @Input() paragraphLength: number;
-  @Output() colWidthChange = new EventEmitter<number>();
-  @Output() titleChange = new EventEmitter<boolean>();
-  @Output() enabledChange = new EventEmitter<boolean>();
-  @Output() fontSizeChange = new EventEmitter<number>();
-  @Output() tableHideChange = new EventEmitter<boolean>();
-  @Output() runParagraph = new EventEmitter();
-  @Output() lineNumbersChange = new EventEmitter<boolean>();
-  @Output() cancelParagraph = new EventEmitter();
-  @Output() editorHideChange = new EventEmitter<boolean>();
-  @Output() runOnSelectionChangeChange = new EventEmitter<boolean>();
-  @Output() moveUp = new EventEmitter<void>();
-  @Output() moveDown = new EventEmitter<void>();
-  @Output() insertNew = new EventEmitter<void>();
-  @Output() runAllAbove = new EventEmitter<void>();
-  @Output() runAllBelowAndCurrent = new EventEmitter<void>();
-  @Output() cloneParagraph = new EventEmitter<void>();
+  @Output() readonly colWidthChange = new EventEmitter<number>();
+  @Output() readonly titleChange = new EventEmitter<boolean>();
+  @Output() readonly enabledChange = new EventEmitter<boolean>();
+  @Output() readonly fontSizeChange = new EventEmitter<number>();
+  @Output() readonly tableHideChange = new EventEmitter<boolean>();
+  @Output() readonly runParagraph = new EventEmitter();
+  @Output() readonly lineNumbersChange = new EventEmitter<boolean>();
+  @Output() readonly cancelParagraph = new EventEmitter();
+  @Output() readonly editorHideChange = new EventEmitter<boolean>();
+  @Output() readonly runOnSelectionChangeChange = new EventEmitter<boolean>();
+  @Output() readonly moveUp = new EventEmitter<void>();
+  @Output() readonly moveDown = new EventEmitter<void>();
+  @Output() readonly insertNew = new EventEmitter<void>();
+  @Output() readonly runAllAbove = new EventEmitter<void>();
+  @Output() readonly runAllBelowAndCurrent = new EventEmitter<void>();
+  @Output() readonly cloneParagraph = new EventEmitter<void>();
   fontSizeOption = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
   dropdownVisible = false;
   isMac = navigator.appVersion.indexOf('Mac') !== -1;
@@ -67,9 +67,9 @@ export class NotebookParagraphControlComponent implements OnInit, OnChanges {
     show: boolean;
     disabled: boolean;
     icon: string;
-    trigger: () => void;
     shortCut: string;
     keyBindings: number[];
+    trigger(): void;
   }> = [];
 
   updateListOfMenu(monaco?) {
@@ -220,8 +220,7 @@ export class NotebookParagraphControlComponent implements OnInit, OnChanges {
   goToSingleParagraph() {
     // TODO asIframe
     const { noteId } = this.activatedRoute.snapshot.params;
-    const redirectToUrl =
-      location.protocol + '//' + location.host + location.pathname + '#/notebook/' + noteId + '/paragraph/' + this.pid;
+    const redirectToUrl = `${location.protocol}//${location.host}${location.pathname}#/notebook/${noteId}/paragraph/${this.pid}`;
     window.open(redirectToUrl);
   }
 

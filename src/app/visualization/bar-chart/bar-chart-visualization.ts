@@ -1,6 +1,6 @@
+import { CdkPortalOutlet } from '@angular/cdk/portal';
 import { ViewContainerRef } from '@angular/core';
 import { GraphConfig } from '@zeppelin/sdk';
-import { CdkPortalOutlet } from '@angular/cdk/portal';
 
 import { G2VisualizationBase } from '../g2-visualization-base';
 import { VisualizationComponentPortal } from '../visualization-component-portal';

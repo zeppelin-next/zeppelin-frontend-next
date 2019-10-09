@@ -18,10 +18,10 @@ import { DomSanitizer, SafeHtml, SafeUrl } from '@angular/platform-browser';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import * as hljs from 'highlight.js';
-import { utils, WorkSheet, writeFile, WritingOptions } from 'xlsx';
 import * as Convert from 'ansi-to-html';
+import * as hljs from 'highlight.js';
 import { NzResizeEvent } from 'ng-zorro-antd/resizable';
+import { utils, writeFile, WorkSheet, WritingOptions } from 'xlsx';
 
 import {
   DatasetType,
@@ -34,7 +34,7 @@ import {
   VisualizationScatterChart,
   VisualizationStackedAreaChart
 } from '@zeppelin/sdk';
-import { NgZService, DynamicTemplate, RuntimeCompilerService } from '@zeppelin/services';
+import { DynamicTemplate, NgZService, RuntimeCompilerService } from '@zeppelin/services';
 
 import { AreaChartVisualization } from '@zeppelin/visualization/area-chart/area-chart-visualization';
 import { BarChartVisualization } from '@zeppelin/visualization/bar-chart/bar-chart-visualization';
@@ -56,8 +56,8 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
   @Input() config: ParagraphConfigResult;
   @Input() id: string;
   @Input() currentCol = 12;
-  @Output() configChange = new EventEmitter<ParagraphConfigResult>();
-  @Output() sizeChange = new EventEmitter<NzResizeEvent>();
+  @Output() readonly configChange = new EventEmitter<ParagraphConfigResult>();
+  @Output() readonly sizeChange = new EventEmitter<NzResizeEvent>();
   @ViewChild('graphEle', { static: false }) graphEle: ElementRef<HTMLDivElement>;
   @ViewChild(CdkPortalOutlet, { static: false }) portalOutlet: CdkPortalOutlet;
 

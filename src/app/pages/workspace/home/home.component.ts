@@ -1,8 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
-import { MessageService, TicketService } from '@zeppelin/services';
 import { MessageListener, MessageListenersManager } from '@zeppelin/core';
 import { OP } from '@zeppelin/sdk';
+import { MessageService, TicketService } from '@zeppelin/services';
 
 @Component({
   selector: 'zeppelin-home',

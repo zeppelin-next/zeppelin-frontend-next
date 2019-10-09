@@ -1,12 +1,12 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { isNil } from 'lodash';
 
-import { TicketService } from '@zeppelin/services';
 import { environment } from '@zeppelin/environment';
+import { TicketService } from '@zeppelin/services';
 
 @Injectable()
 export class AppHttpInterceptor implements HttpInterceptor {

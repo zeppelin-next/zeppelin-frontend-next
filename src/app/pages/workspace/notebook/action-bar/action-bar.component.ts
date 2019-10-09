@@ -1,4 +1,3 @@
-import { ActivatedRoute, Router } from '@angular/router';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -9,12 +8,13 @@ import {
   OnInit,
   Output
 } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 
-import { MessageService, NoteStatusService, SaveAsService, TicketService, NoteActionService } from '@zeppelin/services';
-import { Note, OP, RevisionListItem } from '@zeppelin/sdk';
 import { MessageListener, MessageListenersManager } from '@zeppelin/core';
 import { TRASH_FOLDER_ID_TOKEN } from '@zeppelin/interfaces';
+import { Note, OP, RevisionListItem } from '@zeppelin/sdk';
+import { MessageService, NoteActionService, NoteStatusService, SaveAsService, TicketService } from '@zeppelin/services';
 
 import { NoteCreateComponent } from '@zeppelin/share/note-create/note-create.component';
 
@@ -34,9 +34,11 @@ export class NotebookActionBarComponent extends MessageListenersManager implemen
   @Input() collaborativeModeUsers = [];
   @Input() revisionView = false;
   @Input() activatedExtension: 'interpreter' | 'permissions' | 'revisions' | 'hide' = 'hide';
-  @Output() activatedExtensionChange = new EventEmitter<'interpreter' | 'permissions' | 'revisions' | 'hide'>();
-  @Output() editorHideChange = new EventEmitter<boolean>();
-  @Output() tableHideChange = new EventEmitter<boolean>();
+  @Output() readonly activatedExtensionChange = new EventEmitter<
+    'interpreter' | 'permissions' | 'revisions' | 'hide'
+  >();
+  @Output() readonly editorHideChange = new EventEmitter<boolean>();
+  @Output() readonly tableHideChange = new EventEmitter<boolean>();
   lfOption: Array<'report' | 'default' | 'simple'> = ['default', 'simple', 'report'];
   isNoteParagraphRunning = false;
   principal = this.ticketService.ticket.principal;

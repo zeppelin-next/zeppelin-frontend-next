@@ -2,16 +2,16 @@ import { interval, Observable, Subject, Subscription } from 'rxjs';
 import { delay, filter, map, mergeMap, retryWhen, take } from 'rxjs/operators';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 
+import { Ticket } from './interfaces/message-common.interface';
 import {
   MessageReceiveDataTypeMap,
   MessageSendDataTypeMap,
   MixMessageDataTypeMap
 } from './interfaces/message-data-type-map.interface';
-import { SendNote, NoteConfig, PersonalizedMode } from './interfaces/message-notebook.interface';
+import { NoteConfig, PersonalizedMode, SendNote } from './interfaces/message-notebook.interface';
 import { OP } from './interfaces/message-operator.interface';
-import { SendParagraph, ParagraphConfig, ParagraphParams } from './interfaces/message-paragraph.interface';
+import { ParagraphConfig, ParagraphParams, SendParagraph } from './interfaces/message-paragraph.interface';
 import { WebSocketMessage } from './interfaces/websocket-message.interface';
-import { Ticket } from './interfaces/message-common.interface';
 
 export type ArgumentsType<T> = T extends (...args: infer U) => void ? U : never;
 
@@ -393,11 +393,11 @@ export class Message {
   patchParagraph(paragraphId: string, noteId: string, patch: string): void {
     // javascript add "," if change contains several patches
     // but java library requires patch list without ","
-    patch = patch.replace(/,@@/g, '@@');
+    const normalPatch = patch.replace(/,@@/g, '@@');
     return this.send<OP.PATCH_PARAGRAPH>(OP.PATCH_PARAGRAPH, {
       id: paragraphId,
       noteId: noteId,
-      patch: patch
+      patch: normalPatch
     });
   }
 

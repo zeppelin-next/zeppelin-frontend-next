@@ -1,11 +1,11 @@
 import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
   AfterViewInit,
-  ViewChild,
+  ChangeDetectionStrategy,
+  Component,
   ElementRef,
-  Inject
+  Inject,
+  OnInit,
+  ViewChild
 } from '@angular/core';
 
 import { VisualizationPivotSettingComponent } from '../common/pivot-setting/pivot-setting.component';

@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
-import * as format from 'date-fns/format';
 import * as distanceInWordsStrict from 'date-fns/distance_in_words_strict';
 import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
+import * as format from 'date-fns/format';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph-footer',

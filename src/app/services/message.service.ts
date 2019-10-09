@@ -1,23 +1,23 @@
 import { Inject, Injectable, OnDestroy, Optional } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { MessageInterceptor, MESSAGE_INTERCEPTOR } from '@zeppelin/interfaces';
 import {
-  MessageSendDataTypeMap,
+  Message,
   MessageReceiveDataTypeMap,
+  MessageSendDataTypeMap,
   NoteConfig,
-  PersonalizedMode,
-  SendNote,
   ParagraphConfig,
   ParagraphParams,
+  PersonalizedMode,
+  SendArgumentsType,
+  SendNote,
   SendParagraph,
-  WebSocketMessage,
-  Message,
-  SendArgumentsType
+  WebSocketMessage
 } from '@zeppelin/sdk';
-import { MESSAGE_INTERCEPTOR, MessageInterceptor } from '@zeppelin/interfaces';
 
-import { TicketService } from './ticket.service';
 import { BaseUrlService } from './base-url.service';
+import { TicketService } from './ticket.service';
 
 @Injectable({
   providedIn: 'root'

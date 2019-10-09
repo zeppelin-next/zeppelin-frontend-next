@@ -5,7 +5,7 @@ import { MessageReceiveDataTypeMap, ReceiveArgumentsType } from '@zeppelin/sdk';
 import { MessageService } from '@zeppelin/services';
 
 export class MessageListenersManager implements OnDestroy {
-  __zeppelinMessageListeners__: Function[];
+  __zeppelinMessageListeners__: Array<() => void>;
   __zeppelinMessageListeners$__ = new Subscriber();
   constructor(public messageService: MessageService) {
     if (this.__zeppelinMessageListeners__) {
@@ -28,6 +28,7 @@ export function MessageListener<K extends keyof MessageReceiveDataTypeMap>(op: K
     const oldValue = descriptor.value as ReceiveArgumentsType<K>;
 
     const fn = function() {
+      // tslint:disable:no-invalid-this
       this.__zeppelinMessageListeners$__.add(
         this.messageService.receive(op).subscribe(data => {
           oldValue.apply(this, [data]);

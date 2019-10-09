@@ -1,12 +1,12 @@
 import {
-  Component,
-  OnInit,
   ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
   Input,
   OnChanges,
-  SimpleChanges,
+  OnInit,
   Output,
-  EventEmitter
+  SimpleChanges
 } from '@angular/core';
 
 import * as distanceInWords from 'date-fns/distance_in_words';
@@ -21,8 +21,8 @@ import { JobsItem, JobStatus } from '@zeppelin/sdk';
 })
 export class JobManagerJobComponent implements OnInit, OnChanges {
   @Input() note: JobsItem;
-  @Output() start = new EventEmitter<string>();
-  @Output() stop = new EventEmitter<string>();
+  @Output() readonly start = new EventEmitter<string>();
+  @Output() readonly stop = new EventEmitter<string>();
   icon = 'file';
   relativeTime = '';
   progress = 0;

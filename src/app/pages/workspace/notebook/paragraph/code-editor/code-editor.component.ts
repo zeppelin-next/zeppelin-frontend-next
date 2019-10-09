@@ -16,7 +16,7 @@ import IStandaloneCodeEditor = MonacoEditor.IStandaloneCodeEditor;
 import IEditor = monaco.editor.IEditor;
 
 import { InterpreterBindingItem } from '@zeppelin/sdk';
-import { MessageService, CompletionService } from '@zeppelin/services';
+import { CompletionService, MessageService } from '@zeppelin/services';
 
 import { NotebookParagraphControlComponent } from '../control/control.component';
 
@@ -40,8 +40,8 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
   @Input() dirty = false;
   @Input() interpreterBindings: InterpreterBindingItem[] = [];
   @Input() pid: string;
-  @Output() textChanged = new EventEmitter<string>();
-  @Output() editorBlur = new EventEmitter<void>();
+  @Output() readonly textChanged = new EventEmitter<string>();
+  @Output() readonly editorBlur = new EventEmitter<void>();
   private editor: IStandaloneCodeEditor;
   private monacoDisposables: IDisposable[] = [];
   height = 0;

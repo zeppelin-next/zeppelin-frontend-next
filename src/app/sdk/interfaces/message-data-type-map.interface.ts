@@ -1,4 +1,4 @@
-import { ConfigurationsInfo, ErrorInfo, AuthInfo } from './message-common.interface';
+import { AuthInfo, ConfigurationsInfo, ErrorInfo } from './message-common.interface';
 import {
   CheckpointNote,
   CloneNote,
@@ -15,11 +15,11 @@ import {
   MoveNoteToTrash,
   NewNote,
   Note,
+  NotesInfo,
   NoteRename,
   NoteRevision,
   NoteRevisionForCompare,
   NoteRunningStatus,
-  NotesInfo,
   NoteUpdate,
   NoteUpdated,
   ParagraphAdded,
@@ -44,6 +44,7 @@ import {
   CancelParagraph,
   CommitParagraph,
   Completion,
+  CompletionReceived,
   CopyParagraph,
   InsertParagraph,
   MoveParagraph,
@@ -51,19 +52,18 @@ import {
   ParagraphClearOutput,
   ParagraphRemove,
   ParagraphRemoved,
+  ParasInfo,
   PatchParagraphReceived,
   PatchParagraphSend,
   Progress,
   RunAllParagraphs,
-  RunParagraph,
-  ParasInfo,
-  CompletionReceived
+  RunParagraph
 } from './message-paragraph.interface';
 
 import { ListNoteJobs, ListUpdateNoteJobs } from './message-job.interface';
 
-import { OP } from './message-operator.interface';
 import { InterpreterBindings, InterpreterSetting } from './message-interpreter.interface';
+import { OP } from './message-operator.interface';
 
 export type MixMessageDataTypeMap = MessageSendDataTypeMap & MessageReceiveDataTypeMap;
 

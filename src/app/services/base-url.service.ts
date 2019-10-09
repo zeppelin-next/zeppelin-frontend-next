@@ -17,13 +17,11 @@ export class BaseUrlService {
 
   getWebsocketUrl() {
     const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-    return (
-      wsProtocol + '//' + location.hostname + ':' + this.getPort() + this.skipTrailingSlash(location.pathname) + '/ws'
-    );
+    return `${wsProtocol}//${location.hostname}:${this.getPort()}${this.skipTrailingSlash(location.pathname)}/ws`;
   }
 
   getBase() {
-    return location.protocol + '//' + location.hostname + ':' + this.getPort() + location.pathname;
+    return `${location.protocol}//${location.hostname}:${this.getPort()}${location.pathname}`;
   }
 
   getRestApiBase() {

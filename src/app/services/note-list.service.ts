@@ -3,14 +3,14 @@ import { Inject, Injectable } from '@angular/core';
 import { TRASH_FOLDER_ID_TOKEN } from '@zeppelin/interfaces';
 import { NotesInfoItem } from '@zeppelin/sdk';
 
+import { NodeList } from '../interfaces/node-list';
 import { ArrayOrderingService } from './array-ordering.service';
-import { INodeList } from '../interfaces/node-list';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NoteListService {
-  notes: INodeList = {
+  notes: NodeList = {
     root: { children: [] },
     flatList: [],
     flatFolderMap: {}
@@ -46,7 +46,7 @@ export class NoteListService {
         title: nodes[0],
         isLeaf: true,
         nodeType: 'note',
-        path: curDir.id ? curDir.id + '/' + nodes[0] : nodes[0],
+        path: curDir.id ? `${curDir.id}/${nodes[0]}` : nodes[0],
         isTrash: curDir.id ? curDir.id.split('/')[0] === this.TRASH_FOLDER_ID : false
       });
     } else {
@@ -59,7 +59,7 @@ export class NoteListService {
         // found an existing dir
         this.addNode(dir, nodes, noteId);
       } else {
-        const id = curDir.id ? curDir.id + '/' + node : node;
+        const id = curDir.id ? `${curDir.id}/${node}` : node;
         const newDir = {
           id,
           title: node,

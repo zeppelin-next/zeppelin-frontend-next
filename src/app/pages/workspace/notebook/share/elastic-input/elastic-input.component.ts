@@ -1,14 +1,14 @@
 import {
-  Component,
-  OnChanges,
   ChangeDetectionStrategy,
-  Input,
-  Output,
-  EventEmitter,
-  ViewChild,
+  Component,
   ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
   Renderer2,
-  SimpleChanges
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
 
 @Component({
@@ -21,7 +21,7 @@ export class ElasticInputComponent implements OnChanges {
   @Input() value: string;
   @Input() readonly = false;
   @Input() min = false;
-  @Output() valueUpdate = new EventEmitter<string>();
+  @Output() readonly valueUpdate = new EventEmitter<string>();
   @ViewChild('inputElement', { read: ElementRef, static: false }) inputElement: ElementRef;
   @ViewChild('pElement', { read: ElementRef, static: false }) pElement: ElementRef;
   @ViewChild('elasticElement', { read: ElementRef, static: true }) elasticElement: ElementRef;

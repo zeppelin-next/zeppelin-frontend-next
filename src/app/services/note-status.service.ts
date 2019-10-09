@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 
-import { Note, ParagraphItem } from '@zeppelin/sdk';
 import { TRASH_FOLDER_ID_TOKEN } from '@zeppelin/interfaces';
+import { Note, ParagraphItem } from '@zeppelin/sdk';
 
 export const ParagraphStatus = {
   READY: 'READY',

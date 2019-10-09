@@ -15,7 +15,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { NzCheckBoxOptionInterface } from 'ng-zorro-antd';
 
-import { DynamicFormParams, DynamicForms, DynamicFormsItem, DynamicFormsType } from '@zeppelin/sdk';
+import { DynamicForms, DynamicFormsItem, DynamicFormsType, DynamicFormParams } from '@zeppelin/sdk';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph-dynamic-forms',
@@ -30,7 +30,7 @@ export class NotebookParagraphDynamicFormsComponent implements OnInit, OnChanges
   @Input() paramDefs: DynamicFormParams;
   @Input() runOnChange = false;
   @Input() disable = false;
-  @Output() formChange = new EventEmitter<void>();
+  @Output() readonly formChange = new EventEmitter<void>();
 
   formChange$ = new Subject<void>();
   forms: DynamicFormsItem[] = [];

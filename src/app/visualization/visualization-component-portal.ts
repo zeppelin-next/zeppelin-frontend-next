@@ -1,5 +1,5 @@
+import { CdkPortalOutlet, ComponentPortal, ComponentType, PortalInjector } from '@angular/cdk/portal';
 import { InjectionToken, ViewContainerRef } from '@angular/core';
-import { PortalInjector, ComponentPortal, CdkPortalOutlet, ComponentType } from '@angular/cdk/portal';
 
 import { Visualization } from './visualization';
 

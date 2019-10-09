@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 
 import { Permissions, SecurityUserList } from '@zeppelin/interfaces';
 
-import { BaseUrlService } from './base-url.service';
 import { BaseRest } from './base-rest';
+import { BaseUrlService } from './base-url.service';
 
 @Injectable({
   providedIn: 'root'

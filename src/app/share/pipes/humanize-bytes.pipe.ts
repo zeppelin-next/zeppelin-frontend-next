@@ -30,9 +30,9 @@ export class HumanizeBytesPipe implements PipeTransform {
     const converter = (v: number, p: number): string => {
       const base = Math.pow(1024, p);
       if (v < base) {
-        return (v / base).toFixed(2) + ' ' + units[p];
+        return `${(v / base).toFixed(2)} ${units[p]}`;
       } else if (v < base * 1000) {
-        return (v / base).toPrecision(3) + ' ' + units[p];
+        return `${(v / base).toPrecision(3)} ${units[p]}`;
       } else {
         return converter(v, p + 1);
       }

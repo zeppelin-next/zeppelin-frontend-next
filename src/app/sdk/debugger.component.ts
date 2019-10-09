@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 
 import { MessageListener, MessageListenersManager } from '@zeppelin/core';
-import { MessageReceiveDataTypeMap, MixMessageDataTypeMap } from '@zeppelin/sdk';
+import { MessageReceiveDataTypeMap, MixMessageDataTypeMap, OP, ParagraphItem, WebSocketMessage } from '@zeppelin/sdk';
 import { MessageService } from '@zeppelin/services';
-import { WebSocketMessage, ParagraphItem, OP } from '@zeppelin/sdk';
 
 @Component({
   selector: 'zeppelin-message-debugger',

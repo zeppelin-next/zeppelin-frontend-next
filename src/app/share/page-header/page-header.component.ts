@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { InputBoolean } from 'ng-zorro-antd';
 
 @Component({

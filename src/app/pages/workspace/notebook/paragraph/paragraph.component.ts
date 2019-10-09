@@ -1,52 +1,52 @@
 import {
-  Component,
-  OnInit,
   ChangeDetectionStrategy,
-  Input,
   ChangeDetectorRef,
-  Output,
+  Component,
   EventEmitter,
+  Input,
   OnChanges,
-  ViewChild,
-  ViewChildren,
+  OnDestroy,
+  OnInit,
+  Output,
   QueryList,
-  OnDestroy
+  ViewChild,
+  ViewChildren
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzModalService } from 'ng-zorro-antd';
-import { isEmpty, isEqual } from 'lodash';
 import DiffMatchPatch from 'diff-match-patch';
+import { isEmpty, isEqual } from 'lodash';
+import { NzModalService } from 'ng-zorro-antd';
 
+import { MessageListener, MessageListenersManager } from '@zeppelin/core';
 import {
+  AngularObjectRemove,
+  AngularObjectUpdate,
+  GraphConfig,
+  InterpreterBindingItem,
   MessageReceiveDataTypeMap,
   Note,
   OP,
   ParagraphConfig,
-  ParagraphEditorSetting,
   ParagraphConfigResult,
+  ParagraphEditorSetting,
   ParagraphItem,
-  InterpreterBindingItem,
-  GraphConfig,
-  ParagraphIResultsMsgItem,
-  AngularObjectUpdate,
-  AngularObjectRemove
+  ParagraphIResultsMsgItem
 } from '@zeppelin/sdk';
 import {
   HeliumService,
   MessageService,
+  NgZService,
   NoteStatusService,
-  ParagraphStatus,
   NoteVarShareService,
-  NgZService
+  ParagraphStatus
 } from '@zeppelin/services';
-import { MessageListener, MessageListenersManager } from '@zeppelin/core';
 import { SpellResult } from '@zeppelin/spell/spell-result';
 
+import { NzResizeEvent } from 'ng-zorro-antd/resizable';
 import { NotebookParagraphCodeEditorComponent } from './code-editor/code-editor.component';
 import { NotebookParagraphResultComponent } from './result/result.component';
-import { NzResizeEvent } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph',
@@ -69,8 +69,8 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
   @Input() collaborativeMode = false;
   @Input() first: boolean;
   @Input() interpreterBindings: InterpreterBindingItem[] = [];
-  @Output() saveNoteTimer = new EventEmitter();
-  @Output() triggerSaveParagraph = new EventEmitter<string>();
+  @Output() readonly saveNoteTimer = new EventEmitter();
+  @Output() readonly triggerSaveParagraph = new EventEmitter<string>();
 
   private destroy$ = new Subject();
   dirtyText: string;
@@ -121,6 +121,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     if (this.isUpdateRequired(oldPara, newPara)) {
       this.updateParagraph(oldPara, newPara, () => {
         if (newPara.results && newPara.results.msg) {
+          // tslint:disable-next-line:no-for-in-array
           for (const i in newPara.results.msg) {
             if (newPara.results.msg[i]) {
               const newResult = newPara.results.msg ? newPara.results.msg[i] : new ParagraphIResultsMsgItem();
@@ -172,7 +173,7 @@ export class NotebookParagraphComponent extends MessageListenersManager implemen
     }
   }
 
-  updateParagraph(oldPara: ParagraphItem, newPara: ParagraphItem, updateCallback: Function) {
+  updateParagraph(oldPara: ParagraphItem, newPara: ParagraphItem, updateCallback: () => void) {
     // 1. can't update on revision view
     if (!this.revisionView) {
       // 2. get status, refreshed

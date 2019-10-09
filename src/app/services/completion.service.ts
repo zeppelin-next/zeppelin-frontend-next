@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { filter, take, map } from 'rxjs/operators';
+import { filter, map, take } from 'rxjs/operators';
 
 import { MessageListener, MessageListenersManager } from '@zeppelin/core';
-import { OP, CompletionReceived } from '@zeppelin/sdk';
+import { CompletionReceived, OP } from '@zeppelin/sdk';
 
 import { MessageService } from './message.service';
 
@@ -44,6 +44,7 @@ export class CompletionService extends MessageListenersManager {
   }
 
   private bindMonacoCompletion(): void {
+    // tslint:disable-next-line:no-this-assignment
     const that = this;
 
     this.completionLanguages.forEach(l => {

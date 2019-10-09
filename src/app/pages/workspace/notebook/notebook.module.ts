@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { PortalModule } from '@angular/cdk/portal';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {
   NzButtonModule,
@@ -22,27 +22,27 @@ import {
   NzSwitchModule,
   NzToolTipModule
 } from 'ng-zorro-antd';
-import { NzResizableModule } from 'ng-zorro-antd/resizable';
 import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
+import { NzResizableModule } from 'ng-zorro-antd/resizable';
 
 import { ShareModule } from '@zeppelin/share';
 
-import { NotebookInterpreterBindingComponent } from './interpreter-binding/interpreter-binding.component';
-import { NotebookPermissionsComponent } from './permissions/permissions.component';
-import { NotebookRevisionsComparatorComponent } from './revisions-comparator/revisions-comparator.component';
-import { NotebookParagraphComponent } from './paragraph/paragraph.component';
-import { NotebookAddParagraphComponent } from './add-paragraph/add-paragraph.component';
-import { NotebookParagraphCodeEditorComponent } from './paragraph/code-editor/code-editor.component';
-import { NotebookParagraphResultComponent } from './paragraph/result/result.component';
 import { VisualizationModule } from 'src/app/visualization/visualization.module';
-import { NotebookParagraphProgressComponent } from './paragraph/progress/progress.component';
-import { NotebookParagraphFooterComponent } from './paragraph/footer/footer.component';
+import { NotebookAddParagraphComponent } from './add-paragraph/add-paragraph.component';
+import { NotebookInterpreterBindingComponent } from './interpreter-binding/interpreter-binding.component';
+import { NotebookParagraphCodeEditorComponent } from './paragraph/code-editor/code-editor.component';
 import { NotebookParagraphControlComponent } from './paragraph/control/control.component';
 import { NotebookParagraphDynamicFormsComponent } from './paragraph/dynamic-forms/dynamic-forms.component';
+import { NotebookParagraphFooterComponent } from './paragraph/footer/footer.component';
+import { NotebookParagraphComponent } from './paragraph/paragraph.component';
+import { NotebookParagraphProgressComponent } from './paragraph/progress/progress.component';
+import { NotebookParagraphResultComponent } from './paragraph/result/result.component';
+import { NotebookPermissionsComponent } from './permissions/permissions.component';
+import { NotebookRevisionsComparatorComponent } from './revisions-comparator/revisions-comparator.component';
 
-import { NotebookComponent } from './notebook.component';
-import { NotebookRoutingModule } from './notebook-routing.module';
 import { NotebookActionBarComponent } from './action-bar/action-bar.component';
+import { NotebookRoutingModule } from './notebook-routing.module';
+import { NotebookComponent } from './notebook.component';
 import { NotebookShareModule } from './share/share.module';
 
 @NgModule({

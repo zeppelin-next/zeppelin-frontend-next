@@ -1,5 +1,5 @@
-import { Component, ChangeDetectionStrategy, Input, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { NzModalService } from 'ng-zorro-antd';
 
@@ -17,7 +17,9 @@ export class NotebookInterpreterBindingComponent {
   @Input() noteId: string;
   @Input() interpreterBindings: InterpreterBindingItem[] = [];
   @Input() activatedExtension: 'interpreter' | 'permissions' | 'revisions' | 'hide' = 'hide';
-  @Output() activatedExtensionChange = new EventEmitter<'interpreter' | 'permissions' | 'revisions' | 'hide'>();
+  @Output() readonly activatedExtensionChange = new EventEmitter<
+    'interpreter' | 'permissions' | 'revisions' | 'hide'
+  >();
 
   restartInterpreter(interpreter: InterpreterBindingItem) {
     this.nzModalService.create({

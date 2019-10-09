@@ -1,26 +1,26 @@
-import { Router, RouterModule } from '@angular/router';
+import { registerLocaleData } from '@angular/common';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import en from '@angular/common/locales/en';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { registerLocaleData } from '@angular/common';
-import en from '@angular/common/locales/en';
+import { Router, RouterModule } from '@angular/router';
 
-import { NZ_I18N, en_US, NzNotificationService, NzModalService } from 'ng-zorro-antd';
+import { en_US, NzModalService, NzNotificationService, NZ_I18N } from 'ng-zorro-antd';
 import { NZ_CODE_EDITOR_CONFIG } from 'ng-zorro-antd/code-editor';
 
-import { ShareModule } from '@zeppelin/share';
-import { TicketService } from '@zeppelin/services';
 import { MESSAGE_INTERCEPTOR, TRASH_FOLDER_ID_TOKEN } from '@zeppelin/interfaces';
 import { loadMonacoLanguage } from '@zeppelin/languages';
+import { TicketService } from '@zeppelin/services';
+import { ShareModule } from '@zeppelin/share';
 
-import { AppComponent } from './app.component';
 import { AppHttpInterceptor } from './app-http.interceptor';
-import { AppRoutingModule } from './app-routing.module';
 import { AppMessageInterceptor } from './app-message.interceptor';
-import { DebuggerComponent } from './sdk/debugger.component';
+import { AppRoutingModule } from './app-routing.module';
 import { RUNTIME_COMPILER_PROVIDERS } from './app-runtime-compiler.providers';
+import { AppComponent } from './app.component';
+import { DebuggerComponent } from './sdk/debugger.component';
 
 export const loadMonaco = () => {
   loadMonacoLanguage();

@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
+  NzAlertModule,
   NzBadgeModule,
   NzButtonModule,
   NzCardModule,
@@ -11,22 +12,21 @@ import {
   NzFormModule,
   NzIconModule,
   NzInputModule,
+  NzMessageModule,
   NzModalModule,
   NzRadioModule,
   NzSelectModule,
   NzSwitchModule,
-  NzTagModule,
-  NzToolTipModule,
   NzTableModule,
-  NzMessageModule,
-  NzAlertModule
+  NzTagModule,
+  NzToolTipModule
 } from 'ng-zorro-antd';
 
 import { ShareModule } from '@zeppelin/share';
 
-import { InterpreterComponent } from './interpreter.component';
-import { InterpreterRoutingModule } from './interpreter-routing.module';
 import { InterpreterCreateRepositoryModalComponent } from './create-repository-modal/create-repository-modal.component';
+import { InterpreterRoutingModule } from './interpreter-routing.module';
+import { InterpreterComponent } from './interpreter.component';
 import { InterpreterItemComponent } from './item/item.component';
 
 @NgModule({

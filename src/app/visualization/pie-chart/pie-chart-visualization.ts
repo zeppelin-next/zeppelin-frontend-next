@@ -1,5 +1,5 @@
-import { ViewContainerRef } from '@angular/core';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
+import { ViewContainerRef } from '@angular/core';
 
 import { GraphConfig } from '@zeppelin/sdk';
 

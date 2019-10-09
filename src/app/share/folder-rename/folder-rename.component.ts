@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 
 import { NzModalRef } from 'ng-zorro-antd';
 
@@ -28,31 +28,31 @@ export class FolderRenameComponent implements OnInit {
   }
 
   normalizeFolderId(folderId) {
-    folderId = folderId.trim();
+    let normalizeFolderId = folderId.trim();
 
-    while (folderId.indexOf('\\') > -1) {
-      folderId = folderId.replace('\\', '/');
+    while (normalizeFolderId.indexOf('\\') > -1) {
+      normalizeFolderId = normalizeFolderId.replace('\\', '/');
     }
 
-    while (folderId.indexOf('///') > -1) {
-      folderId = folderId.replace('///', '/');
+    while (normalizeFolderId.indexOf('///') > -1) {
+      normalizeFolderId = normalizeFolderId.replace('///', '/');
     }
 
-    folderId = folderId.replace('//', '/');
+    normalizeFolderId = normalizeFolderId.replace('//', '/');
 
-    if (folderId === '/') {
+    if (normalizeFolderId === '/') {
       return '/';
     }
 
-    if (folderId[0] === '/') {
-      folderId = folderId.substring(1);
+    if (normalizeFolderId[0] === '/') {
+      normalizeFolderId = normalizeFolderId.substring(1);
     }
 
-    if (folderId.slice(-1) === '/') {
-      folderId = folderId.slice(0, -1);
+    if (normalizeFolderId.slice(-1) === '/') {
+      normalizeFolderId = normalizeFolderId.slice(0, -1);
     }
 
-    return folderId;
+    return normalizeFolderId;
   }
 
   constructor(

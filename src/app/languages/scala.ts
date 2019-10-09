@@ -33,7 +33,7 @@ export const conf: IRichLanguageConfiguration = {
   ]
 };
 
-export const language = <ILanguage>{
+export const language = {
   defaultToken: '',
   tokenPostfix: '.scala',
 
@@ -226,4 +226,4 @@ export const language = <ILanguage>{
       [/"/, 'string', '@pop']
     ]
   }
-};
+} as ILanguage;

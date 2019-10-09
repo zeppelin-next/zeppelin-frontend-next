@@ -1,7 +1,7 @@
-import { Router } from '@angular/router';
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, forkJoin, Subject } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { forkJoin, BehaviorSubject, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { NzMessageService } from 'ng-zorro-antd';
@@ -27,10 +27,10 @@ export class TicketService {
   }
 
   getTicket() {
-    return forkJoin(
+    return forkJoin([
       this.httpClient.get<ITicket>(`${this.baseUrlService.getRestApiBase()}/security/ticket`),
       this.getZeppelinVersion()
-    ).pipe(
+    ]).pipe(
       tap(data => {
         const [ticket, version] = data;
         this.version = version;

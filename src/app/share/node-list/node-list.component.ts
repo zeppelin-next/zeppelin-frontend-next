@@ -1,10 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 
 import { NzModalService, NzTreeNode } from 'ng-zorro-antd';
 
-import { NoteListService, NoteActionService, MessageService } from '@zeppelin/services';
 import { MessageListener, MessageListenersManager } from '@zeppelin/core';
 import { MessageReceiveDataTypeMap, OP } from '@zeppelin/sdk';
+import { MessageService, NoteActionService, NoteListService } from '@zeppelin/services';
 
 @Component({
   selector: 'zeppelin-node-list',

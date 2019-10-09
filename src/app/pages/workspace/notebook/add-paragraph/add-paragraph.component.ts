@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'zeppelin-notebook-add-paragraph',
@@ -7,7 +7,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotebookAddParagraphComponent implements OnInit {
-  @Output() addParagraph = new EventEmitter();
+  @Output() readonly addParagraph = new EventEmitter();
   @Input() disabled = false;
 
   clickAdd() {

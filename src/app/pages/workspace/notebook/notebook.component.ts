@@ -8,20 +8,20 @@ import {
   ViewChildren
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { isNil } from 'lodash';
 import { Subject } from 'rxjs';
 import { distinctUntilKeyChanged, takeUntil } from 'rxjs/operators';
-import { isNil } from 'lodash';
 
+import { MessageListener, MessageListenersManager } from '@zeppelin/core';
+import { Permissions } from '@zeppelin/interfaces';
+import { InterpreterBindingItem, MessageReceiveDataTypeMap, Note, OP, RevisionListItem } from '@zeppelin/sdk';
 import {
   MessageService,
   NoteStatusService,
+  NoteVarShareService,
   SecurityService,
-  TicketService,
-  NoteVarShareService
+  TicketService
 } from '@zeppelin/services';
-import { MessageListener, MessageListenersManager } from '@zeppelin/core';
-import { InterpreterBindingItem, MessageReceiveDataTypeMap, Note, OP, RevisionListItem } from '@zeppelin/sdk';
-import { Permissions } from '@zeppelin/interfaces';
 
 import { NotebookParagraphComponent } from './paragraph/paragraph.component';
 

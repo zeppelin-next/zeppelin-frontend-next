@@ -3,8 +3,8 @@ import {
   CompilerFactory,
   CompilerOptions,
   COMPILER_OPTIONS,
-  ViewEncapsulation,
-  StaticProvider
+  StaticProvider,
+  ViewEncapsulation
 } from '@angular/core';
 import { JitCompilerFactory } from '@angular/platform-browser-dynamic';
 
