@@ -6,6 +6,24 @@
       "@zeppelin/*": [
         "./src/app/*",
         "./src/environments/*"
+      ],
+      "zeppelin-helium": [
+        "./dist/zeppelin-helium"
+      ],
+      "zeppelin-helium/*": [
+        "./dist/zeppelin-helium/*"
+      ],
+      "zeppelin-visualization": [
+        "dist/zeppelin-visualization"
+      ],
+      "zeppelin-visualization/*": [
+        "dist/zeppelin-visualization/*"
+      ],
+      "@zeppelin/sdk": [
+        "dist/zeppelin-sdk"
+      ],
+      "@zeppelin/sdk/*": [
+        "dist/zeppelin-sdk/*"
       ]
     },
     "outDir": "./dist/out-tsc",

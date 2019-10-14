@@ -1,7 +1,7 @@
 import * as G2 from '@antv/g2';
 import { get } from 'lodash';
 
-import { Visualization } from '../../visualization';
+import { Visualization } from 'zeppelin-visualization';
 
 export function setChartXAxis(
   visualization: Visualization,

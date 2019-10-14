@@ -4,7 +4,7 @@ import * as G2 from '@antv/g2';
 
 import { GraphConfig } from '@zeppelin/sdk';
 
-import { Visualization } from './visualization';
+import { Visualization } from 'zeppelin-visualization';
 
 export abstract class G2VisualizationComponentBase implements OnDestroy {
   abstract container: ElementRef<HTMLDivElement>;

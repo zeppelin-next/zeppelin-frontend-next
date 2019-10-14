@@ -9,13 +9,13 @@ import {
   ViewChild
 } from '@angular/core';
 
+import { Visualization, VISUALIZATION } from 'zeppelin-visualization';
+
 import { VisualizationPivotSettingComponent } from '../common/pivot-setting/pivot-setting.component';
 import { calcTickCount } from '../common/util/calc-tick-count';
 import { setChartXAxis } from '../common/util/set-x-axis';
 import { VisualizationXAxisSettingComponent } from '../common/x-axis-setting/x-axis-setting.component';
 import { G2VisualizationComponentBase } from '../g2-visualization-component-base';
-import { Visualization } from '../visualization';
-import { VISUALIZATION } from '../visualization-component-portal';
 
 @Component({
   selector: 'zeppelin-line-chart-visualization',

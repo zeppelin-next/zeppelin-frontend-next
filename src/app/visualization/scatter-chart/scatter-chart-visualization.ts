@@ -1,9 +1,10 @@
 import { CdkPortalOutlet } from '@angular/cdk/portal';
 import { ViewContainerRef } from '@angular/core';
+
 import { GraphConfig } from '@zeppelin/sdk';
+import { VisualizationComponentPortal } from 'zeppelin-visualization';
 
 import { G2VisualizationBase } from '../g2-visualization-base';
-import { VisualizationComponentPortal } from '../visualization-component-portal';
 import { ScatterChartVisualizationComponent } from './scatter-chart-visualization.component';
 
 export class ScatterChartVisualization extends G2VisualizationBase {

@@ -11,11 +11,11 @@ import {
 
 import { get } from 'lodash';
 
+import { Visualization, VISUALIZATION } from 'zeppelin-visualization';
+
 import { VisualizationScatterSettingComponent } from '../common/scatter-setting/scatter-setting.component';
 import { calcTickCount } from '../common/util/calc-tick-count';
 import { G2VisualizationComponentBase } from '../g2-visualization-component-base';
-import { Visualization } from '../visualization';
-import { VISUALIZATION } from '../visualization-component-portal';
 
 @Component({
   selector: 'zeppelin-scatter-chart-visualization',

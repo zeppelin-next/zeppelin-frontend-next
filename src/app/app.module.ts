@@ -9,6 +9,7 @@ import { Router, RouterModule } from '@angular/router';
 
 import { en_US, NzModalService, NzNotificationService, NZ_I18N } from 'ng-zorro-antd';
 import { NZ_CODE_EDITOR_CONFIG } from 'ng-zorro-antd/code-editor';
+import { ZeppelinHeliumModule } from 'zeppelin-helium';
 
 import { MESSAGE_INTERCEPTOR, TRASH_FOLDER_ID_TOKEN } from '@zeppelin/interfaces';
 import { loadMonacoLanguage } from '@zeppelin/languages';
@@ -20,7 +21,6 @@ import { AppMessageInterceptor } from './app-message.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { RUNTIME_COMPILER_PROVIDERS } from './app-runtime-compiler.providers';
 import { AppComponent } from './app.component';
-import { DebuggerComponent } from './sdk/debugger.component';
 
 export const loadMonaco = () => {
   loadMonacoLanguage();
@@ -29,7 +29,7 @@ export const loadMonaco = () => {
 registerLocaleData(en);
 
 @NgModule({
-  declarations: [AppComponent, DebuggerComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     FormsModule,
@@ -37,7 +37,8 @@ registerLocaleData(en);
     BrowserAnimationsModule,
     ShareModule,
     AppRoutingModule,
-    RouterModule
+    RouterModule,
+    ZeppelinHeliumModule
   ],
   providers: [
     ...RUNTIME_COMPILER_PROVIDERS,

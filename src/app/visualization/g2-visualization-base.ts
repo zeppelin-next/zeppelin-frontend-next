@@ -1,10 +1,8 @@
 import { GraphConfig } from '@zeppelin/sdk';
 
+import { Transformation, Visualization, VisualizationComponentPortal } from 'zeppelin-visualization';
 import { G2VisualizationComponentBase } from './g2-visualization-component-base';
 import { PivotTransformation } from './pivot-transformation';
-import { Setting, Transformation } from './transformation';
-import { Visualization } from './visualization';
-import { VisualizationComponentPortal } from './visualization-component-portal';
 
 export abstract class G2VisualizationBase extends Visualization<G2VisualizationComponentBase> {
   pivot = new PivotTransformation(this.getConfig());
@@ -21,10 +19,6 @@ export abstract class G2VisualizationBase extends Visualization<G2VisualizationC
     }
     this.configChange$.complete();
     this.configChange$ = null;
-  }
-
-  getSetting(): Setting {
-    return undefined;
   }
 
   getTransformation(): Transformation {

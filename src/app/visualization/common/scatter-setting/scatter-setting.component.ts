@@ -4,9 +4,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } 
 import { get } from 'lodash';
 
 import { GraphConfig } from '@zeppelin/sdk';
-
-import { TableData } from '../../dataset/table-data';
-import { Visualization } from '../../visualization';
+import { TableData } from '@zeppelin/visualization/table-data';
+import { Visualization } from 'zeppelin-visualization';
 
 @Component({
   selector: 'zeppelin-visualization-scatter-setting',

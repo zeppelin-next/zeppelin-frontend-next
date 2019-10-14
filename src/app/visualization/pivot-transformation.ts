@@ -1,17 +1,13 @@
 import { DataSet } from '@antv/data-set';
 import { get } from 'lodash';
 
-import { TableData } from './dataset/table-data';
-import { Setting, Transformation } from './transformation';
+import { TableData } from '@zeppelin/visualization/table-data';
+import { Transformation } from 'zeppelin-visualization';
 
 // tslint:disable-next-line:no-any
 export class PivotTransformation extends Transformation {
   constructor(config) {
     super(config);
-  }
-
-  getSetting(): Setting {
-    return undefined;
   }
 
   removeUnknown(array: Array<{ name: string }>, tableData: TableData): void {

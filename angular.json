@@ -81,7 +81,11 @@
               ]
             },
             "scripts": [
-              "node_modules/mathjax/MathJax.js"
+              "node_modules/mathjax/MathJax.js",
+              "node_modules/systemjs/dist/s.js",
+              "node_modules/systemjs/dist/extras/amd.js",
+              "node_modules/systemjs/dist/extras/named-register.js",
+              "node_modules/systemjs/dist/extras/use-default.js"
             ]
           },
           "configurations": {
@@ -180,6 +184,146 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "zeppelin-helium": {
+      "projectType": "library",
+      "root": "projects/zeppelin-helium",
+      "sourceRoot": "projects/zeppelin-helium/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/zeppelin-helium/tsconfig.lib.json",
+            "project": "projects/zeppelin-helium/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/zeppelin-helium/src/test.ts",
+            "tsConfig": "projects/zeppelin-helium/tsconfig.spec.json",
+            "karmaConfig": "projects/zeppelin-helium/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/zeppelin-helium/tsconfig.lib.json",
+              "projects/zeppelin-helium/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "helium-vis-example": {
+      "projectType": "library",
+      "root": "projects/helium-vis-example",
+      "sourceRoot": "projects/helium-vis-example/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/helium-vis-example/tsconfig.lib.json",
+            "project": "projects/helium-vis-example/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/helium-vis-example/src/test.ts",
+            "tsConfig": "projects/helium-vis-example/tsconfig.spec.json",
+            "karmaConfig": "projects/helium-vis-example/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/helium-vis-example/tsconfig.lib.json",
+              "projects/helium-vis-example/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "zeppelin-visualization": {
+      "projectType": "library",
+      "root": "projects/zeppelin-visualization",
+      "sourceRoot": "projects/zeppelin-visualization/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/zeppelin-visualization/tsconfig.lib.json",
+            "project": "projects/zeppelin-visualization/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/zeppelin-visualization/src/test.ts",
+            "tsConfig": "projects/zeppelin-visualization/tsconfig.spec.json",
+            "karmaConfig": "projects/zeppelin-visualization/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/zeppelin-visualization/tsconfig.lib.json",
+              "projects/zeppelin-visualization/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "zeppelin-sdk": {
+      "projectType": "library",
+      "root": "projects/zeppelin-sdk",
+      "sourceRoot": "projects/zeppelin-sdk/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/zeppelin-sdk/tsconfig.lib.json",
+            "project": "projects/zeppelin-sdk/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/zeppelin-sdk/src/test.ts",
+            "tsConfig": "projects/zeppelin-sdk/tsconfig.spec.json",
+            "karmaConfig": "projects/zeppelin-sdk/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/zeppelin-sdk/tsconfig.lib.json",
+              "projects/zeppelin-sdk/tsconfig.spec.json"
+            ],
             "exclude": [
               "**/node_modules/**"
             ]

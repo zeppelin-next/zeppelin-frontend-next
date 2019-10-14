@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { HeliumManagerService } from '@zeppelin/helium-manager';
 import { MessageService } from '@zeppelin/services';
 
 @Component({
@@ -14,13 +15,18 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject();
   websocketConnected = false;
 
-  constructor(public messageService: MessageService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    public messageService: MessageService,
+    private cdr: ChangeDetectorRef,
+    private heliumManagerService: HeliumManagerService
+  ) {}
 
   ngOnInit() {
     this.messageService.connectedStatus$.pipe(takeUntil(this.destroy$)).subscribe(data => {
       this.websocketConnected = data;
       this.cdr.markForCheck();
     });
+    this.heliumManagerService.initPackages();
   }
 
   ngOnDestroy(): void {

@@ -1,8 +1,10 @@
 import { CdkPortalOutlet } from '@angular/cdk/portal';
 import { ViewContainerRef } from '@angular/core';
+
 import { GraphConfig } from '@zeppelin/sdk';
+import { VisualizationComponentPortal } from 'zeppelin-visualization';
+
 import { G2VisualizationBase } from '../g2-visualization-base';
-import { VisualizationComponentPortal } from '../visualization-component-portal';
 import { AreaChartVisualizationComponent } from './area-chart-visualization.component';
 
 export class AreaChartVisualization extends G2VisualizationBase {

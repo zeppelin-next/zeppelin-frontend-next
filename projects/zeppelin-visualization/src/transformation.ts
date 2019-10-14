@@ -1,6 +1,6 @@
 import { GraphConfig } from '@zeppelin/sdk';
 
-import { DataSet } from './dataset/data-set';
+import { DataSet } from './data-set';
 
 export interface Setting {
   // tslint:disable-next-line:no-any
@@ -13,13 +13,8 @@ export abstract class Transformation {
   dataset: DataSet;
   constructor(private config: GraphConfig) {}
 
-  abstract getSetting(): Setting;
   // tslint:disable-next-line:no-any
   abstract transform(tableData): any;
-
-  renderSetting(target): void {
-    // TODO
-  }
 
   setConfig(config) {
     this.config = config;

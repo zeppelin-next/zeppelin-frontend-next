@@ -4,9 +4,8 @@ import { filter, maxBy, minBy, orderBy, sumBy } from 'lodash';
 import { NzTableComponent } from 'ng-zorro-antd';
 import { utils, writeFile, WorkSheet } from 'xlsx';
 
-import { TableData } from '../dataset/table-data';
-import { Visualization } from '../visualization';
-import { VISUALIZATION } from '../visualization-component-portal';
+import { TableData } from '@zeppelin/visualization/table-data';
+import { Visualization, VISUALIZATION } from 'zeppelin-visualization';
 
 type ColType = 'string' | 'date' | 'number';
 type AggregationType = 'count' | 'sum' | 'min' | 'max' | 'avg';

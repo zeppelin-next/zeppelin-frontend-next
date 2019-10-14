@@ -8,10 +8,10 @@ import {
   ViewChild
 } from '@angular/core';
 
+import { Visualization, VISUALIZATION } from 'zeppelin-visualization';
+
 import { VisualizationPivotSettingComponent } from '../common/pivot-setting/pivot-setting.component';
 import { G2VisualizationComponentBase } from '../g2-visualization-component-base';
-import { Visualization } from '../visualization';
-import { VISUALIZATION } from '../visualization-component-portal';
 
 @Component({
   selector: 'zeppelin-pie-chart-visualization',

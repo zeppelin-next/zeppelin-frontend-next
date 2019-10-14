@@ -2,11 +2,9 @@ import { CdkPortalOutlet } from '@angular/cdk/portal';
 import { ViewContainerRef } from '@angular/core';
 
 import { GraphConfig } from '@zeppelin/sdk';
+import { Transformation, Visualization, VisualizationComponentPortal } from 'zeppelin-visualization';
 
 import { TableTransformation } from '../table-transformation';
-import { Setting, Transformation } from '../transformation';
-import { Visualization } from '../visualization';
-import { VisualizationComponentPortal } from '../visualization-component-portal';
 import { TableVisualizationComponent } from './table-visualization.component';
 
 export class TableVisualization extends Visualization<TableVisualizationComponent> {
@@ -28,10 +26,6 @@ export class TableVisualization extends Visualization<TableVisualizationComponen
     }
     this.configChange$.complete();
     this.configChange$ = null;
-  }
-
-  getSetting(): Setting {
-    return undefined;
   }
 
   getTransformation(): Transformation {

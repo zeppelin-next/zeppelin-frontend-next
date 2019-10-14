@@ -3,8 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } 
 import { get } from 'lodash';
 
 import { GraphConfig, XAxisSetting, XLabelStatus } from '@zeppelin/sdk';
-
-import { Visualization } from '../../visualization';
+import { Visualization } from 'zeppelin-visualization';
 
 @Component({
   selector: 'zeppelin-visualization-x-axis-setting',

@@ -35,15 +35,17 @@ import {
   VisualizationStackedAreaChart
 } from '@zeppelin/sdk';
 import { DynamicTemplate, NgZService, RuntimeCompilerService } from '@zeppelin/services';
+import { ZeppelinHeliumService } from 'zeppelin-helium';
+import { Visualization } from 'zeppelin-visualization';
 
+import { HeliumManagerService } from '@zeppelin/helium-manager';
 import { AreaChartVisualization } from '@zeppelin/visualization/area-chart/area-chart-visualization';
 import { BarChartVisualization } from '@zeppelin/visualization/bar-chart/bar-chart-visualization';
-import { TableData } from '@zeppelin/visualization/dataset/table-data';
 import { LineChartVisualization } from '@zeppelin/visualization/line-chart/line-chart-visualization';
 import { PieChartVisualization } from '@zeppelin/visualization/pie-chart/pie-chart-visualization';
 import { ScatterChartVisualization } from '@zeppelin/visualization/scatter-chart/scatter-chart-visualization';
+import { TableData } from '@zeppelin/visualization/table-data';
 import { TableVisualization } from '@zeppelin/visualization/table/table-visualization';
-import { Visualization } from '@zeppelin/visualization/visualization';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph-result',
@@ -125,8 +127,17 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
     private runtimeCompilerService: RuntimeCompilerService,
     private sanitizer: DomSanitizer,
     private injector: Injector,
-    private ngZService: NgZService
-  ) {}
+    private ngZService: NgZService,
+    private zeppelinHeliumService: ZeppelinHeliumService,
+    private heliumManagerService: HeliumManagerService
+  ) {
+    this.heliumManagerService
+      .packagesLoadChange()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(packages => {
+        console.log(packages);
+      });
+  }
 
   ngOnInit() {
     this.ngZService
