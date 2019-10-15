@@ -7,9 +7,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router, RouterModule } from '@angular/router';
 
+import { ZeppelinHeliumModule } from '@zeppelin/helium';
 import { en_US, NzModalService, NzNotificationService, NZ_I18N } from 'ng-zorro-antd';
 import { NZ_CODE_EDITOR_CONFIG } from 'ng-zorro-antd/code-editor';
-import { ZeppelinHeliumModule } from 'zeppelin-helium';
 
 import { MESSAGE_INTERCEPTOR, TRASH_FOLDER_ID_TOKEN } from '@zeppelin/interfaces';
 import { loadMonacoLanguage } from '@zeppelin/languages';

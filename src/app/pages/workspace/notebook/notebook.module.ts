@@ -27,7 +27,7 @@ import { NzResizableModule } from 'ng-zorro-antd/resizable';
 
 import { ShareModule } from '@zeppelin/share';
 
-import { VisualizationModule } from 'src/app/visualization/visualization.module';
+import { VisualizationModule } from 'src/app/visualizations/visualization.module';
 import { NotebookAddParagraphComponent } from './add-paragraph/add-paragraph.component';
 import { NotebookInterpreterBindingComponent } from './interpreter-binding/interpreter-binding.component';
 import { NotebookParagraphCodeEditorComponent } from './paragraph/code-editor/code-editor.component';

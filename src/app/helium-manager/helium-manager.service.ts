@@ -1,6 +1,6 @@
 import { Compiler, Injectable, Injector, NgModuleFactory, OnDestroy, Type } from '@angular/core';
+import { ZeppelinHeliumPackage, ZeppelinHeliumService } from '@zeppelin/helium';
 import { of, BehaviorSubject } from 'rxjs';
-import { ZeppelinHeliumPackage, ZeppelinHeliumService } from 'zeppelin-helium';
 import { HeliumManagerModule } from './helium-manager.module';
 
 export interface CompiledPackage {

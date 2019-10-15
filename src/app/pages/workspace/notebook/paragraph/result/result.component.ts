@@ -34,18 +34,18 @@ import {
   VisualizationScatterChart,
   VisualizationStackedAreaChart
 } from '@zeppelin/sdk';
-import { DynamicTemplate, NgZService, RuntimeCompilerService } from '@zeppelin/services';
-import { ZeppelinHeliumService } from 'zeppelin-helium';
-import { Visualization } from 'zeppelin-visualization';
+
+import { ZeppelinHeliumService } from '@zeppelin/helium';
+import { TableData, Visualization } from '@zeppelin/visualization';
 
 import { HeliumManagerService } from '@zeppelin/helium-manager';
-import { AreaChartVisualization } from '@zeppelin/visualization/area-chart/area-chart-visualization';
-import { BarChartVisualization } from '@zeppelin/visualization/bar-chart/bar-chart-visualization';
-import { LineChartVisualization } from '@zeppelin/visualization/line-chart/line-chart-visualization';
-import { PieChartVisualization } from '@zeppelin/visualization/pie-chart/pie-chart-visualization';
-import { ScatterChartVisualization } from '@zeppelin/visualization/scatter-chart/scatter-chart-visualization';
-import { TableData } from '@zeppelin/visualization/table-data';
-import { TableVisualization } from '@zeppelin/visualization/table/table-visualization';
+import { DynamicTemplate, NgZService, RuntimeCompilerService } from '@zeppelin/services';
+import { AreaChartVisualization } from '@zeppelin/visualizations/area-chart/area-chart-visualization';
+import { BarChartVisualization } from '@zeppelin/visualizations/bar-chart/bar-chart-visualization';
+import { LineChartVisualization } from '@zeppelin/visualizations/line-chart/line-chart-visualization';
+import { PieChartVisualization } from '@zeppelin/visualizations/pie-chart/pie-chart-visualization';
+import { ScatterChartVisualization } from '@zeppelin/visualizations/scatter-chart/scatter-chart-visualization';
+import { TableVisualization } from '@zeppelin/visualizations/table/table-visualization';
 
 @Component({
   selector: 'zeppelin-notebook-paragraph-result',
@@ -60,7 +60,6 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
   @Input() currentCol = 12;
   @Output() readonly configChange = new EventEmitter<ParagraphConfigResult>();
   @Output() readonly sizeChange = new EventEmitter<NzResizeEvent>();
-  @ViewChild('graphEle', { static: false }) graphEle: ElementRef<HTMLDivElement>;
   @ViewChild(CdkPortalOutlet, { static: false }) portalOutlet: CdkPortalOutlet;
 
   private destroy$ = new Subject();
@@ -70,7 +69,8 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
   plainText: string | SafeHtml = '';
   imgData: string | SafeUrl = '';
   tableData = new TableData();
-  visualizations = [
+  // tslint:disable-next-line:no-any
+  visualizations: any[] = [
     {
       id: 'table',
       name: 'Table',
@@ -135,7 +135,18 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
       .packagesLoadChange()
       .pipe(takeUntil(this.destroy$))
       .subscribe(packages => {
-        console.log(packages);
+        packages.forEach(pack => {
+          this.visualizations.push({
+            id: pack._raw.id,
+            name: pack.name,
+            icon: pack._raw.icon,
+            Class: pack._raw.visualization,
+            componentFactoryResolver: pack.moduleFactory.create(this.injector).componentFactoryResolver,
+            changeSubscription: null,
+            instance: undefined
+          });
+        });
+        this.cdr.markForCheck();
       });
   }
 
@@ -247,7 +258,13 @@ export class NotebookParagraphResultComponent implements OnInit, AfterViewInit, 
     }
     this.destroyVisualizations(this.config.graph.mode);
     if (!visualizationItem.instance) {
-      instance = new visualizationItem.Class(this.config.graph, this.portalOutlet, this.viewContainerRef);
+      // tslint:disable-next-line:no-any
+      instance = new visualizationItem.Class(
+        this.config.graph,
+        this.portalOutlet,
+        this.viewContainerRef,
+        visualizationItem.componentFactoryResolver
+      );
       visualizationItem.instance = instance;
       visualizationItem.changeSubscription = instance.configChanged().subscribe(config => {
         this.config.graph = config;

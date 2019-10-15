@@ -1,5 +1,5 @@
 import { CdkPortalOutlet, ComponentPortal, ComponentType, PortalInjector } from '@angular/cdk/portal';
-import { InjectionToken, ViewContainerRef } from '@angular/core';
+import { ComponentFactoryResolver, InjectionToken, ViewContainerRef } from '@angular/core';
 
 import { Visualization } from './visualization';
 
@@ -10,7 +10,8 @@ export class VisualizationComponentPortal<T extends Visualization, C> {
     private visualization: T,
     private component: ComponentType<C>,
     private portalOutlet: CdkPortalOutlet,
-    private viewContainerRef: ViewContainerRef
+    private viewContainerRef: ViewContainerRef,
+    private componentFactoryResolver?: ComponentFactoryResolver
   ) {}
 
   createInjector() {
@@ -22,7 +23,7 @@ export class VisualizationComponentPortal<T extends Visualization, C> {
 
   getComponentPortal() {
     const injector = this.createInjector();
-    return new ComponentPortal(this.component, undefined, injector);
+    return new ComponentPortal(this.component, null, injector, this.componentFactoryResolver);
   }
 
   attachComponentPortal() {
