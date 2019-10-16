@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -26,7 +27,7 @@ import { NotebookParagraphControlComponent } from '../control/control.component'
   styleUrls: ['./code-editor.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestroy {
+export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestroy, AfterViewInit {
   // TODO:
   //  1. cursor position
   @Input() readOnly = false;
@@ -60,7 +61,6 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
 
   initEditorListener() {
     const editor = this.editor;
-
     this.monacoDisposables.push(
       editor.onDidFocusEditorText(() => {
         this.ngZone.runOutsideAngular(() => {
@@ -117,7 +117,9 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
     this.initEditorFocus();
     this.initCompletionService();
     this.setEditorValue();
-    this.autoAdjustEditorHeight();
+    setTimeout(() => {
+      this.autoAdjustEditorHeight();
+    });
   }
 
   initCompletionService(): void {
@@ -139,7 +141,8 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
         minimap: { enabled: false },
         lineNumbers: this.lineNumbers ? 'on' : 'off',
         glyphMargin: false,
-        folding: false
+        folding: false,
+        scrollBeyondLastLine: false
       });
     }
   }
@@ -218,4 +221,6 @@ export class NotebookParagraphCodeEditorComponent implements OnChanges, OnDestro
     this.completionService.unregister(this.editor.getModel());
     this.monacoDisposables.forEach(d => d.dispose());
   }
+
+  ngAfterViewInit(): void {}
 }

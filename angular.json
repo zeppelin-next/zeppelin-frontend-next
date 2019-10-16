@@ -41,7 +41,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "ngx-build-plus:browser",
           "options": {
             "outputPath": "dist/zeppelin",
             "index": "src/index.html",
@@ -71,7 +71,8 @@
               "src/styles/theme/dark/antd-dark.less",
               "src/styles/theme/light/antd-light.less",
               "src/styles.less",
-              "./node_modules/highlight.js/styles/github.css"
+              "./node_modules/highlight.js/styles/github.css",
+              "./node_modules/monaco-editor/min/vs/editor/editor.main.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -116,7 +117,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "ngx-build-plus:dev-server",
           "options": {
             "browserTarget": "zeppelin:build"
           },
@@ -133,7 +134,7 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "ngx-build-plus:karma",
           "options": {
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",

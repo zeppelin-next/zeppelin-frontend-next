@@ -1,5 +1,5 @@
 {
-  "name": "zeppelin-helium",
+  "name": "@zeppelin/helium",
   "version": "0.0.0",
   "peerDependencies": {
     "@angular/common": "~8.2.8",
